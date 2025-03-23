@@ -3,7 +3,6 @@
 ## Guideline
 
 - Node version: `v20.18.0`
-- Run command: `npm install`
 
 ### Installation
 

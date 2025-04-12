@@ -1,0 +1,27 @@
+:root {
+  // Primary colors
+  --accent: rgb(35 49 75);
+  --text-primary: var(--accent);
+  --background-primary: #ffffff;
+
+  // Button colors
+  --button-background-primary: var(--accent);
+  --button-background-secondary: 35 49 75;
+  --button-text-primary: var(--background-primary);
+  --button-text-secondary: 255 255 255;
+
+  // Status colors
+  --success: 0 163 65 / 224 244 232;
+  --warning: 255 183 74 / 255 246 233;
+  --error: 248 58 58 / 254 231 231;
+
+  // Badges
+  --badge-on-sale: 35 49 75 / 255 255 255;
+  --badge-sold-out: 0 0 0 / 255 255 255;
+  --badge-primary: 35 49 75 / 255 255 255;
+
+  // Components
+  --product-card: 255 255 255 / 35 49 75;
+  --header: 255 255 255 / 35 49 75;
+  --footer: 247 247 247 / 35 49 75;
+}

@@ -15,7 +15,7 @@ git clone https://github.com/PhanThanhDat16/clothes-client.git
 2. Navigate to the project directory:
 
 ```sh
-cd client
+cd clothes-client
 ```
 
 3. Install the dependencies:

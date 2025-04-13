@@ -1,7 +1,5 @@
-import Logo from '../../Logo/Logo.avif'
-import 'boxicons/css/boxicons.min.css'
 import { memo, useState } from 'react'
-import { ProductShirt, ProductShort } from '../../apis/index'
+// import { ProductShirt, ProductShort } from '../../apis/index'
 
 // interface Product {
 //   name: string;
@@ -33,13 +31,13 @@ const ListNameCollection = [
 const Header = () => {
   const [valueSearch, setValueSearch] = useState('')
   const [isOpen, setIsOpen] = useState(false)
-  console.log(ProductShirt, ProductShort)
+  // console.log(ProductShirt, ProductShort)
   return (
     <div className="wrapper-Menu w-full ">
-      <div className="wrapper-Menu_Header flex justify-between items-center w-full h-[100%]">
+      <div className="wrapper-Menu_Header p-0 flex justify-between items-center w-full h-[100%]">
         {/* Logo */}
         <div className="Box-Logo-Header ml-[11.2rem] mr-[5.6rem]">
-          <img src={Logo} alt="logo" className="img-Logo" />
+          <img src="/logo/Logo.avif" alt="logo" className="img-Logo" />
         </div>
         {/* Text */}
         <ul className="Menu flex items-center">

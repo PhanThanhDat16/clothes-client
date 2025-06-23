@@ -1,5 +1,3 @@
-import { useCallback, memo } from 'react'
-
 const data = [
   { id: 1, title: 'ĐƠN 500K: GIẢM 5% TỔNG ĐƠN + FREESHIP' },
   { id: 2, title: 'ĐƠN 500K: GIẢM 5% TỔNG ĐƠN + FREESHIP' },
@@ -10,30 +8,22 @@ const data = [
   { id: 7, title: 'ĐƠN 500K: GIẢM 5% TỔNG ĐƠN + FREESHIP' }
 ]
 
-function PromoBanner() {
-  const RenderPromoBanner = useCallback(() => {
-    return (
-      <div className="promoBanner w-full h-[100%]">
-        <div className="flex overflow-hidden h-full">
-          <div className="flex animate-scroll whitespace-nowrap h-full items-center">
-            {data.map((item) => (
-              <p key={item.id} className="promoBanner__container inline-block px-4 h-full flex items-center">
-                <a href="/" className="text-white">
-                  {item.title}
-                </a>
-              </p>
-            ))}
-          </div>
+const PromoBanner = () => {
+  return (
+    <div className="w-full bg-black py-3 overflow-hidden">
+      <div className="">
+        <div className="flex whitespace-nowrap">
+          {data.map((item) => (
+            <p key={item.id} className="animate-[marquee_10s_linear_infinite]">
+              <a href="/" className="text-white px-5">
+                {item.title}
+              </a>
+            </p>
+          ))}
         </div>
       </div>
-    )
-  }, [data])
-
-  return (
-    <div className="promoBanner">
-      <RenderPromoBanner />
     </div>
   )
 }
 
-export default memo(PromoBanner)
+export default PromoBanner

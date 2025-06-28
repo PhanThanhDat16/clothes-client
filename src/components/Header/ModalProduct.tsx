@@ -2,16 +2,16 @@ import { PRODUCT_PAGE } from '@/constants'
 import { useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 
-// const listNameProduceShirt = [
-//   { id: 1, name: 'Polo' },
-//   { id: 2, name: 'T-shirt' },
-//   { id: 3, name: 'SơMi' }
-// ]
-// const listNameProduceShort = [
-//   { id: 1, name: 'Quần Dài' },
-//   { id: 2, name: 'Quần Short' },
-//   { id: 3, name: 'Quần Jean' },
-// ]
+const listNameProduceShirt = [
+  { id: 1, name: 'Polo' },
+  { id: 2, name: 'T-shirt' },
+  { id: 3, name: 'SơMi' }
+]
+const listNameProduceShort = [
+  { id: 1, name: 'Quần Dài' },
+  { id: 2, name: 'Quần Short' },
+  { id: 3, name: 'Quần Jean' }
+]
 
 export const ModalProduct = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -27,7 +27,7 @@ export const ModalProduct = () => {
   }
 
   return (
-    <div className="relative group">
+    <div>
       <NavLink
         to={PRODUCT_PAGE}
         className={`flex px-2 hover:opacity-80`}
@@ -39,17 +39,51 @@ export const ModalProduct = () => {
       </NavLink>
 
       <div
-        className={`fixed left-0 right-0 h-60 z-auto mt-10 bg-white border ${isModalOpen ? '' : 'hidden'}`}
+        className={`absolute inset-x-0 h-auto mt-10 bg-white border ${isModalOpen ? '' : 'hidden'}`}
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
       >
-        <div className="grid grid-cols-[15%_15%_15%_15%_1fr] w-[90%] max-w-[1600px] mx-auto py-10 items-center text-blue-950">
-          <ul className="flex flex-auto gap-[5%] w-full">
-            <li className="text-2xl font-normal hover:bg-slate-500">Áo</li>
-            <li className="text-2xl font-normal hover:bg-slate-500">Quần</li>
-            <li className="text-2xl font-normal hover:bg-slate-500">Phụ kiện</li>
-            <li className="text-2xl font-normal hover:bg-slate-500">Bán chạy nhất</li>
-            <li className="text-2xl font-normal hover:bg-slate-500">Tất cả sản phẩm</li>
+        <div className="w-[90%] max-w-[1600px] mx-auto py-10 items-center text-blue-950">
+          <ul className="flex justify-between">
+            <li className="font-normal grid gap-3">
+              <a href="#" className="text-xl hover:underline">
+                Áo
+              </a>
+              <div className="row-start-2 flex flex-col gap-2">
+                {listNameProduceShirt.map((item) => (
+                  <a href="#" className="opacity-80 hover:opacity-100">
+                    {item.name}
+                  </a>
+                ))}
+              </div>
+            </li>
+            <li className="font-normal grid gap-3">
+              <a href="#" className="text-xl hover:underline">
+                Quần
+              </a>
+              <div className="row-start-2 flex flex-col gap-2">
+                {listNameProduceShort.map((item) => (
+                  <a href="#" className="opacity-80 hover:opacity-100">
+                    {item.name}
+                  </a>
+                ))}
+              </div>
+            </li>
+            <li className="font-normal">
+              <a href="#" className="text-xl hover:underline">
+                Phụ kiện
+              </a>
+            </li>
+            <li className="font-normal">
+              <a href="#" className="text-xl hover:underline">
+                Bán chạy nhất
+              </a>
+            </li>
+            <li className="font-normal grid">
+              <a href="#" className="text-2xl hover:underline">
+                Tất cả sản phẩm
+              </a>
+            </li>
           </ul>
         </div>
       </div>

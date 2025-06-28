@@ -1,17 +1,7 @@
-/// Bo Suu Tap
-// const ListNameCollection = [
-//   { id: 1, name: 'Summer Manor' },
-//   { id: 2, name: 'The Real Jeans' },
-//   { id: 3, name: 'Sánh Đôi' },
-//   { id: 4, name: 'Từ Nhà Ra Phố' },
-//   { id: 5, name: 'Chill Thé' },
-//   { id: 6, name: 'Smart F' },
-//   { id: 7, name: 'Social Circle' }
-// ]
-
-import { COLLECTION_PAGE, CONTACT_PAGE, HOME_PAGE, LOGIN_PAGE, NEWIN_PAGE } from '@/constants'
+import { CONTACT_PAGE, HOME_PAGE, LOGIN_PAGE, NEWIN_PAGE } from '@/constants'
 import { NavLink } from 'react-router-dom'
 import { ModalProduct } from './ModalProduct'
+import { ModalCollection } from './ModalCollection'
 
 const Header = () => {
   return (
@@ -26,11 +16,7 @@ const Header = () => {
         </NavLink>
 
         <ModalProduct />
-
-        <NavLink to={COLLECTION_PAGE} className="px-2 flex hover:opacity-80">
-          Bộ sưu tập
-          <i className="bx bx-chevron-down"></i>
-        </NavLink>
+        <ModalCollection />
 
         <NavLink to={CONTACT_PAGE} className="px-2 hover:opacity-80">
           Liên hệ

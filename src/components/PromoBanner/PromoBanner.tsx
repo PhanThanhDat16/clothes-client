@@ -14,11 +14,11 @@ const PromoBanner = () => {
       <div className="">
         <div className="flex whitespace-nowrap">
           {data.map((item) => (
-            <p key={item.id} className="animate-[marquee_10s_linear_infinite]">
+            <li key={item.id} className="animate-[marquee_10s_linear_infinite]">
               <a href="/" className="text-white px-5">
                 {item.title}
               </a>
-            </p>
+            </li>
           ))}
         </div>
       </div>

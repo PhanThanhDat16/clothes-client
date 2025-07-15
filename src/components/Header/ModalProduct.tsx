@@ -43,7 +43,7 @@ export const ModalProduct = () => {
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
       >
-        <div className="w-[90%] max-w-[1600px] mx-auto py-10 items-center text-blue-950">
+        <div className="w-[90%] max-w-[1600px] mx-auto py-10 items-center text-[var(--primary-color)]">
           <ul className="flex justify-between">
             <li className="font-normal grid gap-3">
               <a href="#" className="text-xl hover:underline">

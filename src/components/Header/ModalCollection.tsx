@@ -43,7 +43,7 @@ export const ModalCollection = () => {
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
       >
-        <div className="w-[90%] max-w-[1600px] mx-auto py-10 text-blue-950 flex justify-between">
+        <div className="w-[90%] max-w-[1600px] mx-auto py-10 text-[var(--primary-color)] flex justify-between">
           <ul className="flex flex-auto flex-wrap gap-[4rem]">
             {ListNameCollection.map((item) => (
               <li key={item.id} className="font-normal grid">

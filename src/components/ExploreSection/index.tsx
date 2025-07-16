@@ -1,10 +1,10 @@
 import React from 'react'
-import Footer from './Footer'
+import ExploreSection from './ExploreSection'
 
 const index = () => {
   return (
     <div>
-      <Footer></Footer>
+      <ExploreSection />
     </div>
   )
 }

@@ -1,5 +1,11 @@
+import CategoriesSection from '@/components/Categories/CategoriesSection'
+
 const Product = () => {
-  return <div>product test cái </div>
+  return (
+    <div>
+      <CategoriesSection></CategoriesSection>
+    </div>
+  )
 }
 
 export default Product

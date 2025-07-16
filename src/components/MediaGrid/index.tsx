@@ -1,10 +1,10 @@
 import React from 'react'
-import Footer from './Footer'
+import MediaGrid from './MediaGridSection'
 
 const index = () => {
   return (
     <div>
-      <Footer></Footer>
+      <MediaGrid />
     </div>
   )
 }

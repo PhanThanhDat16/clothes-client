@@ -1,10 +1,10 @@
 import React from 'react'
-import Footer from './Footer'
+import ImageBanner from './ImageBanner'
 
 const index = () => {
   return (
     <div>
-      <Footer></Footer>
+      <ImageBanner />
     </div>
   )
 }

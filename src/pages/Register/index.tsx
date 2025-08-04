@@ -5,7 +5,7 @@ const Register = () => {
   return (
     <div className="bg-slate-100 max-w-2xl mx-auto">
       <div className="max-w-md text-center mx-auto py-10">
-        <h1 className=" text-3xl text-blue-950 font-semibold pb-10">Đăng ký</h1>
+        <h1 className=" text-3xl text-[var(--primary-color)] font-semibold pb-10">Đăng ký</h1>
         <div className="py-2">
           <input className="w-full border p-4 focus:border-black" type="text" placeholder="Họ & đệm" />
         </div>
@@ -19,13 +19,13 @@ const Register = () => {
           <input className="w-full border p-4 focus:border-black" type="password" placeholder="Mật khẩu" />
         </div>
 
-        <div className=" border-2 border-blue-950 my-5">
-          <button className="text-white bg-blue-950 w-full font-semibold py-5 hover:bg-white hover:text-blue-950">
+        <div className=" border-2 border-[var(--primary-color)] my-5">
+          <button className="text-white bg-[var(--primary-color)] w-full font-semibold py-5 hover:bg-white hover:text-[var(--primary-color)]">
             Tạo tài khoản
           </button>
         </div>
 
-        <NavLink to={LOGIN_PAGE} className="text-blue-950/80 hover:underline">
+        <NavLink to={LOGIN_PAGE} className="text-[var(--primary-color)]/80 hover:underline">
           Đăng nhập
         </NavLink>
       </div>

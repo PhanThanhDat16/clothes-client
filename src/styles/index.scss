@@ -47,6 +47,7 @@ body {
   line-height: 1;
 }
 
+// <<<<<<< bugfix/fix-UI-HomePage
 @keyframes marquee {
   0% {
     transform: translateX(0);
@@ -55,4 +56,9 @@ body {
   100% {
     transform: translateX(-100%);
   }
+// =======
+// :root {
+//   --max-width: 1600px;
+//   --primary-color: #23314b;
+// >>>>>>> feature/develop-UI
 }

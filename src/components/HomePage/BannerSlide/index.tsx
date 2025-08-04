@@ -9,7 +9,7 @@ const Slide = [
   }
 ]
 
-const Banner_Slide = () => {
+const BannerSlide = () => {
   const [urlImage, setUrlImage] = useState(Slide[2])
   const [count, setCount] = useState(0)
 
@@ -34,4 +34,4 @@ const Banner_Slide = () => {
   )
 }
 
-export default Banner_Slide
+export default BannerSlide

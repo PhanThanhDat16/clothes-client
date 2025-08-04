@@ -1,7 +1,10 @@
-import React from 'react'
-import ProductCard, { type Product } from './ProductCard'
+// src/components/NewProductsSection.tsx
 
-const bestSellerProducts: Product[] = [
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation, Pagination } from 'swiper/modules'
+import ProductCard, { type Product } from '../../ProductCard'
+
+const newProducts: Product[] = [
   {
     id: '9903737241906',
     handle: 'ao-thun-neo',
@@ -15,6 +18,7 @@ const bestSellerProducts: Product[] = [
       original: '450.000₫'
     },
     savings: '181.000₫',
+    isNew: true,
     colors: [
       { name: 'Trắng', className: 'bg-white' },
       { name: 'Đen', className: 'bg-black' }
@@ -33,6 +37,7 @@ const bestSellerProducts: Product[] = [
       original: '450.000₫'
     },
     savings: '181.000₫',
+    isNew: true,
     colors: [
       { name: 'Be', className: 'bg-[#f2eeeb]' },
       { name: 'Trắng', className: 'bg-white' }
@@ -51,10 +56,7 @@ const bestSellerProducts: Product[] = [
       original: '500.000₫'
     },
     savings: '161.000₫',
-    colors: [
-      { name: 'Kem Navy', className: 'bg-[#e4e2de]' },
-      { name: 'Xám Nhạt', className: 'bg-gray-300' }
-    ]
+    isNew: true
   },
   {
     id: '9903734882610',
@@ -69,6 +71,7 @@ const bestSellerProducts: Product[] = [
       original: '500.000₫'
     },
     savings: '161.000₫',
+    isNew: true,
     colors: [
       { name: 'CaPhe', className: 'bg-[#b0a395]' },
       { name: 'Kem Nhạt', className: 'bg-[#f7f4eb]' }
@@ -77,20 +80,26 @@ const bestSellerProducts: Product[] = [
 ]
 
 const ChevronRightIcon = () => (
-  <svg role="presentation" focusable="false" width="5" height="8" viewBox="0 0 5 8">
+  <svg
+    role="presentation"
+    focusable="false"
+    width="5"
+    height="8"
+    className="icon icon-chevron-right-small"
+    viewBox="0 0 5 8"
+  >
     <path d="m.75 7 3-3-3-3" fill="none" stroke="currentColor" strokeWidth="1.5"></path>
   </svg>
 )
 
-const BestSellerProductsSection: React.FC = () => {
+const NewProductsSection = () => {
   return (
-    <section className="bg-gray-50 text-[#23314B] w-full py-12 px-4 sm:px-6 lg:px-8">
-      <div className="w-[1600px] mx-auto">
-        {/* Header */}
+    <section className="bg-gray-50 text-[#23314B] w-full py-12 px-4">
+      <div className="max-w-7xl mx-auto">
         <header className="flex items-center justify-between mb-8">
-          <h2 className="text-3xl font-extrabold tracking-tight">Sản Phẩm Bán Chạy</h2>
+          <h2 className="text-2xl font-extrabold tracking-tight">Sản Phẩm Mới</h2>
           <a
-            href="/collections/best-sellers"
+            href="/collections/new-products-1"
             className="group flex items-center text-sm font-semibold text-blue-600 hover:text-blue-800"
           >
             <span>Xem toàn bộ sản phẩm</span>
@@ -100,15 +109,26 @@ const BestSellerProductsSection: React.FC = () => {
           </a>
         </header>
 
-        {/* Products Grid */}
-        <div className="flex space-x-6 overflow-x-auto pb-4 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:grid-cols-4 lg:gap-x-6">
-          {bestSellerProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+        <div className="w-full">
+          <Swiper
+            spaceBetween={20}
+            slidesPerView={4}
+            modules={[Navigation, Pagination]}
+            navigation={true}
+            pagination={{
+              clickable: true
+            }}
+          >
+            {newProducts.map((product) => (
+              <SwiperSlide key={product.id}>
+                <ProductCard product={product} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
       </div>
     </section>
   )
 }
 
-export default BestSellerProductsSection
+export default NewProductsSection

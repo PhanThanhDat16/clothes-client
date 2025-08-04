@@ -1,21 +1,15 @@
-import React from 'react'
-
-const ImageBanner: React.FC = () => {
+const ImageBanner = () => {
   return (
-    <section className="relative w-full h-[500px] overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0 h-full">
-        <picture>
-          <img
-            src="https://polomanor.vn/cdn/shop/files/8_1_1_1.jpg?v=1671680555&width=2000"
-            alt="Polo Manor Brand Image"
-            className="w-full h-full object-cover"
-            loading="lazy"
-          />
-        </picture>
+    <div className="relative w-full h-[500px] overflow-hidden">
+      <div className="h-full">
+        <img
+          src="https://polomanor.vn/cdn/shop/files/8_1_1_1.jpg?v=1671680555&width=2000"
+          alt="Polo Manor Brand Image"
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
       </div>
 
-      {/* Text Content */}
       <div className="absolute inset-0 z-10 flex items-center justify-center p-6 text-white">
         <div className="max-w-4xl text-center">
           <div className="space-y-6">
@@ -53,7 +47,7 @@ const ImageBanner: React.FC = () => {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   )
 }
 

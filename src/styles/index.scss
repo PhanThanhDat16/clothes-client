@@ -3,12 +3,9 @@
 @use 'tailwindcss/utilities';
 @use 'variables';
 
-// Components
-@use '../components/PromoBanner/index.scss' as PromoBanner;
-@use '../components/Header/index.scss' as Header;
-@use '../components/Banner_Slide/index.scss' as Banner_Slide;
-// Config main
-
+@use 'swiper/css';
+@use 'swiper/css/navigation';
+@use 'swiper/css/pagination';
 *,
 *:before,
 *:after {
@@ -48,4 +45,14 @@ body {
   font-weight: 400;
   font-size: 16px;
   line-height: 1;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
 }

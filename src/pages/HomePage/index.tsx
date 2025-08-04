@@ -1,21 +1,21 @@
-import Banner_Slide from '@/components/Banner_Slide'
-import CategoriesSection from '@/components/Categories/CategoriesSection'
-import ExploreSection from '@/components/ExploreSection/ExploreSection'
-import ImageBanner from '@/components/ImageBanner/ImageBanner'
-import MediaGrid from '@/components/MediaGrid/MediaGridSection'
-import BestSellerProductsSection from '@/components/Products/BestSellerProductsSection'
-import NewProductsSection from '@/components/Products/NewProductsSection'
+import BannerSlide from '@/components/HomePage/BannerSlide'
+import CategoriesSection from '@/components/HomePage/CategoriesSection'
+import NewProductsSection from '@/components/HomePage/NewProductSection'
+import BestSellerProductsSection from '@/components/HomePage/BestSellerProduct'
+import ImageBanner from '@/components/HomePage/ImageBanner'
+import MediaGrid from '@/components/HomePage/MediaGrid'
+import ExploreSection from '@/components/HomePage/ExploreSection'
 
 const HomePage = () => {
   return (
-    <div>
-      <Banner_Slide />
-      <CategoriesSection></CategoriesSection>
-      <NewProductsSection></NewProductsSection>
-      <BestSellerProductsSection></BestSellerProductsSection>
+    <div className="w-full">
+      <BannerSlide />
+      <CategoriesSection />
+      <NewProductsSection />
+      <BestSellerProductsSection />
       <ImageBanner></ImageBanner>
       <MediaGrid></MediaGrid>
-      <ExploreSection></ExploreSection>
+      <ExploreSection></ExploreSection>/
     </div>
   )
 }

@@ -4,16 +4,15 @@ import { Outlet } from 'react-router-dom'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import PromoBanner from '@/components/PromoBanner/PromoBanner'
-import Sidebar from '@/components/Sidebar/Sidebar'
 const MainLayout = () => {
   return (
-    <div className="main-layout">
+    <div className="w-full">
       <PromoBanner />
-      <div className="md:hidden">
+      {/* <div className="md:hidden">
         <Sidebar />
-      </div>
+      </div> */}
       <Header />
-      <div className="main-layout__content">
+      <div className="w-full">
         <Outlet />
       </div>
       <Footer />

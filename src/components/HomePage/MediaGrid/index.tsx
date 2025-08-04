@@ -1,5 +1,3 @@
-import React from 'react'
-
 interface MediaGridItem {
   id: string
   href: string
@@ -10,7 +8,7 @@ interface MediaGridItem {
   rowSpan: number
 }
 
-const MediaGrid: React.FC = () => {
+const MediaGrid = () => {
   const mediaItems: MediaGridItem[] = [
     {
       id: 'media-grid-item-1',
@@ -49,11 +47,9 @@ const MediaGrid: React.FC = () => {
   ]
 
   return (
-    <section className="w-full py-8 px-4">
-      <div className="w-[1600px] mx-auto">
-        {/* Grid Layout theo kiểu ảnh mẫu */}
-        <div className="grid grid-cols-4 grid-rows-2 gap-4 h-[600px]">
-          {/* Item 1 - Large left (2x2) */}
+    <section className="w-full p-8">
+      <div>
+        <div className="grid grid-cols-4 grid-rows-2 gap-4 h-full">
           <a
             href={mediaItems[0].href}
             className="col-span-2 row-span-2 relative overflow-hidden rounded-lg group cursor-pointer"
@@ -66,10 +62,8 @@ const MediaGrid: React.FC = () => {
                 loading="lazy"
               />
 
-              {/* Overlay */}
               <div className="absolute inset-0 bg-black bg-opacity-40" />
 
-              {/* Text content */}
               <div className="absolute inset-0 flex items-center justify-center p-8">
                 <div className="text-center">
                   <p className="text-white text-lg md:text-xl font-medium leading-relaxed max-w-md">

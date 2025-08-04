@@ -1,6 +1,4 @@
-// src/components/ProductCard.tsx
-
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 export interface Product {
   id: string
@@ -37,11 +35,11 @@ interface ProductCardProps {
   product: Product
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+const ProductCard = ({ product }: ProductCardProps) => {
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0]?.name || '')
 
   return (
-    <div className="group w-[382px] h-[679px] flex-shrink-0">
+    <div className="group flex-shrink-0">
       <div className="relative overflow-hidden bg-white text-[#23314B] rounded-lg shadow-sm hover:shadow-xl transition-shadow duration-300">
         {/* Badges */}
         <div className="absolute top-3 left-3 z-10 flex flex-col items-start space-y-2">
@@ -55,7 +53,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           )}
         </div>
 
-        {/* Product Image and Quick Buy */}
         <div className="relative">
           <a href={`/products/${product.handle}`}>
             <img
@@ -77,7 +74,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </div>
         </div>
 
-        {/* Product Info */}
         <div className="p-4 text-left">
           <div className="flex justify-between items-start">
             <div className="flex flex-col">
@@ -91,7 +87,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 <span className="text-gray-500 line-through text-sm">{product.price.original}</span>
               </div>
             </div>
-            {/* Color Swatches */}
+            s{' '}
             {product.colors && (
               <div className="flex flex-shrink-0 space-x-1.5 mt-1">
                 {product.colors.map((color) => (

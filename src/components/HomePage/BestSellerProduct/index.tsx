@@ -1,10 +1,9 @@
-// src/components/NewProductsSection.tsx
-
 import React from 'react'
-import ProductCard, { type Product } from './ProductCard' // Import ProductCard và cả kiểu Product từ nó
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation, Pagination } from 'swiper/modules'
+import ProductCard, { type Product } from '../../ProductCard'
 
-//=========== DỮ LIỆU ĐƯỢC CHUYỂN VÀO ĐÂY ===========//
-const newProducts: Product[] = [
+const bestSellerProducts: Product[] = [
   {
     id: '9903737241906',
     handle: 'ao-thun-neo',
@@ -18,7 +17,6 @@ const newProducts: Product[] = [
       original: '450.000₫'
     },
     savings: '181.000₫',
-    isNew: true,
     colors: [
       { name: 'Trắng', className: 'bg-white' },
       { name: 'Đen', className: 'bg-black' }
@@ -37,7 +35,6 @@ const newProducts: Product[] = [
       original: '450.000₫'
     },
     savings: '181.000₫',
-    isNew: true,
     colors: [
       { name: 'Be', className: 'bg-[#f2eeeb]' },
       { name: 'Trắng', className: 'bg-white' }
@@ -56,7 +53,10 @@ const newProducts: Product[] = [
       original: '500.000₫'
     },
     savings: '161.000₫',
-    isNew: true
+    colors: [
+      { name: 'Kem Navy', className: 'bg-[#e4e2de]' },
+      { name: 'Xám Nhạt', className: 'bg-gray-300' }
+    ]
   },
   {
     id: '9903734882610',
@@ -71,38 +71,28 @@ const newProducts: Product[] = [
       original: '500.000₫'
     },
     savings: '161.000₫',
-    isNew: true,
     colors: [
       { name: 'CaPhe', className: 'bg-[#b0a395]' },
       { name: 'Kem Nhạt', className: 'bg-[#f7f4eb]' }
     ]
   }
 ]
-//==================================================//
 
-// Icon SVG
 const ChevronRightIcon = () => (
-  <svg
-    role="presentation"
-    focusable="false"
-    width="5"
-    height="8"
-    className="icon icon-chevron-right-small"
-    viewBox="0 0 5 8"
-  >
+  <svg role="presentation" focusable="false" width="5" height="8" viewBox="0 0 5 8">
     <path d="m.75 7 3-3-3-3" fill="none" stroke="currentColor" strokeWidth="1.5"></path>
   </svg>
 )
 
-const NewProductsSection: React.FC = () => {
+const BestSellerProductsSection: React.FC = () => {
   return (
     <section className="bg-gray-50 text-[#23314B] w-full py-12 px-4 sm:px-6 lg:px-8">
-      <div className="w-[1600px] mx-auto">
-        {/* Section Header */}
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
         <header className="flex items-center justify-between mb-8">
-          <h2 className="text-3xl font-extrabold tracking-tight">Sản Phẩm Mới</h2>
+          <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight">Sản Phẩm Bán Chạy</h2>
           <a
-            href="/collections/new-products-1"
+            href="/collections/best-sellers"
             className="group flex items-center text-sm font-semibold text-blue-600 hover:text-blue-800"
           >
             <span>Xem toàn bộ sản phẩm</span>
@@ -112,15 +102,38 @@ const NewProductsSection: React.FC = () => {
           </a>
         </header>
 
-        {/* Products Grid */}
-        <div className="flex space-x-6 overflow-x-auto pb-4 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:grid-cols-4 lg:gap-x-6">
-          {newProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+        {/* Products Swiper */}
+        <div className="w-full">
+          <Swiper
+            spaceBetween={20}
+            slidesPerView={1}
+            breakpoints={{
+              640: {
+                slidesPerView: 2
+              },
+              768: {
+                slidesPerView: 3
+              },
+              1024: {
+                slidesPerView: 4
+              }
+            }}
+            modules={[Navigation, Pagination]}
+            navigation={true}
+            pagination={{
+              clickable: true
+            }}
+          >
+            {bestSellerProducts.map((product) => (
+              <SwiperSlide key={product.id}>
+                <ProductCard product={product} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
       </div>
     </section>
   )
 }
 
-export default NewProductsSection
+export default BestSellerProductsSection

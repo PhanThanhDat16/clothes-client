@@ -1,4 +1,3 @@
-/// custom hooks
 const index = () => {
   return <div></div>
 }

@@ -1,7 +1,6 @@
 @use 'tailwindcss/base';
 @use 'tailwindcss/components';
 @use 'tailwindcss/utilities';
-@use 'variables';
 
 @use 'swiper/css';
 @use 'swiper/css/navigation';
@@ -47,7 +46,6 @@ body {
   line-height: 1;
 }
 
-// <<<<<<< bugfix/fix-UI-HomePage
 @keyframes marquee {
   0% {
     transform: translateX(0);
@@ -56,9 +54,12 @@ body {
   100% {
     transform: translateX(-100%);
   }
-// =======
-// :root {
-//   --max-width: 1600px;
-//   --primary-color: #23314b;
-// >>>>>>> feature/develop-UI
+}
+
+:root {
+  --max-width: 1600px;
+  // Primary colors
+  --accent: rgb(35 49 75);
+  --primary-color: var(--accent);
+  // --background-primary: #ffffff;
 }

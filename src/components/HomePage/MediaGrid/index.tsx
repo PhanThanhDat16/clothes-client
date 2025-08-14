@@ -59,7 +59,6 @@ const MediaGrid = () => {
                 src={mediaItems[0].image}
                 alt={mediaItems[0].alt}
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 filter grayscale"
-                loading="lazy"
               />
 
               <div className="absolute inset-0 bg-black bg-opacity-40" />
@@ -84,7 +83,6 @@ const MediaGrid = () => {
                 src={mediaItems[1].image}
                 alt={mediaItems[1].alt}
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 filter grayscale"
-                loading="lazy"
               />
               <div className="absolute inset-0 bg-black bg-opacity-20" />
             </div>

@@ -1,3 +1,7 @@
+import zaloIcon from '@/assets/zalo.png'
+import messengerIcon from '@/assets/messenger.png'
+import contactIcon from '@/assets/contact.png'
+
 const Contact = () => {
   return (
     <div className="w-[90%] max-w-[var(--max-width)] mx-auto">
@@ -23,9 +27,17 @@ const Contact = () => {
 
           <div className="text-center">
             <div className=" text-[var(--primary-color)] text-xl my-3">Hoặc liên hệ ngay</div>
-            <button>Zalo</button>
-            <button>Messege</button>
-            <button>SĐT</button>
+            <div className="flex justify-center">
+              <button>
+                <img src={zaloIcon} alt="Zalo" className="w-8 rounded-full" />
+              </button>
+              <button className="mx-3">
+                <img src={messengerIcon} alt="Zalo" className="w-8" />
+              </button>
+              <button>
+                <img src={contactIcon} alt="Zalo" className="w-8" />
+              </button>
+            </div>
           </div>
         </div>
       </div>

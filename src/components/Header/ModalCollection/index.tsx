@@ -3,14 +3,15 @@ import { useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 
 // Bo Suu Tap
-const ListNameCollection = [
-  { id: 1, name: 'Summer Manor' },
-  { id: 2, name: 'The Real Jeans' },
-  { id: 3, name: 'Sánh Đôi' },
-  { id: 4, name: 'Từ Nhà Ra Phố' },
-  { id: 5, name: 'Chill Thé' },
-  { id: 6, name: 'Smart F' },
-  { id: 7, name: 'Social Circle' }
+const ListNameCategory = [
+  { id: 1, name: 'Áo Thun' },
+  { id: 2, name: 'Áo Khoác' },
+  { id: 3, name: 'Jeans' },
+  { id: 4, name: 'Pants' },
+  { id: 5, name: 'Polo' },
+  { id: 6, name: 'Short' },
+  { id: 7, name: 'Sơmi' },
+  { id: 8, name: 'Phụ kiện' }
 ]
 
 export const ModalCollection = () => {
@@ -34,7 +35,7 @@ export const ModalCollection = () => {
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
       >
-        <p>Bộ sưu tập</p>
+        <p>Danh Mục</p>
         <i className="bx bx-chevron-down"></i>
       </NavLink>
 
@@ -45,7 +46,7 @@ export const ModalCollection = () => {
       >
         <div className="w-[90%] max-w-[1600px] mx-auto py-10 text-[var(--primary-color)] flex justify-between">
           <ul className="flex flex-auto flex-wrap gap-[4rem]">
-            {ListNameCollection.map((item) => (
+            {ListNameCategory.map((item) => (
               <li key={item.id} className="font-normal grid">
                 <a href="#" className="text-xl hover:underline">
                   {item.name}

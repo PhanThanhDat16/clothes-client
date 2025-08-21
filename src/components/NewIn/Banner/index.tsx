@@ -120,7 +120,7 @@ const Banner = () => {
     <div className="w-full">
       <div className="relative max-h-[400px] overflow-hidden">
         <img
-          src="https://polomanor.vn/cdn/shop/collections/PLM01983.jpg?v=1754277533"
+          src="https://polomanor.vn/cdn/shop/collections/PLM01983.jpg?v=1754277533&width=1080"
           alt=""
           className="h-full w-full object-cover filter "
         />

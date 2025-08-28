@@ -1,4 +1,4 @@
-import { CONTACT_PAGE, HOME_PAGE, LOGIN_PAGE, NEWIN_PAGE } from '@/constants'
+import { CART_PAGE, CONTACT_PAGE, HOME_PAGE, LOGIN_PAGE, NEWIN_PAGE } from '@/constants'
 import { NavLink } from 'react-router-dom'
 import { ModalProduct } from './ModalProduct'
 import { ModalCollection } from './ModalCollection'
@@ -29,9 +29,9 @@ const Header = () => {
         <NavLink to={LOGIN_PAGE}>
           <i className="bx bx-user px-2"></i>
         </NavLink>
-        <button>
+        <NavLink to={CART_PAGE}>
           <i className="bx bx-cart px-2"></i>
-        </button>
+        </NavLink>
       </div>
     </div>
   )

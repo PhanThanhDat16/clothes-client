@@ -6,3 +6,5 @@ export const CONTACT_PAGE = '/contact'
 
 export const LOGIN_PAGE = '/login'
 export const REGISTER_PAGE = '/register'
+export const CART_PAGE = '/cart'
+export const AUTH_SUCCESS = 'auth/success'

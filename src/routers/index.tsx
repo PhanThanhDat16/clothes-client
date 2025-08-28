@@ -12,7 +12,9 @@ import {
   LOGIN_PAGE,
   NEWIN_PAGE,
   PRODUCT_PAGE,
-  REGISTER_PAGE
+  REGISTER_PAGE,
+  CART_PAGE,
+  AUTH_SUCCESS
 } from '@/constants'
 
 import MainLayout from '@/layouts'
@@ -22,6 +24,8 @@ import Collection from '@/pages/Collection'
 import Contact from '@/pages/Contact'
 import Login from '@/pages/Login'
 import Register from '@/pages/Register'
+import Cart from '@/pages/Cart'
+import AuthSuccess from '@/pages/auth-success/auth-success'
 
 const AppRouters = () => {
   return (
@@ -34,8 +38,11 @@ const AppRouters = () => {
         <Route path={COLLECTION_PAGE} element={<Collection />} />
         <Route path={CONTACT_PAGE} element={<Contact />} />
 
+        <Route path={CART_PAGE} element={<Cart />} />
+
         <Route path={LOGIN_PAGE} element={<Login />} />
         <Route path={REGISTER_PAGE} element={<Register />} />
+        <Route path={AUTH_SUCCESS} element={<AuthSuccess />} />
       </Route>
     </Routes>
   )

@@ -18,6 +18,9 @@ const Register = () => {
         <div className="py-2">
           <input className="w-full border-2 p-4 focus:border-black" type="password" placeholder="Mật khẩu" />
         </div>
+        <div className="py-2">
+          <input className="w-full border-2 p-4 focus:border-black" type="password" placeholder="Nhập lại mật khẩu" />
+        </div>
 
         <div className=" border-2 border-[var(--primary-color)] my-5">
           <button className="text-white bg-[var(--primary-color)] w-full font-semibold py-5 hover:opacity-85">

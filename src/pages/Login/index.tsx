@@ -1,7 +1,19 @@
-import { REGISTER_PAGE } from '@/constants'
+import { HOME_PAGE, PROFILE_PAGE, REGISTER_PAGE } from '@/constants'
 import { useState, useCallback, useEffect } from 'react'
 import { User, Settings, LogOut, Camera, Edit3, Save, X, Mail, Phone, MapPin, Calendar } from 'lucide-react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { IAuthForm } from '@/models/auth'
+import { toast } from 'react-toastify'
+import { EButtonType } from '@/models/common'
+import Button from '@/components/common/Button'
+import { logIn } from '@/apis/authService'
+import google from '@/assets/google.png'
+import Field from '@/components/common/Field'
+import Input from '@/components/common/Input'
+import InputPassword from '@/components/common/Input/InputPassword'
 
 interface User {
   data: {
@@ -14,9 +26,101 @@ interface User {
     address?: string
   }
 }
+
+const schema = yup.object({
+  email: yup.string().required('The email field is required.').email('Enter email, please!'),
+  password: yup.string().required('The password field is required.').min(5, 'At least 5 characters.')
+})
+
+const defaultForm = {
+  mode: 'onChange' as const,
+  resolver: yupResolver(schema),
+  defaultValues: {
+    email: '',
+    password: ''
+  }
+}
+
 const fieldClass =
   'w-full p-3 rounded-lg text-gray-800 bg-gray-50 border-2 border-stone-100 border-transparent focus:border-[var(--primary-color)] focus:outline-none transition-colors'
+
 const Login = () => {
+  const navigate = useNavigate()
+
+  const [rememberMe, setRememberMe] = useState<boolean>(false)
+  const {
+    handleSubmit,
+    control,
+    setValue,
+    getValues,
+    formState: { errors, isSubmitting }
+  } = useForm<IAuthForm>(defaultForm)
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken')
+    if (token) {
+      navigate(PROFILE_PAGE, { replace: true })
+    }
+  }, [navigate])
+
+  const handleSignIn: SubmitHandler<IAuthForm> = async (values: IAuthForm) => {
+    try {
+      const res = await logIn(values)
+      const { accessToken, refreshToken } = res.data
+
+      if (!accessToken || !refreshToken) {
+        throw new Error('Token empty')
+      }
+
+      toast.success(`Login successfull`, {
+        pauseOnHover: false,
+        autoClose: 3000
+      })
+
+      // logining  → HOME_PAGE
+      localStorage.setItem('accessToken', accessToken)
+      navigate(HOME_PAGE)
+
+      localStorage.setItem('accessToken', accessToken)
+      localStorage.setItem('refreshToken', refreshToken)
+
+      if (rememberMe) {
+        localStorage.setItem('email', values.email)
+        localStorage.setItem('password', values.password)
+        localStorage.setItem('rememberMe', 'true')
+      } else {
+        localStorage.removeItem('email')
+        localStorage.removeItem('password')
+        localStorage.removeItem('rememberMe')
+      }
+    } catch (error) {
+      console.log({ error })
+    }
+  }
+
+  const handleRememberMe = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRememberMe(e.target.checked)
+    if (e.target.checked) {
+      localStorage.setItem('email', getValues('email'))
+      localStorage.setItem('password', getValues('password'))
+    } else {
+      localStorage.setItem('email', '')
+      localStorage.setItem('password', '')
+    }
+  }
+
+  useEffect(() => {
+    const savedEmail = localStorage.getItem('email') || ''
+    const savedPassword = localStorage.getItem('password') || ''
+    const savedRememberMe = localStorage.getItem('rememberMe') === 'true'
+
+    if (savedRememberMe) {
+      setValue('email', savedEmail)
+      setValue('password', savedPassword)
+    }
+  }, [setValue])
+
+  //gg
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const [user, setUser] = useState<User | null>(null)
@@ -50,18 +154,33 @@ const Login = () => {
           setIsLoggedIn(false)
           localStorage.removeItem('accessToken')
         }
+        //Công test
+        // if (response.status === 401) {
+        //   // Token hết hạn hoặc không hợp lệ → logout
+        //   localStorage.removeItem("accessToken");
+        //   setIsLoggedIn(false);
+        //   setUser(null);
+        // } else if (!response.ok) {
+        //   // Lỗi khác (500, 404, network...) → không xóa token
+        //   console.error("Fetch user error:", response.status);
+        //   setIsLoggedIn(false);
+        // } else {
+        //   const data = await response.json();
+        //   setUser(data);
+        //   setIsLoggedIn(true);
+        // }
       } catch (error) {
         console.error(error)
-        localStorage.removeItem('accessToken')
+        // localStorage.removeItem('accessToken')
         setUser(null)
         setIsLoggedIn(false)
       } finally {
         setLoading(false)
       }
     }
-
     fetchUser()
   }, [])
+
   const handleEditToggle = () => {
     if (isEditing) {
       setEditForm(user)
@@ -221,32 +340,62 @@ const Login = () => {
           <p className="text-blue-100 mt-2">Chào mừng bạn trở lại!</p>
         </div>
 
-        <div className="p-6 space-y-4">
-          <div>
-            <input
-              className="w-full border-2 border-gray-200 p-4 rounded-lg focus:border-[var(--primary-color)] focus:outline-none transition-colors"
+        <form className="p-6 space-y-4" onSubmit={handleSubmit(handleSignIn)}>
+          <Field>
+            <Input
               type="email"
-              placeholder="E-mail"
+              name="email"
+              className={`!h-12 ${errors.email ? 'border-red-500' : ''}`}
+              control={control}
+              label="Email"
             />
-          </div>
-
-          <div>
+            {errors.email && <p className="text-[12.8px] text-[#ef4444] mt-1 ml-1">{errors.email.message}</p>}
+          </Field>
+          {/* <div>
             <input
               className="w-full border-2 border-gray-200 p-4 rounded-lg focus:border-[var(--primary-color)] focus:outline-none transition-colors"
               type="password"
               placeholder="Mật khẩu"
             />
+          </div> */}
+
+          <Field>
+            <InputPassword
+              type="password"
+              name="password"
+              className={errors.password ? 'border-red-500' : ''}
+              control={control}
+              label="Password"
+            />
+            {errors.password && <p className="text-[12.8px] text-[#ef4444] mt-1 ml-1">{errors.password.message}</p>}
+          </Field>
+
+          <div className="flex items-center justify-between mb-6">
+            <label htmlFor="remember-me" className="flex items-center gap-x-2">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                name="remember-me"
+                id="remember-me"
+                onChange={handleRememberMe}
+              />
+              <span className="text-xs text-heading">Remember Me</span>
+            </label>
+            <NavLink
+              to="/forget-password"
+              className="text-xs font-medium capitalize transition cursor-pointer text-primary2 hover:underline"
+            >
+              Forget Password
+            </NavLink>
           </div>
 
-          <div className="text-right">
-            <a href="#" className="hover:underline text-[var(--primary-color)] text-sm font-semibold">
-              Quên mật khẩu?
-            </a>
-          </div>
-
-          <button className="w-full bg-[var(--primary-color)] hover:opacity-90 text-white font-semibold py-4 rounded-lg transition-all duration-200 transform hover:-translate-y-0.5">
-            Đăng nhập
-          </button>
+          <Button
+            type={EButtonType.SUBMIT}
+            text="Đăng nhập"
+            isSubmitting={isSubmitting}
+            isDisabled={isSubmitting}
+            onClick={() => {}}
+          />
 
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
@@ -261,24 +410,7 @@ const Login = () => {
             onClick={handleGoogleLogin}
             className="w-full inline-flex justify-center items-center px-4 py-3 border-2 border-gray-50 rounded-lg bg-white  text-gray-700 hover:bg-gray-300 hover:border-gray-300 transition-all duration-200 font-medium"
           >
-            <svg className="h-6 w-6 mr-3" viewBox="0 0 24 24">
-              <path
-                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                fill="#4285F4"
-              />
-              <path
-                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                fill="#34A853"
-              />
-              <path
-                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-                fill="#FBBC05"
-              />
-              <path
-                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                fill="#EA4335"
-              />
-            </svg>
+            <img src={google} alt="Zalo" className="w-8 rounded-full mx-2" />
             Đăng nhập với Google
           </button>
 
@@ -288,7 +420,7 @@ const Login = () => {
               Đăng ký ngay
             </NavLink>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   )

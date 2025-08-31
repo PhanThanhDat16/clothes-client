@@ -92,7 +92,7 @@ const BestSellerProductsSection: React.FC = () => {
         <header className="flex items-center justify-between mb-8">
           <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight">Sản Phẩm Bán Chạy</h2>
           <a
-            href="/collections/best-sellers"
+            href="/category/best-sellers"
             className="group flex items-center text-sm font-semibold text-blue-600 hover:text-blue-800"
           >
             <span>Xem toàn bộ sản phẩm</span>

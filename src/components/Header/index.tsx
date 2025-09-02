@@ -1,7 +1,7 @@
 import { CART_PAGE, CONTACT_PAGE, HOME_PAGE, LOGIN_PAGE, NEWIN_PAGE } from '@/constants'
 import { NavLink } from 'react-router-dom'
 import { ModalProduct } from './ModalProduct'
-import { ModalCollection } from './ModalCollection'
+import { ModalCategory } from './ModalCategory'
 
 const Header = () => {
   return (
@@ -16,7 +16,7 @@ const Header = () => {
         </NavLink>
 
         <ModalProduct />
-        <ModalCollection />
+        <ModalCategory />
 
         <NavLink to={CONTACT_PAGE} className="px-2 hover:opacity-80">
           Liên hệ

@@ -51,7 +51,7 @@ export const ModalProduct = () => {
               </a>
               <div className="row-start-2 flex flex-col gap-2">
                 {listNameProduceShirt.map((item) => (
-                  <a href="#" className="opacity-80 hover:opacity-100">
+                  <a href="#" className="opacity-80 hover:opacity-100" key={item.id}>
                     {item.name}
                   </a>
                 ))}
@@ -63,7 +63,7 @@ export const ModalProduct = () => {
               </a>
               <div className="row-start-2 flex flex-col gap-2">
                 {listNameProduceShort.map((item) => (
-                  <a href="#" className="opacity-80 hover:opacity-100">
+                  <a href="#" className="opacity-80 hover:opacity-100" key={item.id}>
                     {item.name}
                   </a>
                 ))}

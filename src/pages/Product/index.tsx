@@ -1,44 +1,47 @@
+import { getAllCategory } from '@/apis/categories'
 import ProductCard, { Product } from '@/components/ProductCard'
+import { ICategory } from '@/models/categories'
+import { useEffect, useState } from 'react'
 
-interface PropsCategories {
-  nameCate: string
-  countCate: number
-}
+// interface PropsCategories {
+//   nameCate: string
+//   countCate: number
+// }
 
-const Categories: PropsCategories[] = [
-  {
-    nameCate: 'Áo Khoác',
-    countCate: 1
-  },
-  {
-    nameCate: 'Áo Thun',
-    countCate: 17
-  },
-  {
-    nameCate: 'Jeans',
-    countCate: 1
-  },
-  {
-    nameCate: 'Pants',
-    countCate: 6
-  },
-  {
-    nameCate: 'Phụ kiện',
-    countCate: 9
-  },
-  {
-    nameCate: 'Polo',
-    countCate: 92
-  },
-  {
-    nameCate: 'Short',
-    countCate: 6
-  },
-  {
-    nameCate: 'Sơmi',
-    countCate: 9
-  }
-]
+// const Categories: PropsCategories[] = [
+//   {
+//     nameCate: 'Áo Khoác',
+//     countCate: 1
+//   },
+//   {
+//     nameCate: 'Áo Thun',
+//     countCate: 17
+//   },
+//   {
+//     nameCate: 'Jeans',
+//     countCate: 1
+//   },
+//   {
+//     nameCate: 'Pants',
+//     countCate: 6
+//   },
+//   {
+//     nameCate: 'Phụ kiện',
+//     countCate: 9
+//   },
+//   {
+//     nameCate: 'Polo',
+//     countCate: 92
+//   },
+//   {
+//     nameCate: 'Short',
+//     countCate: 6
+//   },
+//   {
+//     nameCate: 'Sơmi',
+//     countCate: 9
+//   }
+// ]
 
 const newProducts: Product[] = [
   {
@@ -116,6 +119,21 @@ const newProducts: Product[] = [
 ]
 
 const ProductPage = () => {
+  const [categories, setCategories] = useState<ICategory[] | []>([])
+
+  const handleGetAll = async (params?: { search?: string; page?: number; limit?: number }) => {
+    try {
+      const res = await getAllCategory(params)
+      if (!res || !res.data) return
+      setCategories(res.data.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    handleGetAll()
+  }, [])
   return (
     <div className="w-full">
       <div className="relative max-h-[400px] overflow-hidden">
@@ -142,13 +160,11 @@ const ProductPage = () => {
               </button>
             </div>
             <div className="border-b border-black pb-5">
-              {Categories.map((item, idx) => (
-                <div className="flex py-2">
+              {categories.map((item) => (
+                <div className="flex py-2" key={item._id}>
                   <input type="checkbox" name="" id="" />
-                  <p className="px-2" key={idx}>
-                    {item.nameCate}
-                  </p>
-                  <p>({item.countCate})</p>
+                  <p className="px-2">{item.name}</p>
+                  <p>(số lượng)</p>
                 </div>
               ))}
             </div>

@@ -4,32 +4,32 @@ import CategoriesCard from './CatergoriesCard'
 const categories = [
   {
     name: 'Áo Polo',
-    href: '/collections/ao-polo',
+    href: '/catogory/ao-polo',
     img: '//polomanor.vn/cdn/shop/files/polotron.webp?v=1744617539&width=600'
   },
   {
     name: 'Áo Thun',
-    href: '/collections/ao-thun',
+    href: '/catogory/ao-thun',
     img: '//polomanor.vn/cdn/shop/files/MODELNENTRANG17.jpg?v=1697258446&width=600'
   },
   {
     name: 'Quần dài',
-    href: '/collections/quan-dai',
+    href: '/catogory/quan-dai',
     img: '//polomanor.vn/cdn/shop/files/MODELNENTRANG19.jpg?v=1697258468&width=600'
   },
   {
     name: 'Quần Short',
-    href: '/collections/quan-short',
+    href: '/catogory/quan-short',
     img: '//polomanor.vn/cdn/shop/files/MODELNENTRANG2.jpg?v=1697258497&width=600'
   },
   {
     name: 'Áo Sơ Mi',
-    href: '/collections/ao-so-mi',
+    href: '/catogory/ao-so-mi',
     img: '//polomanor.vn/cdn/shop/files/so-mi.jpg?v=1697689898&width=600'
   },
   {
     name: 'Áo Khoác',
-    href: '/collections/ao-khoac',
+    href: '/catogory/ao-khoac',
     img: '//polomanor.vn/cdn/shop/files/so-mi.jpg?v=1697689898&width=600'
   }
 ]

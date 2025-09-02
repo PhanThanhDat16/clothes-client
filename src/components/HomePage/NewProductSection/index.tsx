@@ -99,7 +99,7 @@ const NewProductsSection = () => {
         <header className="flex items-center justify-between mb-8">
           <h2 className="text-2xl font-extrabold tracking-tight">Sản Phẩm Mới</h2>
           <a
-            href="/collections/new-products-1"
+            href="/category/new-products-1"
             className="group flex items-center text-sm font-semibold text-blue-600 hover:text-blue-800"
           >
             <span>Xem toàn bộ sản phẩm</span>

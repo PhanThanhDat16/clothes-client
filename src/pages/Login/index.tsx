@@ -127,7 +127,7 @@ const Login = () => {
   const [loading, setLoading] = useState(true)
   const API_BASE_LOGIN_GG = 'http://localhost:5000/api/auth/google'
   const API_USER = 'http://localhost:5000/api/users'
-
+  const API_AUTH = 'http://localhost:5000/api/auth'
   const [editForm, setEditForm] = useState<User | null>(null)
   console.log(loading)
   // Simulate checking localStorage (in real app, use: localStorage.getItem('accessToken'))
@@ -139,7 +139,7 @@ const Login = () => {
     }
     const fetchUser = async () => {
       try {
-        const response = await fetch(`${API_USER}/current`, {
+        const response = await fetch(`${API_USER}/profile`, {
           method: 'GET',
           headers: {
             'Content-type': 'application/json',
@@ -147,6 +147,7 @@ const Login = () => {
           }
         })
         const data = await response.json()
+        console.log(data)
         if (response.ok) {
           setUser(data) // ✅ lấy user từ `data`
           setIsLoggedIn(true)
@@ -191,9 +192,29 @@ const Login = () => {
     window.location.href = API_BASE_LOGIN_GG
   }, [])
 
-  const handleLogout = () => {
-    setIsLoggedIn(false)
-    localStorage.removeItem('accessToken')
+  const handleLogout = async () => {
+    try {
+      const refreshToken = localStorage.getItem('refreshToken')
+
+      const logOut = await fetch(`${API_AUTH}/logout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ refreshToken })
+      })
+      const data = await logOut.json()
+      if (data) {
+        localStorage.removeItem('refreshToken')
+        localStorage.removeItem('accessToken')
+        setIsLoggedIn(false)
+        window.location.href = '/login'
+      } else {
+        console.error('Logout failed:', data.message)
+      }
+    } catch (error) {
+      console.error(error)
+    }
   }
   if (isLoggedIn) {
     return (
@@ -206,7 +227,7 @@ const Login = () => {
                 <h1 className="text-2xl font-bold text-white">Trang cá nhân</h1>
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors"
+                  className="flex text-lg font-semibold items-center gap-2 bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors"
                 >
                   <LogOut size={18} />
                   Đăng xuất

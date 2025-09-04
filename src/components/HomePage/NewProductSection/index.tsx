@@ -14,15 +14,17 @@ const newProducts: Product[] = [
       alt: 'Áo Thun Nam Neo Polomanor Màu Trắng'
     },
     price: {
-      sale: '269.000₫',
-      original: '450.000₫'
+      sale: 269000,
+      original: 450000
     },
-    savings: '181.000₫',
+    savings: 181.0,
     isNew: true,
     colors: [
       { name: 'Trắng', className: 'bg-white' },
       { name: 'Đen', className: 'bg-black' }
-    ]
+    ],
+    size: ['M', 'L', 'XL'],
+    stock: 10
   },
   {
     id: '9903737176370',
@@ -33,15 +35,17 @@ const newProducts: Product[] = [
       alt: 'Áo Thun Nam Lio Polomanor Màu Kem Nhạt'
     },
     price: {
-      sale: '269.000₫',
-      original: '450.000₫'
+      sale: 269000,
+      original: 450000
     },
-    savings: '181.000₫',
+    savings: 181.0,
     isNew: true,
     colors: [
       { name: 'Be', className: 'bg-[#f2eeeb]' },
       { name: 'Trắng', className: 'bg-white' }
-    ]
+    ],
+    size: ['M', 'L', 'XL'],
+    stock: 10
   },
   {
     id: '9903734817074',
@@ -52,11 +56,13 @@ const newProducts: Product[] = [
       alt: 'Áo Polo Nam Rum Polomanor Màu Kem Navy'
     },
     price: {
-      sale: '339.000₫',
-      original: '500.000₫'
+      sale: 269000,
+      original: 450000
     },
-    savings: '161.000₫',
-    isNew: true
+    savings: 161.0,
+    isNew: true,
+    size: ['M', 'L', 'XL'],
+    stock: 10
   },
   {
     id: '9903734882610',
@@ -67,15 +73,17 @@ const newProducts: Product[] = [
       alt: 'Áo Polo Nam Marco Polomanor Màu Cafe'
     },
     price: {
-      sale: '339.000₫',
-      original: '500.000₫'
+      sale: 269000,
+      original: 450000
     },
-    savings: '161.000₫',
+    savings: 161.0,
     isNew: true,
     colors: [
       { name: 'CaPhe', className: 'bg-[#b0a395]' },
       { name: 'Kem Nhạt', className: 'bg-[#f7f4eb]' }
-    ]
+    ],
+    size: ['M', 'L', 'XL'],
+    stock: 10
   }
 ]
 

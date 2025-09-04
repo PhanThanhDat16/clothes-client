@@ -1,3 +1,4 @@
+import { useCartStore } from '@/store/useCartStore'
 import { useState } from 'react'
 
 export interface Product {
@@ -9,15 +10,31 @@ export interface Product {
     alt: string
   }
   price: {
-    sale?: string
-    original: string
+    sale?: number
+    original?: number
   }
-  savings?: string
+  savings?: number
   isNew?: boolean
   colors?: {
     name: string
     className: string
   }[]
+  size?: string[]
+  stock?: number
+}
+
+interface CartItem {
+  id: string
+  name: string
+  price: number
+  image: {
+    src: string
+    alt: string
+  }
+  quantity: number
+  color: string
+  size: string
+  stock?: number
 }
 
 const QuickBuyCartIcon = () => (
@@ -31,12 +48,23 @@ const QuickBuyCartIcon = () => (
   </svg>
 )
 
-interface ProductCardProps {
+export interface ProductCardProps {
   product: Product
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0]?.name || '')
+  const { addItem } = useCartStore()
+
+  const productAdd: CartItem = {
+    id: product.id,
+    name: product.name,
+    price: product.price.sale || 0,
+    image: { src: product.image.src, alt: product.image.alt }, // lưu thành object
+    quantity: 1,
+    color: selectedColor,
+    size: 'L'
+  }
 
   return (
     <div className="group flex-shrink-0">
@@ -65,7 +93,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
             />
           </a>
           <div className="absolute bottom-4 left-1/2 w-[calc(100%-2rem)] -translate-x-1/2 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:bottom-6">
-            <button className="hidden w-full items-center justify-center rounded-md bg-gray-800 bg-opacity-90 py-2.5 px-4 text-sm font-semibold text-white shadow-lg backdrop-blur-sm hover:bg-opacity-100 md:flex">
+            <button
+              onClick={() => addItem(productAdd)}
+              className="hidden w-full items-center justify-center rounded-md bg-gray-800 bg-opacity-90 py-2.5 px-4 text-sm font-semibold text-white shadow-lg backdrop-blur-sm hover:bg-opacity-100 md:flex"
+            >
               + Thêm nhanh
             </button>
             <button className="flex w-full items-center justify-center rounded-md bg-gray-800 bg-opacity-90 py-2.5 px-4 text-sm font-semibold text-white shadow-lg backdrop-blur-sm hover:bg-opacity-100 md:hidden">

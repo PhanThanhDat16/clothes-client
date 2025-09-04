@@ -9,11 +9,16 @@ const AuthSuccess = () => {
     if (processed.current) return // Bỏ qua nếu đã xử lý
     // Lấy token từ URL
     const params = new URLSearchParams(window.location.search)
-    const token = params.get('token')
-    console.log('Token received:', token)
-    if (token) {
+
+    const accessToken = params.get('accessToken')
+    const refreshToken = params.get('refreshToken')
+
+    console.log('Token received:', accessToken)
+    if (accessToken && refreshToken) {
       // Lưu token vào localStorage
-      localStorage.setItem('accessToken', token)
+      localStorage.setItem('accessToken', accessToken)
+      localStorage.setItem('refreshToken', refreshToken)
+
       processed.current = true // Chuyển hướng về trang chủ
       navigate('/', { replace: true })
     } else {

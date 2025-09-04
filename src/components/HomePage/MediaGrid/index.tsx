@@ -21,7 +21,7 @@ const MediaGrid = () => {
     },
     {
       id: 'media-grid-item-2',
-      href: '/collections/tat-ca-san-pham',
+      href: '/category/tat-ca-san-pham',
       image: 'https://polomanor.vn/cdn/shop/files/IMG_97921.jpg?v=1737000965&width=1200',
       alt: 'Xem tất cả sản phẩm Polomanor',
       columnSpan: 1,
@@ -29,7 +29,7 @@ const MediaGrid = () => {
     },
     {
       id: 'media-grid-item-3',
-      href: '/collections',
+      href: '/category',
       image: 'https://polomanor.vn/cdn/shop/files/alo_alo1.jpg?v=1671679448&width=1080',
       alt: 'Xem tất cả sản phẩm Polomanor',
       columnSpan: 1,

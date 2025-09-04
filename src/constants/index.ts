@@ -1,9 +1,10 @@
 export const HOME_PAGE = '/'
 export const NEWIN_PAGE = '/newin'
 export const PRODUCT_PAGE = '/product'
-export const COLLECTION_PAGE = '/collection'
+export const CATEGORY_PAGE = '/category'
 export const CONTACT_PAGE = '/contact'
 
+export const PROFILE_PAGE = '/profile'
 export const LOGIN_PAGE = '/login'
 export const REGISTER_PAGE = '/register'
 export const CART_PAGE = '/cart'

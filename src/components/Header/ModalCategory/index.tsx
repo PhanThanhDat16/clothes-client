@@ -1,19 +1,40 @@
-import { COLLECTION_PAGE } from '@/constants'
-import { useRef, useState } from 'react'
+import { getAllCategory } from '@/apis/categories'
+import { CATEGORY_PAGE } from '@/constants'
+import { ICategory } from '@/models/categories'
+import { useEffect, useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 
 // Bo Suu Tap
-const ListNameCollection = [
-  { id: 1, name: 'Summer Manor' },
-  { id: 2, name: 'The Real Jeans' },
-  { id: 3, name: 'Sánh Đôi' },
-  { id: 4, name: 'Từ Nhà Ra Phố' },
-  { id: 5, name: 'Chill Thé' },
-  { id: 6, name: 'Smart F' },
-  { id: 7, name: 'Social Circle' }
-]
+// const ListNameCategory = [
+//   { id: 1, name: 'Áo Thun' },
+//   { id: 2, name: 'Áo Khoác' },
+//   { id: 3, name: 'Jeans' },
+//   { id: 4, name: 'Pants' },
+//   { id: 5, name: 'Polo' },
+//   { id: 6, name: 'Short' },
+//   { id: 7, name: 'Sơmi' },
+//   { id: 8, name: 'Phụ kiện' }
+// ]
 
-export const ModalCollection = () => {
+export const ModalCategory = () => {
+  //API cate
+  const [categories, setCategories] = useState<ICategory[] | []>([])
+
+  const handleGetAll = async (params?: { search?: string; page?: number; limit?: number }) => {
+    try {
+      const res = await getAllCategory(params)
+      if (!res || !res.data) return
+      setCategories(res.data.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    handleGetAll()
+  }, [])
+  // -----
+
   const [isModalOpen, setIsModalOpen] = useState(false)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
@@ -29,12 +50,12 @@ export const ModalCollection = () => {
   return (
     <div>
       <NavLink
-        to={COLLECTION_PAGE}
+        to={CATEGORY_PAGE}
         className={`flex px-2 hover:opacity-80`}
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
       >
-        <p>Bộ sưu tập</p>
+        <p>Danh Mục</p>
         <i className="bx bx-chevron-down"></i>
       </NavLink>
 
@@ -45,8 +66,8 @@ export const ModalCollection = () => {
       >
         <div className="w-[90%] max-w-[1600px] mx-auto py-10 text-[var(--primary-color)] flex justify-between">
           <ul className="flex flex-auto flex-wrap gap-[4rem]">
-            {ListNameCollection.map((item) => (
-              <li key={item.id} className="font-normal grid">
+            {categories.map((item) => (
+              <li key={item._id} className="font-normal grid">
                 <a href="#" className="text-xl hover:underline">
                   {item.name}
                 </a>

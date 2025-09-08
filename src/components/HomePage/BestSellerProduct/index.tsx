@@ -1,82 +1,9 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination } from 'swiper/modules'
-import ProductCard, { type Product } from '../../ProductCard'
-
-const bestSellerProducts: Product[] = [
-  {
-    id: '9903737241906',
-    handle: 'ao-thun-neo',
-    name: 'Áo Thun Neo',
-    image: {
-      src: '//polomanor.vn/cdn/shop/files/ao-thun-nam-neo-trang.webp?v=1752166983&width=1200',
-      alt: 'Áo Thun Nam Neo Polomanor Màu Trắng'
-    },
-    price: {
-      sale: '269.000₫',
-      original: '450.000₫'
-    },
-    savings: '181.000₫',
-    colors: [
-      { name: 'Trắng', className: 'bg-white' },
-      { name: 'Đen', className: 'bg-black' }
-    ]
-  },
-  {
-    id: '9903737176370',
-    handle: 'ao-thun-lio',
-    name: 'Áo Thun Lio',
-    image: {
-      src: '//polomanor.vn/cdn/shop/files/ao-thun-nam-lio-be.webp?v=1752166997&width=1200',
-      alt: 'Áo Thun Nam Lio Polomanor Màu Kem Nhạt'
-    },
-    price: {
-      sale: '269.000₫',
-      original: '450.000₫'
-    },
-    savings: '181.000₫',
-    colors: [
-      { name: 'Be', className: 'bg-[#f2eeeb]' },
-      { name: 'Trắng', className: 'bg-white' }
-    ]
-  },
-  {
-    id: '9903734817074',
-    handle: 'ao-polo-rum',
-    name: 'Áo Polo Rum',
-    image: {
-      src: '//polomanor.vn/cdn/shop/files/ao-polo-nam-rum.webp?v=1752167040&width=1200',
-      alt: 'Áo Polo Nam Rum Polomanor Màu Kem Navy'
-    },
-    price: {
-      sale: '339.000₫',
-      original: '500.000₫'
-    },
-    savings: '161.000₫',
-    colors: [
-      { name: 'Kem Navy', className: 'bg-[#e4e2de]' },
-      { name: 'Xám Nhạt', className: 'bg-gray-300' }
-    ]
-  },
-  {
-    id: '9903734882610',
-    handle: 'ao-polo-marco',
-    name: 'Áo Polo Marco',
-    image: {
-      src: '//polomanor.vn/cdn/shop/files/ao-polo-nam-marco-cafe.webp?v=1752167019&width=1200',
-      alt: 'Áo Polo Nam Marco Polomanor Màu Cafe'
-    },
-    price: {
-      sale: '339.000₫',
-      original: '500.000₫'
-    },
-    savings: '161.000₫',
-    colors: [
-      { name: 'CaPhe', className: 'bg-[#b0a395]' },
-      { name: 'Kem Nhạt', className: 'bg-[#f7f4eb]' }
-    ]
-  }
-]
+import ProductCard from '../../ProductCard'
+import { apiProductService } from '@/apis/api_product'
+import { item } from '@/models/products'
 
 const ChevronRightIcon = () => (
   <svg role="presentation" focusable="false" width="5" height="8" viewBox="0 0 5 8">
@@ -85,6 +12,22 @@ const ChevronRightIcon = () => (
 )
 
 const BestSellerProductsSection: React.FC = () => {
+  const [products, setProducts] = useState<item[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fectProducts = async () => {
+      setLoading(true)
+      const res = await apiProductService.getAll()
+      if (res && res.data) {
+        setProducts(res.data.data)
+      }
+      setLoading(false)
+    }
+    fectProducts()
+  }, [])
+
+  if (loading) return <p>Đang tải sản phẩm...</p>
   return (
     <section className="bg-gray-50 text-[#23314B] w-full py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -106,7 +49,7 @@ const BestSellerProductsSection: React.FC = () => {
         <div className="w-full">
           <Swiper
             spaceBetween={20}
-            slidesPerView={1}
+            slidesPerView={4}
             breakpoints={{
               640: {
                 slidesPerView: 2
@@ -123,10 +66,11 @@ const BestSellerProductsSection: React.FC = () => {
             pagination={{
               clickable: true
             }}
+            className="pb-12"
           >
-            {bestSellerProducts.map((product) => (
-              <SwiperSlide key={product.id}>
-                <ProductCard product={product} />
+            {products.map((product) => (
+              <SwiperSlide key={product._id}>
+                <ProductCard item={product} />
               </SwiperSlide>
             ))}
           </Swiper>

@@ -1,4 +1,7 @@
-import ProductCard, { Product } from '@/components/ProductCard'
+import { apiProductService } from '@/apis/api_product'
+import ProductCard from '@/components/ProductCard'
+import { type item } from '@/models/products'
+import { useEffect, useState } from 'react'
 
 interface PropsCategories {
   nameCate: string
@@ -39,83 +42,23 @@ const Categories: PropsCategories[] = [
     countCate: 9
   }
 ]
-
-const newProducts: Product[] = [
-  {
-    id: '9903737241906',
-    handle: 'ao-thun-neo',
-    name: 'Áo Thun Neo',
-    image: {
-      src: '//polomanor.vn/cdn/shop/files/ao-thun-nam-neo-trang.webp?v=1752166983&width=1200',
-      alt: 'Áo Thun Nam Neo Polomanor Màu Trắng'
-    },
-    price: {
-      sale: 269000,
-      original: 450000
-    },
-    savings: 181000,
-    isNew: true,
-    colors: [
-      { name: 'Trắng', className: 'bg-white' },
-      { name: 'Đen', className: 'bg-black' }
-    ]
-  },
-  {
-    id: '9903737176370',
-    handle: 'ao-thun-lio',
-    name: 'Áo Thun Lio',
-    image: {
-      src: '//polomanor.vn/cdn/shop/files/ao-thun-nam-lio-be.webp?v=1752166997&width=1200',
-      alt: 'Áo Thun Nam Lio Polomanor Màu Kem Nhạt'
-    },
-    price: {
-      sale: 269000,
-      original: 450000
-    },
-    savings: 181000,
-    isNew: true,
-    colors: [
-      { name: 'Be', className: 'bg-[#f2eeeb]' },
-      { name: 'Trắng', className: 'bg-white' }
-    ]
-  },
-  {
-    id: '9903734817074',
-    handle: 'ao-polo-rum',
-    name: 'Áo Polo Rum',
-    image: {
-      src: '//polomanor.vn/cdn/shop/files/ao-polo-nam-rum.webp?v=1752167040&width=1200',
-      alt: 'Áo Polo Nam Rum Polomanor Màu Kem Navy'
-    },
-    price: {
-      sale: 339000,
-      original: 500000
-    },
-    savings: 161000,
-    isNew: true
-  },
-  {
-    id: '9903734882610',
-    handle: 'ao-polo-marco',
-    name: 'Áo Polo Marco',
-    image: {
-      src: '//polomanor.vn/cdn/shop/files/ao-polo-nam-marco-cafe.webp?v=1752167019&width=1200',
-      alt: 'Áo Polo Nam Marco Polomanor Màu Cafe'
-    },
-    price: {
-      sale: 339000,
-      original: 500000
-    },
-    savings: 161000,
-    isNew: true,
-    colors: [
-      { name: 'CaPhe', className: 'bg-[#b0a395]' },
-      { name: 'Kem Nhạt', className: 'bg-[#f7f4eb]' }
-    ]
-  }
-]
-
 const Banner = () => {
+  const [products, setProducts] = useState<item[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fectProducts = async () => {
+      setLoading(true)
+      const res = await apiProductService.getAll()
+      if (res && res.data) {
+        setProducts(res.data.data)
+      }
+      setLoading(false)
+    }
+    fectProducts()
+  }, [])
+
+  if (loading) return <p>Đang tải sản phẩm...</p>
   return (
     <div className="w-full">
       <div className="relative max-h-[400px] overflow-hidden">
@@ -180,9 +123,9 @@ const Banner = () => {
             </button>
           </div>
           <div className="grid grid-cols-3 gap-6">
-            {newProducts.map((product) => (
-              <div key={product.id}>
-                <ProductCard product={product} />
+            {products.map((product) => (
+              <div key={product._id}>
+                <ProductCard item={product} />
               </div>
             ))}
           </div>
@@ -191,5 +134,4 @@ const Banner = () => {
     </div>
   )
 }
-
 export default Banner

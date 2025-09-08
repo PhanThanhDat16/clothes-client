@@ -63,3 +63,27 @@ body {
   --primary-color: var(--accent);
   // --background-primary: #ffffff;
 }
+
+.swiper-pagination-bullet {
+  width: 32px; // ngang
+  height: 4px; // mỏng
+  border-radius: 9999px; // bo tròn
+  background-color: #d1d5db; // tương đương tailwind gray-300
+  opacity: 1;
+  transition: all 0.3s ease;
+  margin: 0 4px !important; // tạo khoảng cách
+}
+
+.swiper-pagination-bullet-active {
+  background-color: var(--primary-color); // màu chính của bạn
+  width: 40px; // dài hơn khi active
+}
+
+/* container pagination */
+.swiper-pagination {
+  position: static !important; // tránh bị absolute
+  margin-top: 16px; // đẩy xuống dưới ProductCard
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

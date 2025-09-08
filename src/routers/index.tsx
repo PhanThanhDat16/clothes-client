@@ -15,7 +15,8 @@ import {
   REGISTER_PAGE,
   CART_PAGE,
   AUTH_SUCCESS,
-  PROFILE_PAGE
+  PROFILE_PAGE,
+  ORDER_PAGE
 } from '@/constants'
 
 import MainLayout from '@/layouts'
@@ -28,7 +29,7 @@ import Register from '@/pages/Register'
 import Cart from '@/pages/Cart'
 import AuthSuccess from '@/pages/auth-success/auth-success'
 import Profile from '@/pages/Profile'
-
+import ORDER from '@/pages/Oder'
 const AppRouters = () => {
   return (
     <Routes>
@@ -46,6 +47,7 @@ const AppRouters = () => {
         <Route path={LOGIN_PAGE} element={<Login />} />
         <Route path={REGISTER_PAGE} element={<Register />} />
         <Route path={AUTH_SUCCESS} element={<AuthSuccess />} />
+        <Route path={ORDER_PAGE} element={<ORDER />} />
       </Route>
     </Routes>
   )

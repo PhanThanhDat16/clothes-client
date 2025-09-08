@@ -30,15 +30,12 @@ const suggestItems: SuggestItem[] = [
 ]
 
 const Cart: React.FC = () => {
-  const { cart, loadCart, increaseQty, decreaseQty, removeItem } = useCartStore()
+  const { cart, loadCart, increaseQty, decreaseQty, removeItem, TotalBill, TotalItems } = useCartStore()
   useEffect(() => {
     loadCart()
   }, [loadCart])
-  const totalAmount = cart.reduce((sum, item) => {
-    const priceNumber = Number(item.price.toString().replace(/[^\d]/g, '')) // convert "269.000₫" -> 269000
-    return sum + priceNumber * item.quantity
-  }, 0)
-  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0)
+  const totalItems = TotalItems()
+  const totalBill = TotalBill()
   return (
     <div className="max-w-6xl mx-auto p-4 grid grid-cols-1 md:grid-cols-3 gap-6 mb-5">
       {/* Left: Cart Items */}
@@ -51,22 +48,22 @@ const Cart: React.FC = () => {
             <>
               <p className="flex items-center gap-2 mb-4 text-base text-gray-700">
                 🚚{' '}
-                {totalAmount >= 500000 ? (
+                {totalBill >= 500000 ? (
                   <span className={`font-medium text-stone-700 text-base`}>
                     Chúc mừng! Bạn đã được <strong> Miễn phí </strong> vận chuyển
                   </span>
                 ) : (
                   <span className={`font-medium text-stone-700 text-base`}>
-                    Bạn cần mua thêm <strong>{500000 - totalAmount}₫</strong> để được miễn phí vận chuyển
+                    Bạn cần mua thêm <strong>{500000 - totalBill}₫</strong> để được miễn phí vận chuyển
                   </span>
                 )}
               </p>
               <span
                 className={`rounded-lg block py-1 transition-all duration-300 ${
-                  totalAmount >= 500000 ? 'bg-green-700' : 'bg-orange-500'
+                  totalBill >= 500000 ? 'bg-green-700' : 'bg-orange-500'
                 }`}
                 style={{
-                  width: totalAmount >= 500000 ? '742px' : `${742 - (500 - totalAmount / 1000)}px`
+                  width: totalBill >= 500000 ? '742px' : `${742 - (500 - totalBill / 1000)}px`
                 }}
               ></span>
               <div className="space-y-6 mt-10">
@@ -144,7 +141,7 @@ const Cart: React.FC = () => {
           <h2 className="text-xl font-bold mb-2">Tóm tắt đơn hàng</h2>
           <div className="flex justify-between text-sm mb-4">
             <span className="text-base text-stone-600">Tổng phụ</span>
-            <span className="font-bold text-base">{totalAmount.toLocaleString()} ₫</span>
+            <span className="font-bold text-base">{totalBill.toLocaleString()} ₫</span>
           </div>
           <button className="w-full font-semibold bg-gray-900 text-white py-4 rounded-md flex items-center justify-center gap-2 transition-all duration-300 hover:opacity-90 hover:-translate-y-0.5">
             🔒 Thanh toán

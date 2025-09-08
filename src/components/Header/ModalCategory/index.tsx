@@ -3,7 +3,7 @@ import { CATEGORY_PAGE } from '@/constants'
 import { ICategory } from '@/models/categories'
 import { useEffect, useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
-
+import { ChevronDown } from 'lucide-react'
 // Bo Suu Tap
 // const ListNameCategory = [
 //   { id: 1, name: 'Áo Thun' },
@@ -48,15 +48,15 @@ export const ModalCategory = () => {
   }
 
   return (
-    <div>
+    <div className="z-10">
       <NavLink
         to={CATEGORY_PAGE}
         className={`flex px-2 hover:opacity-80`}
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
       >
-        <p>Danh Mục</p>
-        <i className="bx bx-chevron-down"></i>
+        <p className="text-xl">DANH MỤC</p>
+        <ChevronDown className="h-[20px] w-[20px] mt-1" />
       </NavLink>
 
       <div

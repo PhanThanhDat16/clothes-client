@@ -21,6 +21,8 @@ type CartState = {
   increaseQty: (id: string, color: string, size: string) => void
   decreaseQty: (id: string, color: string, size: string) => void
   loadCart: () => void
+  TotalBill: () => number
+  TotalItems: () => number
 }
 const getCartFromStorage = (): CartItem[] => {
   try {
@@ -84,5 +86,20 @@ export const useCartStore = create<CartState>((set, get) => ({
       saveCartToStorage(cart)
       set({ cart })
     }
+  },
+
+  TotalBill: () => {
+    const cart = [...get().cart]
+    const totalAmount = cart.reduce((sum, item) => {
+      const priceNumber = Number(item.price.toString().replace(/[^\d]/g, '')) // convert "269.000₫" -> 269000
+      return sum + priceNumber * item.quantity
+    }, 0)
+    return totalAmount
+  },
+
+  TotalItems: () => {
+    const cart = [...get().cart]
+    const totalItem = cart.reduce((sum, item) => sum + item.quantity, 0)
+    return totalItem
   }
 }))

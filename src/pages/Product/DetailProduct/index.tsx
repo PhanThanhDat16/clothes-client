@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { IProduct } from '@/models/product'
-import { getMockProductDetail } from '@/apis/mockProductService'
 import { useCartStore } from '@/store/useCartStore'
+import { getProductDetail } from '@/apis/productService'
 
 const DetailProduct = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const { addItem } = useCartStore()
 
-  const [product, setProduct] = useState<IProduct | null>(null)
+  const [product, setProduct] = useState<IProduct>()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [selectedSize, setSelectedSize] = useState('')
@@ -27,14 +27,14 @@ const DetailProduct = () => {
       setLoading(true)
       setError(null)
 
-      // Use mock service for testing (you can switch to real API later)
-      const response = await getMockProductDetail(productId)
+      const response = await getProductDetail(productId)
+      console.log(response.data)
 
-      if (response.data && response.data.data) {
-        setProduct(response.data.data)
+      if (response && response.data) {
+        setProduct(response.data)
         // Set default size
-        if (response.data.data.options && response.data.data.options.length > 0) {
-          setSelectedSize(response.data.data.options[0].size)
+        if (response.data.options && response.data.options.length > 0) {
+          setSelectedSize(response.data.options[0].size)
         }
       } else {
         setError('Không tìm thấy sản phẩm')

@@ -1,112 +1,73 @@
 import { getAllCategory } from '@/apis/categories'
+import { getAllProduct } from '@/apis/productService'
 import ProductCard from '@/components/ProductCard'
 import { ICategory } from '@/models/categories'
 import { IProduct } from '@/models/product'
 import { useEffect, useState } from 'react'
 
-// interface PropsCategories {
-//   nameCate: string
-//   countCate: number
-// }
-
-// const Categories: PropsCategories[] = [
+// const newProducts: IProduct[] = [
 //   {
-//     nameCate: 'Áo Khoác',
-//     countCate: 1
+//     _id: '9903737241906',
+//     name: 'Áo Thun Neo',
+//     description: 'Áo Thun Nam Neo Polomanor Màu Trắng',
+//     price: 269000,
+//     oldPrice: 450000,
+//     categoryId: 'category1',
+//     images: ['//polomanor.vn/cdn/shop/files/ao-thun-nam-neo-trang.webp?v=1752166983&width=1200'],
+//     options: [
+//       { size: EProductSize.M, stockQuantity: 10 },
+//       { size: EProductSize.L, stockQuantity: 15 },
+//       { size: EProductSize.XL, stockQuantity: 8 }
+//     ]
 //   },
 //   {
-//     nameCate: 'Áo Thun',
-//     countCate: 17
+//     _id: '9903737176370',
+//     name: 'Áo Thun Lio',
+//     description: 'Áo Thun Nam Lio Polomanor Màu Kem Nhạt',
+//     price: 269000,
+//     oldPrice: 450000,
+//     categoryId: 'category1',
+//     images: ['//polomanor.vn/cdn/shop/files/ao-thun-nam-lio-be.webp?v=1752166997&width=1200'],
+//     options: [
+//       { size: 'M', stockQuantity: 12 },
+//       { size: 'L', stockQuantity: 18 },
+//       { size: 'XL', stockQuantity: 6 }
+//     ]
 //   },
 //   {
-//     nameCate: 'Jeans',
-//     countCate: 1
+//     _id: '9903734817074',
+//     name: 'Áo Polo Rum',
+//     description: 'Áo Polo Nam Rum Polomanor Màu Kem Navy',
+//     price: 339000,
+//     oldPrice: 500000,
+//     categoryId: 'category2',
+//     images: ['//polomanor.vn/cdn/shop/files/ao-polo-nam-rum.webp?v=1752167040&width=1200'],
+//     options: [
+//       { size: 'M', stockQuantity: 8 },
+//       { size: 'L', stockQuantity: 14 },
+//       { size: 'XL', stockQuantity: 10 }
+//     ]
 //   },
 //   {
-//     nameCate: 'Pants',
-//     countCate: 6
-//   },
-//   {
-//     nameCate: 'Phụ kiện',
-//     countCate: 9
-//   },
-//   {
-//     nameCate: 'Polo',
-//     countCate: 92
-//   },
-//   {
-//     nameCate: 'Short',
-//     countCate: 6
-//   },
-//   {
-//     nameCate: 'Sơmi',
-//     countCate: 9
+//     _id: '9903734882610',
+//     name: 'Áo Polo Marco',
+//     description: 'Áo Polo Nam Marco Polomanor Màu Cafe',
+//     price: 339000,
+//     oldPrice: 500000,
+//     categoryId: 'category2',
+//     images: ['//polomanor.vn/cdn/shop/files/ao-polo-nam-marco-cafe.webp?v=1752167019&width=1200'],
+//     options: [
+//       { size: 'M', stockQuantity: 9 },
+//       { size: 'L', stockQuantity: 16 },
+//       { size: 'XL', stockQuantity: 7 }
+//     ]
 //   }
 // ]
-
-const newProducts: IProduct[] = [
-  {
-    _id: '9903737241906',
-    name: 'Áo Thun Neo',
-    description: 'Áo Thun Nam Neo Polomanor Màu Trắng',
-    price: 269000,
-    oldPrice: 450000,
-    categoryId: 'category1',
-    images: ['//polomanor.vn/cdn/shop/files/ao-thun-nam-neo-trang.webp?v=1752166983&width=1200'],
-    options: [
-      { size: 'M', stockQuantity: 10 },
-      { size: 'L', stockQuantity: 15 },
-      { size: 'XL', stockQuantity: 8 }
-    ]
-  },
-  {
-    _id: '9903737176370',
-    name: 'Áo Thun Lio',
-    description: 'Áo Thun Nam Lio Polomanor Màu Kem Nhạt',
-    price: 269000,
-    oldPrice: 450000,
-    categoryId: 'category1',
-    images: ['//polomanor.vn/cdn/shop/files/ao-thun-nam-lio-be.webp?v=1752166997&width=1200'],
-    options: [
-      { size: 'M', stockQuantity: 12 },
-      { size: 'L', stockQuantity: 18 },
-      { size: 'XL', stockQuantity: 6 }
-    ]
-  },
-  {
-    _id: '9903734817074',
-    name: 'Áo Polo Rum',
-    description: 'Áo Polo Nam Rum Polomanor Màu Kem Navy',
-    price: 339000,
-    oldPrice: 500000,
-    categoryId: 'category2',
-    images: ['//polomanor.vn/cdn/shop/files/ao-polo-nam-rum.webp?v=1752167040&width=1200'],
-    options: [
-      { size: 'M', stockQuantity: 8 },
-      { size: 'L', stockQuantity: 14 },
-      { size: 'XL', stockQuantity: 10 }
-    ]
-  },
-  {
-    _id: '9903734882610',
-    name: 'Áo Polo Marco',
-    description: 'Áo Polo Nam Marco Polomanor Màu Cafe',
-    price: 339000,
-    oldPrice: 500000,
-    categoryId: 'category2',
-    images: ['//polomanor.vn/cdn/shop/files/ao-polo-nam-marco-cafe.webp?v=1752167019&width=1200'],
-    options: [
-      { size: 'M', stockQuantity: 9 },
-      { size: 'L', stockQuantity: 16 },
-      { size: 'XL', stockQuantity: 7 }
-    ]
-  }
-]
 
 const ProductPage = () => {
   const [categories, setCategories] = useState<ICategory[] | []>([])
 
-  const handleGetAll = async (params?: { search?: string; page?: number; limit?: number }) => {
+  const handleGetAllCategory = async (params?: { search?: string; page?: number; limit?: number }) => {
     try {
       const res = await getAllCategory(params)
       if (!res || !res.data) return
@@ -117,9 +78,25 @@ const ProductPage = () => {
   }
 
   useEffect(() => {
-    handleGetAll()
+    handleGetAllCategory()
   }, [])
 
+  //product
+  const [products, setProducts] = useState<IProduct[] | []>([])
+
+  const handleGetAllProduct = async (params?: { search?: string; page?: number; limit?: number }) => {
+    try {
+      const res = await getAllProduct(params)
+      if (!res || !res.data) return
+      setProducts(res.data.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    handleGetAllProduct()
+  }, [])
   return (
     <div className="w-full">
       <div className="relative max-h-[400px] overflow-hidden">
@@ -182,7 +159,7 @@ const ProductPage = () => {
             </button>
           </div>
           <div className="grid grid-cols-3 gap-6">
-            {newProducts.map((product) => (
+            {products.map((product) => (
               <div key={product._id}>
                 <ProductCard product={product} />
               </div>

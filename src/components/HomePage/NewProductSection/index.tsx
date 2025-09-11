@@ -4,8 +4,8 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination } from 'swiper/modules'
 import ProductCard from '../../ProductCard'
 import { useEffect, useState } from 'react'
-import { apiProductService } from '@/apis/api_product'
-import { item } from '@/models/products'
+import { getAllProduct } from '@/apis/productService'
+import { IProduct } from '@/models/product'
 
 const ChevronRightIcon = () => (
   <svg
@@ -21,13 +21,13 @@ const ChevronRightIcon = () => (
 )
 
 const NewProductsSection = () => {
-  const [products, setProducts] = useState<item[]>([])
+  const [products, setProducts] = useState<IProduct[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fectProducts = async () => {
       setLoading(true)
-      const res = await apiProductService.getAll()
+      const res = await getAllProduct()
       if (res && res.data) {
         setProducts(res.data.data)
       }

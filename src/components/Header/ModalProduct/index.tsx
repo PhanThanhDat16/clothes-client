@@ -23,7 +23,7 @@ export const ModalProduct = () => {
   }
 
   const handleLeave = () => {
-    timeoutRef.current = setTimeout(() => setIsModalOpen(false), 500) // ⏱ delay 500ms
+    timeoutRef.current = setTimeout(() => setIsModalOpen(false), 300) // ⏱ delay 500ms
   }
 
   return (

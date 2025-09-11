@@ -86,7 +86,7 @@ export const OrderCard = ({ order }: { order: order }) => {
           Yêu Cầu Trả Hàng/Hoàn Tiền
         </button>
         <button className="px-6 py-2 text-base font-medium text-white bg-[var(--primary-color)] rounded-md hover:opacity-90 transition-colors">
-          {order.deliveryType === 'CHỜ XÁC NHẬN' ? 'Đã Nhận Được Hàng' : 'Đánh Giá'}
+          {order.deliveryType === 'CHỜ XÁC NHẬN' ? 'Đã Nhận Được Hàng' : '★ Đánh Giá'}
         </button>
       </div>
     </div>

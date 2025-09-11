@@ -2,42 +2,40 @@ import { useEffect, useState } from 'react'
 import { ChevronDown, ChevronUp, BadgeCheck, LogOut, Package, User2 } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import { ORDER_PAGE, PROFILE_PAGE } from '@/constants'
-import { User } from '@/pages/Profile'
+import { User } from '@/models/user'
+import { showToast } from '../Toast/showToast'
+import { getProfile } from '@/apis/user'
+import { logOut } from '@/apis/authService'
 
 const UserDropdown = () => {
   const [open, setOpen] = useState(false)
   const [user, setUser] = useState<User | null>(null)
-  const API_USER = 'http://localhost:5000/api/users'
+
+  const handleLogout = async () => {
+    try {
+      const refreshToken = localStorage.getItem('refreshToken') || ''
+
+      const handlerLogout = logOut(refreshToken)
+      if (!handlerLogout) {
+        showToast.error('Bạn không thể đăng xuất ra khỏi')
+        return
+      }
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('refreshToken')
+      window.location.href = '/login'
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken')
-    if (!token) {
-      return
-    }
     const fetchUser = async () => {
-      try {
-        const response = await fetch(`${API_USER}/profile`, {
-          method: 'GET',
-          headers: {
-            'Content-type': 'application/json',
-            Authorization: `Bearer ${token}`
-          }
-        })
-        const data = await response.json()
-        console.log(data)
-        if (response.ok) {
-          setUser(data) // ✅ lấy user từ `data`
-        } else {
-          localStorage.removeItem('accessToken')
-        }
-      } catch (error) {
-        console.error(error)
-        // localStorage.removeItem('accessToken')
-        setUser(null)
-      }
+      const user = await getProfile()
+      if (user) setUser(user)
     }
     fetchUser()
-  }, [])
+  }, [user])
+
   return (
     <div className="relative inline-block text-left">
       {/* Nút chính */}
@@ -89,7 +87,7 @@ const UserDropdown = () => {
               Chính Sách
             </a>
             <button
-              //onClick={}
+              onClick={handleLogout}
               className="flex w-full  items-center gap-2 px-4 py-2 text-base text-stone-800 hover:bg-stone-200 hover:text-gray-900"
             >
               <LogOut className="w-5 h-5 text-stone-800" />

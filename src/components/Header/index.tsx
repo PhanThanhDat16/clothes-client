@@ -5,12 +5,10 @@ import { ModalCategory } from './ModalCategory'
 import UserDropdown from '../UserDropdown/userdropdown'
 import { useEffect, useState } from 'react'
 import CartIcon from '../cart_badge'
-import { useCartStore } from '@/store/useCartStore'
 
 const Header = () => {
   const [isCheckLogin, setIsChekLogin] = useState(false)
-  const { TotalItems } = useCartStore()
-  const totalItemsInCart = TotalItems()
+
   const checkLogin = () => {
     try {
       const token = localStorage.getItem('accessToken')
@@ -49,7 +47,7 @@ const Header = () => {
           <i className="bx bx-search px-2 mr-1"></i>
         </button>
         <NavLink to={CART_PAGE}>
-          <CartIcon count={totalItemsInCart} />
+          <CartIcon count={1} />
         </NavLink>
         {isCheckLogin ? (
           <UserDropdown />

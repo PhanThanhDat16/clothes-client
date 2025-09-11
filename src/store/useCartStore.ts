@@ -4,25 +4,23 @@ export interface CartItem {
   id: string
   name: string
   price: number
-  image: {
-    src: string
-    alt: string
-  }
+  oldPrice: number
+  description: string
+  image: string
   quantity: number
-  color: string
   size: string
-  stock?: number
 }
 
 type CartState = {
   cart: CartItem[]
-  addItem: (item: CartItem) => void
-  removeItem: (id: string, color: string, size: string) => void
-  increaseQty: (id: string, color: string, size: string) => void
-  decreaseQty: (id: string, color: string, size: string) => void
+  addItemlocal: (item: CartItem) => void
+  removeItem: (id: string, size: string) => void
+  increaseQty: (id: string, size: string) => void
+  decreaseQty: (id: string, size: string) => void
   loadCart: () => void
   TotalBill: () => number
   TotalItems: () => number
+  Savingcost: () => number
 }
 const getCartFromStorage = (): CartItem[] => {
   try {
@@ -50,9 +48,9 @@ export const useCartStore = create<CartState>((set, get) => ({
     set({ cart: cart })
   },
 
-  addItem: (item) => {
+  addItemlocal: (item) => {
     const cart = [...get().cart]
-    const idx = cart.findIndex((i) => i.id === item.id && i.color === item.color)
+    const idx = cart.findIndex((i) => i.id === item.id && i.size === item.size)
     if (idx !== -1) {
       cart[idx].quantity += item.quantity
     } else {
@@ -62,15 +60,15 @@ export const useCartStore = create<CartState>((set, get) => ({
     set({ cart })
   },
 
-  removeItem: (id, color, size) => {
-    const updatedCart = get().cart.filter((i) => !(i.id === id && i.color === color && i.size === size))
+  removeItem: (id, size) => {
+    const updatedCart = get().cart.filter((i) => !(i.id === id && i.size === size))
     saveCartToStorage(updatedCart)
     set({ cart: updatedCart })
   },
 
-  increaseQty: (id, color, size) => {
+  increaseQty: (id, size) => {
     const cart = [...get().cart]
-    const idx = cart.findIndex((i) => i.id === id && i.color === color && i.size === size)
+    const idx = cart.findIndex((i) => i.id === id && i.size === size)
     if (idx !== -1) {
       cart[idx].quantity += 1
       saveCartToStorage(cart)
@@ -78,9 +76,9 @@ export const useCartStore = create<CartState>((set, get) => ({
     }
   },
 
-  decreaseQty: (id, color, size) => {
+  decreaseQty: (id, size) => {
     const cart = [...get().cart]
-    const idx = cart.findIndex((i) => i.id === id && i.color === color && i.size === size)
+    const idx = cart.findIndex((i) => i.id === id && i.size === size)
     if (idx !== -1 && cart[idx].quantity > 1) {
       cart[idx].quantity -= 1
       saveCartToStorage(cart)
@@ -101,5 +99,12 @@ export const useCartStore = create<CartState>((set, get) => ({
     const cart = [...get().cart]
     const totalItem = cart.reduce((sum, item) => sum + item.quantity, 0)
     return totalItem
+  },
+
+  Savingcost: () => {
+    const cart = [...get().cart]
+    const totalBillOriginal = cart.reduce((sum, item) => sum + item.oldPrice * item.quantity, 0)
+    const totalBillSale = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
+    return totalBillOriginal - totalBillSale
   }
 }))

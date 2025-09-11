@@ -1,7 +1,8 @@
-import { apiProductService } from '@/apis/api_product'
+import { getAllProduct } from '@/apis/productService'
 import ProductCard from '@/components/ProductCard'
-import { type item } from '@/models/products'
+import { type IProduct } from '@/models/product'
 import { useEffect, useState } from 'react'
+import ReactPaginate from 'react-paginate'
 
 interface PropsCategories {
   nameCate: string
@@ -43,21 +44,31 @@ const Categories: PropsCategories[] = [
   }
 ]
 const Banner = () => {
-  const [products, setProducts] = useState<item[]>([])
+  const [products, setProducts] = useState<IProduct[] | []>([])
   const [loading, setLoading] = useState(true)
+  const [page, setPage] = useState(1)
+  const [totalPages, setTotalPage] = useState(1)
+  console.log(page)
+
+  const handleGetAllProduct = async (params?: { search?: string; page?: number; limit?: number }) => {
+    try {
+      const res = await getAllProduct(params)
+      if (!res || !res.data) return
+      setProducts(res.data.data)
+      setTotalPage(res.data.totalPages)
+      setLoading(false)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   useEffect(() => {
-    const fectProducts = async () => {
-      setLoading(true)
-      const res = await apiProductService.getAll()
-      if (res && res.data) {
-        setProducts(res.data.data)
-      }
-      setLoading(false)
-    }
-    fectProducts()
+    handleGetAllProduct()
   }, [])
 
+  const handleClickPage = (event: { selected: number }) => {
+    setPage(event.selected + 1)
+  }
   if (loading) return <p>Đang tải sản phẩm...</p>
   return (
     <div className="w-full">
@@ -86,7 +97,7 @@ const Banner = () => {
             </div>
             <div className="border-b border-black pb-5">
               {Categories.map((item, idx) => (
-                <div className="flex py-2">
+                <div key={idx} className="flex py-2">
                   <input type="checkbox" name="" id="" />
                   <p className="px-2" key={idx}>
                     {item.nameCate}
@@ -128,6 +139,23 @@ const Banner = () => {
                 <ProductCard item={product} />
               </div>
             ))}
+          </div>
+          <div className="flex justify-center mt-8">
+            <ReactPaginate
+              breakLabel="..."
+              pageCount={totalPages}
+              nextLabel=">"
+              onPageChange={handleClickPage}
+              pageRangeDisplayed={3}
+              marginPagesDisplayed={1}
+              previousLabel="<"
+              containerClassName="flex gap-1"
+              pageClassName="px-4 py-1 border border-gray-200 rounded-md hover:opacity-90"
+              activeClassName="bg-[var(--primary-color)] text-white text-base"
+              previousClassName="px-3 py-1 border rounded-md hover:bg-gray-200 text-base"
+              nextClassName="px-3 py-1 border rounded-md hover:bg-gray-200 text-base"
+              disabledClassName="opacity-50 cursor-not-allowed"
+            />
           </div>
         </div>
       </div>

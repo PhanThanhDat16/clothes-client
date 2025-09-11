@@ -4,12 +4,8 @@ export interface CartItem {
   id: string
   name: string
   price: number
-  image: {
-    src: string
-    alt: string
-  }
+  images: string[]
   quantity: number
-  color: string
   size: string
   stock?: number
 }
@@ -17,9 +13,9 @@ export interface CartItem {
 type CartState = {
   cart: CartItem[]
   addItem: (item: CartItem) => void
-  removeItem: (id: string, color: string, size: string) => void
-  increaseQty: (id: string, color: string, size: string) => void
-  decreaseQty: (id: string, color: string, size: string) => void
+  removeItem: (id: string, size: string) => void
+  increaseQty: (id: string, size: string) => void
+  decreaseQty: (id: string, size: string) => void
   loadCart: () => void
 }
 const getCartFromStorage = (): CartItem[] => {
@@ -50,7 +46,7 @@ export const useCartStore = create<CartState>((set, get) => ({
 
   addItem: (item) => {
     const cart = [...get().cart]
-    const idx = cart.findIndex((i) => i.id === item.id && i.color === item.color)
+    const idx = cart.findIndex((i) => i.id === item.id)
     if (idx !== -1) {
       cart[idx].quantity += item.quantity
     } else {
@@ -60,15 +56,15 @@ export const useCartStore = create<CartState>((set, get) => ({
     set({ cart })
   },
 
-  removeItem: (id, color, size) => {
-    const updatedCart = get().cart.filter((i) => !(i.id === id && i.color === color && i.size === size))
+  removeItem: (id, size) => {
+    const updatedCart = get().cart.filter((i) => !(i.id === id && i.size === size))
     saveCartToStorage(updatedCart)
     set({ cart: updatedCart })
   },
 
-  increaseQty: (id, color, size) => {
+  increaseQty: (id, size) => {
     const cart = [...get().cart]
-    const idx = cart.findIndex((i) => i.id === id && i.color === color && i.size === size)
+    const idx = cart.findIndex((i) => i.id === id && i.size === size)
     if (idx !== -1) {
       cart[idx].quantity += 1
       saveCartToStorage(cart)
@@ -76,9 +72,9 @@ export const useCartStore = create<CartState>((set, get) => ({
     }
   },
 
-  decreaseQty: (id, color, size) => {
+  decreaseQty: (id, size) => {
     const cart = [...get().cart]
-    const idx = cart.findIndex((i) => i.id === id && i.color === color && i.size === size)
+    const idx = cart.findIndex((i) => i.id === id && i.size === size)
     if (idx !== -1 && cart[idx].quantity > 1) {
       cart[idx].quantity -= 1
       saveCartToStorage(cart)

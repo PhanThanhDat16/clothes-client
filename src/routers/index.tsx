@@ -12,6 +12,7 @@ import {
   LOGIN_PAGE,
   NEWIN_PAGE,
   PRODUCT_PAGE,
+  PRODUCT_DETAIL_PAGE,
   REGISTER_PAGE,
   CART_PAGE,
   AUTH_SUCCESS,
@@ -21,6 +22,7 @@ import {
 import MainLayout from '@/layouts'
 import NewIn from '@/pages/NewIn'
 import Product from '@/pages/Product'
+import DetailProduct from '@/pages/Product/DetailProduct'
 import Category from '@/pages/Category'
 import Contact from '@/pages/Contact'
 import Login from '@/pages/Login'
@@ -37,6 +39,7 @@ const AppRouters = () => {
 
         <Route path={NEWIN_PAGE} element={<NewIn />} />
         <Route path={PRODUCT_PAGE} element={<Product />} />
+        <Route path={PRODUCT_DETAIL_PAGE} element={<DetailProduct />} />
         <Route path={CATEGORY_PAGE} element={<Category />} />
         <Route path={CONTACT_PAGE} element={<Contact />} />
 

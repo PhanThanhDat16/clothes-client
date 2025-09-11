@@ -74,7 +74,7 @@ const Cart: React.FC = () => {
                   <div key={item.id} className="flex gap-4 border-b pb-4">
                     {/* Ảnh sản phẩm */}
                     <img
-                      src={item.image.src}
+                      src={item.images[0]}
                       alt={item.name}
                       className="w-[200px] h-[200px] object-cover rounded cursor-pointer"
                     />
@@ -92,19 +92,15 @@ const Cart: React.FC = () => {
                         </div>
                       </div>
 
-                      {/* Phần giữa: size/màu (nếu có) */}
-                      {item.size && (
-                        <p className="text-sm text-gray-500 mt-2">
-                          Size: {item.size} / Màu: {item.color}
-                        </p>
-                      )}
+                      {/* Phần giữa: size (nếu có) */}
+                      {item.size && <p className="text-sm text-gray-500 mt-2">Size: {item.size}</p>}
 
                       {/* Phần dưới: số lượng + xoá */}
                       <div className="flex items-center justify-between mt-10 mb-auto">
                         <div className="inline-flex border border-gray-300 rounded-md overflow-hidden bg-white shadow-md">
                           <button
                             className="px-4 py-3 border-r border-gray-300 hover:bg-red-500 hover:text-white transition-all duration-300 font-bold text-gray-700"
-                            onClick={() => decreaseQty(item.id, item.color, item.size)}
+                            onClick={() => decreaseQty(item.id, item.size)}
                           >
                             −
                           </button>
@@ -113,7 +109,7 @@ const Cart: React.FC = () => {
                           </span>
                           <button
                             className="px-4 py-3 border-l border-gray-300 hover:bg-green-500 hover:text-white transition-all duration-300 font-bold text-gray-700"
-                            onClick={() => increaseQty(item.id, item.color, item.size)}
+                            onClick={() => increaseQty(item.id, item.size)}
                           >
                             +
                           </button>
@@ -122,7 +118,7 @@ const Cart: React.FC = () => {
                         {/* Nút xoá */}
                         <button
                           className="ml-4 flex  justify-center items-center transition-colors rounded-full w-[40px] h-[40px] hover:bg-red-100 hover:text-red-600"
-                          onClick={() => removeItem(item.id, item.color, item.size)}
+                          onClick={() => removeItem(item.id, item.size)}
                         >
                           <Trash2 className="w-[22px] h-[22px]" />
                         </button>

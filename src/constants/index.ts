@@ -1,6 +1,7 @@
 export const HOME_PAGE = '/'
 export const NEWIN_PAGE = '/newin'
 export const PRODUCT_PAGE = '/product'
+export const PRODUCT_DETAIL_PAGE = '/product/:id'
 export const CATEGORY_PAGE = '/category'
 export const CONTACT_PAGE = '/contact'
 

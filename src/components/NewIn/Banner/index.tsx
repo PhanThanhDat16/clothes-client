@@ -1,4 +1,5 @@
-import ProductCard, { Product } from '@/components/ProductCard'
+import ProductCard from '@/components/ProductCard'
+import { IProduct } from '@/models/product'
 
 interface PropsCategories {
   nameCate: string
@@ -40,77 +41,19 @@ const Categories: PropsCategories[] = [
   }
 ]
 
-const newProducts: Product[] = [
+const newProducts: IProduct[] = [
   {
-    id: '9903737241906',
-    handle: 'ao-thun-neo',
+    _id: '9903737241906',
     name: 'Áo Thun Neo',
-    image: {
-      src: '//polomanor.vn/cdn/shop/files/ao-thun-nam-neo-trang.webp?v=1752166983&width=1200',
-      alt: 'Áo Thun Nam Neo Polomanor Màu Trắng'
-    },
-    price: {
-      sale: 269000,
-      original: 450000
-    },
-    savings: 181000,
-    isNew: true,
-    colors: [
-      { name: 'Trắng', className: 'bg-white' },
-      { name: 'Đen', className: 'bg-black' }
-    ]
-  },
-  {
-    id: '9903737176370',
-    handle: 'ao-thun-lio',
-    name: 'Áo Thun Lio',
-    image: {
-      src: '//polomanor.vn/cdn/shop/files/ao-thun-nam-lio-be.webp?v=1752166997&width=1200',
-      alt: 'Áo Thun Nam Lio Polomanor Màu Kem Nhạt'
-    },
-    price: {
-      sale: 269000,
-      original: 450000
-    },
-    savings: 181000,
-    isNew: true,
-    colors: [
-      { name: 'Be', className: 'bg-[#f2eeeb]' },
-      { name: 'Trắng', className: 'bg-white' }
-    ]
-  },
-  {
-    id: '9903734817074',
-    handle: 'ao-polo-rum',
-    name: 'Áo Polo Rum',
-    image: {
-      src: '//polomanor.vn/cdn/shop/files/ao-polo-nam-rum.webp?v=1752167040&width=1200',
-      alt: 'Áo Polo Nam Rum Polomanor Màu Kem Navy'
-    },
-    price: {
-      sale: 339000,
-      original: 500000
-    },
-    savings: 161000,
-    isNew: true
-  },
-  {
-    id: '9903734882610',
-    handle: 'ao-polo-marco',
-    name: 'Áo Polo Marco',
-    image: {
-      src: '//polomanor.vn/cdn/shop/files/ao-polo-nam-marco-cafe.webp?v=1752167019&width=1200',
-      alt: 'Áo Polo Nam Marco Polomanor Màu Cafe'
-    },
-    price: {
-      sale: 339000,
-      original: 500000
-    },
-    savings: 161000,
-    isNew: true,
-    colors: [
-      { name: 'CaPhe', className: 'bg-[#b0a395]' },
-      { name: 'Kem Nhạt', className: 'bg-[#f7f4eb]' }
+    description: 'Áo Thun Neo',
+    price: 269000,
+    oldPrice: 450000,
+    categoryId: '1',
+    images: ['//polomanor.vn/cdn/shop/files/ao-thun-nam-neo-trang.webp?v=1752166983&width=1200'],
+    options: [
+      { size: 'M', stockQuantity: 10 },
+      { size: 'L', stockQuantity: 10 },
+      { size: 'XL', stockQuantity: 10 }
     ]
   }
 ]
@@ -181,7 +124,7 @@ const Banner = () => {
           </div>
           <div className="grid grid-cols-3 gap-6">
             {newProducts.map((product) => (
-              <div key={product.id}>
+              <div key={product._id}>
                 <ProductCard product={product} />
               </div>
             ))}

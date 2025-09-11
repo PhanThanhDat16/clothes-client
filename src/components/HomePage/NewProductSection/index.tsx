@@ -2,88 +2,65 @@
 
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination } from 'swiper/modules'
-import ProductCard, { type Product } from '../../ProductCard'
+import ProductCard from '../../ProductCard'
+import { IProduct } from '@/models/product'
 
-const newProducts: Product[] = [
+const newProducts: IProduct[] = [
   {
-    id: '9903737241906',
-    handle: 'ao-thun-neo',
+    _id: '9903737241906',
     name: 'Áo Thun Neo',
-    image: {
-      src: '//polomanor.vn/cdn/shop/files/ao-thun-nam-neo-trang.webp?v=1752166983&width=1200',
-      alt: 'Áo Thun Nam Neo Polomanor Màu Trắng'
-    },
-    price: {
-      sale: 269000,
-      original: 450000
-    },
-    savings: 181.0,
-    isNew: true,
-    colors: [
-      { name: 'Trắng', className: 'bg-white' },
-      { name: 'Đen', className: 'bg-black' }
-    ],
-    size: ['M', 'L', 'XL'],
-    stock: 10
+    description: 'Áo Thun Nam Neo Polomanor Màu Trắng',
+    price: 269000,
+    oldPrice: 450000,
+    categoryId: 'category1',
+    images: ['//polomanor.vn/cdn/shop/files/ao-thun-nam-neo-trang.webp?v=1752166983&width=1200'],
+    options: [
+      { size: 'M', stockQuantity: 10 },
+      { size: 'L', stockQuantity: 15 },
+      { size: 'XL', stockQuantity: 8 }
+    ]
   },
   {
-    id: '9903737176370',
-    handle: 'ao-thun-lio',
+    _id: '9903737176370',
     name: 'Áo Thun Lio',
-    image: {
-      src: '//polomanor.vn/cdn/shop/files/ao-thun-nam-lio-be.webp?v=1752166997&width=1200',
-      alt: 'Áo Thun Nam Lio Polomanor Màu Kem Nhạt'
-    },
-    price: {
-      sale: 269000,
-      original: 450000
-    },
-    savings: 181.0,
-    isNew: true,
-    colors: [
-      { name: 'Be', className: 'bg-[#f2eeeb]' },
-      { name: 'Trắng', className: 'bg-white' }
-    ],
-    size: ['M', 'L', 'XL'],
-    stock: 10
+    description: 'Áo Thun Nam Lio Polomanor Màu Kem Nhạt',
+    price: 269000,
+    oldPrice: 450000,
+    categoryId: 'category1',
+    images: ['//polomanor.vn/cdn/shop/files/ao-thun-nam-lio-be.webp?v=1752166997&width=1200'],
+    options: [
+      { size: 'M', stockQuantity: 12 },
+      { size: 'L', stockQuantity: 18 },
+      { size: 'XL', stockQuantity: 6 }
+    ]
   },
   {
-    id: '9903734817074',
-    handle: 'ao-polo-rum',
+    _id: '9903734817074',
     name: 'Áo Polo Rum',
-    image: {
-      src: '//polomanor.vn/cdn/shop/files/ao-polo-nam-rum.webp?v=1752167040&width=1200',
-      alt: 'Áo Polo Nam Rum Polomanor Màu Kem Navy'
-    },
-    price: {
-      sale: 269000,
-      original: 450000
-    },
-    savings: 161.0,
-    isNew: true,
-    size: ['M', 'L', 'XL'],
-    stock: 10
+    description: 'Áo Polo Nam Rum Polomanor Màu Kem Navy',
+    price: 339000,
+    oldPrice: 500000,
+    categoryId: 'category2',
+    images: ['//polomanor.vn/cdn/shop/files/ao-polo-nam-rum.webp?v=1752167040&width=1200'],
+    options: [
+      { size: 'M', stockQuantity: 8 },
+      { size: 'L', stockQuantity: 14 },
+      { size: 'XL', stockQuantity: 10 }
+    ]
   },
   {
-    id: '9903734882610',
-    handle: 'ao-polo-marco',
+    _id: '9903734882610',
     name: 'Áo Polo Marco',
-    image: {
-      src: '//polomanor.vn/cdn/shop/files/ao-polo-nam-marco-cafe.webp?v=1752167019&width=1200',
-      alt: 'Áo Polo Nam Marco Polomanor Màu Cafe'
-    },
-    price: {
-      sale: 269000,
-      original: 450000
-    },
-    savings: 161.0,
-    isNew: true,
-    colors: [
-      { name: 'CaPhe', className: 'bg-[#b0a395]' },
-      { name: 'Kem Nhạt', className: 'bg-[#f7f4eb]' }
-    ],
-    size: ['M', 'L', 'XL'],
-    stock: 10
+    description: 'Áo Polo Nam Marco Polomanor Màu Cafe',
+    price: 339000,
+    oldPrice: 500000,
+    categoryId: 'category2',
+    images: ['//polomanor.vn/cdn/shop/files/ao-polo-nam-marco-cafe.webp?v=1752167019&width=1200'],
+    options: [
+      { size: 'M', stockQuantity: 9 },
+      { size: 'L', stockQuantity: 16 },
+      { size: 'XL', stockQuantity: 7 }
+    ]
   }
 ]
 
@@ -128,7 +105,7 @@ const NewProductsSection = () => {
             }}
           >
             {newProducts.map((product) => (
-              <SwiperSlide key={product.id}>
+              <SwiperSlide key={product._id}>
                 <ProductCard product={product} />
               </SwiperSlide>
             ))}

@@ -1,7 +1,7 @@
 import { getAllCategory } from '@/apis/categories'
 import { CATEGORY_PAGE } from '@/constants'
 import { ICategory } from '@/models/categories'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 
 // Bo Suu Tap
@@ -30,9 +30,6 @@ export const ModalCategory = () => {
     }
   }
 
-  useEffect(() => {
-    handleGetAll()
-  }, [])
   // -----
 
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -41,6 +38,7 @@ export const ModalCategory = () => {
   const handleEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current)
     setIsModalOpen(true)
+    handleGetAll()
   }
 
   const handleLeave = () => {

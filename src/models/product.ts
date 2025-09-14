@@ -6,7 +6,7 @@ export interface IProduct {
   description: string
   price: number
   oldPrice: number
-  categoryId: string
+  categoryId: ICategory
   images: string[]
   options: IProductSizeCreate[]
 }

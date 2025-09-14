@@ -27,7 +27,7 @@ export const ModalProduct = () => {
   }
 
   return (
-    <div className="z-10">
+    <div className="z-20">
       <NavLink
         to={PRODUCT_PAGE}
         className={`flex px-2 hover:opacity-80`}
@@ -39,7 +39,7 @@ export const ModalProduct = () => {
       </NavLink>
 
       <div
-        className={`absolute inset-x-0 h-auto mt-10 bg-white border ${isModalOpen ? '' : 'hidden'}`}
+        className={`absolute inset-x-0 h-auto mt-8 bg-white border ${isModalOpen ? '' : 'hidden'}`}
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
       >
@@ -80,7 +80,7 @@ export const ModalProduct = () => {
               </a>
             </li>
             <li className="font-normal grid">
-              <a href="#" className="text-2xl hover:underline">
+              <a href={'/product'} className="text-2xl hover:underline">
                 Tất cả sản phẩm
               </a>
             </li>

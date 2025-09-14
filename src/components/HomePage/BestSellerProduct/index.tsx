@@ -16,7 +16,7 @@ const BestSellerProductsSection: React.FC = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const fectProducts = async () => {
+    const fetchProducts = async () => {
       setLoading(true)
       const res = await getAllProduct()
       if (res && res.data) {
@@ -24,7 +24,7 @@ const BestSellerProductsSection: React.FC = () => {
       }
       setLoading(false)
     }
-    fectProducts()
+    fetchProducts()
   }, [])
 
   if (loading) return <p>Đang tải sản phẩm...</p>
@@ -35,7 +35,7 @@ const BestSellerProductsSection: React.FC = () => {
         <header className="flex items-center justify-between mb-8">
           <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight">Sản Phẩm Bán Chạy</h2>
           <a
-            href="/category/best-sellers"
+            href="/product"
             className="group flex items-center text-sm font-semibold text-blue-600 hover:text-blue-800"
           >
             <span>Xem toàn bộ sản phẩm</span>

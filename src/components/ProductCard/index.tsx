@@ -1,11 +1,10 @@
 import type { IProduct } from '@/models/product'
 import { CartItem, useCartStore } from '@/store/useCartStore'
-import { useEffect, useState } from 'react'
 import { showToast } from '../Toast/showToast'
-import { getProfile } from '@/apis/user'
 import { useCartStoreUser } from '@/store/useCartStoreUser'
 import { CartItemAdd } from '@/models/cartItem'
-import { User } from '@/models/user'
+import { useState } from 'react'
+import { useAuthStore } from '@/store/authStore'
 
 const QuickBuyCartIcon = () => (
   <svg role="presentation" fill="none" strokeWidth="1" focusable="false" width="16" height="14" viewBox="0 0 16 14">
@@ -23,8 +22,9 @@ export interface ProductCardProps {
 }
 
 const ProductCard = ({ item }: ProductCardProps) => {
-  const [selectedSize, setSelectedSize] = useState(String)
-  const [user, setUser] = useState<User>()
+  const [selectedSize, setSelectedSize] = useState<string>('')
+
+  const { user } = useAuthStore() //lấy user từ store (không cần gọi API trong Card)
   const { addItem } = useCartStoreUser()
   const { addItemlocal } = useCartStore()
 
@@ -43,14 +43,16 @@ const ProductCard = ({ item }: ProductCardProps) => {
     size: selectedSize,
     quantity: 1
   }
+
   const handleAddToCart = async () => {
     try {
       if (!selectedSize) {
         showToast.error('Vui lòng chọn size trước khi thêm sản phẩm!')
         return
       }
+
       if (user) {
-        addItem(user?.data._id as string, productAddByUser)
+        await addItem(user.data._id, productAddByUser)
       } else {
         addItemlocal(productAddLocal)
       }
@@ -59,19 +61,7 @@ const ProductCard = ({ item }: ProductCardProps) => {
       console.error('Error', error)
     }
   }
-  useEffect(() => {
-    const checkLogin = async () => {
-      try {
-        const profile = await getProfile()
-        if (profile) {
-          setUser(profile)
-        }
-      } catch (error) {
-        console.error('Error', error)
-      }
-    }
-    checkLogin()
-  }, [])
+
   const costSaving = item.oldPrice - item.price
   return (
     <div className="group flex-shrink-0">
@@ -85,9 +75,9 @@ const ProductCard = ({ item }: ProductCardProps) => {
         </div>
 
         <div className="relative">
-          <a href="#">
+          <a href={`/product/${item._id}`}>
             <img
-              src={item.images[0] || item.images[1]}
+              src={item.images[0]}
               width="1200"
               height="1800"
               className="h-auto w-full object-cover transition-opacity duration-300 group-hover:opacity-80 aspect-[2/3]"
@@ -108,25 +98,24 @@ const ProductCard = ({ item }: ProductCardProps) => {
         </div>
 
         <div className="p-4 text-left">
-          <div className="flex justify-between items-start">
-            <div className="flex flex-col">
-              <h3 className="font-bold text-base md:text-lg">
-                <a href="#" className="hover:underline">
-                  {item.name}
-                </a>
-              </h3>
+          <div className="items-start">
+            <h3 className="font-bold text-base md:text-lg overflow-y-hidden">
+              <a href={`/product/${item._id}`} className="hover:underline">
+                {item.name}
+              </a>
+            </h3>
+
+            <div className="mt-3 flex flex-wrap gap-2 text-base font-medium">
               <div className="mt-1 flex items-baseline space-x-2">
                 <span className="text-red-600 font-bold">{item.price.toLocaleString()}₫</span>
-                <span className="text-gray-500 line-through text-sm">{item.oldPrice.toLocaleString()}₫</span>
+                <span className="text-gray-500 line-through text-xs">{item.oldPrice.toLocaleString()}₫</span>
               </div>
-            </div>
-            <div className="mt-3 flex flex-wrap gap-2">
               {item.options.map((opt) => (
                 <button
                   onClick={() => setSelectedSize(opt.size)}
                   key={opt.size}
                   className={`
-                    px-3 py-1 rounded-lg border-2 text-base font-medium transition
+                    px-3 rounded-lg border-2 transition
                     ${
                       opt.stockQuantity > 0
                         ? `

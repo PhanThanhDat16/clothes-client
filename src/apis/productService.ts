@@ -1,4 +1,4 @@
-import axiosConfig from './axioConfig'
+import axiosConfig from './axiosConfig'
 
 const DEFAULT_URL = '/items'
 

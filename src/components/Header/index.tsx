@@ -1,38 +1,38 @@
-import { CART_PAGE, CONTACT_PAGE, HOME_PAGE, LOGIN_PAGE, NEWIN_PAGE } from '@/constants'
+import { useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
+import { CART_PAGE, CONTACT_PAGE, HOME_PAGE, LOGIN_PAGE, NEWIN_PAGE } from '@/constants'
 import { ModalProduct } from './ModalProduct'
 import { ModalCategory } from './ModalCategory'
 import UserDropdown from '../UserDropdown/userdropdown'
-import { useEffect, useState } from 'react'
 import CartIcon from '../cart_badge'
+import { useAuthStore } from '@/store/authStore'
 
 const Header = () => {
-  const [isCheckLogin, setIsChekLogin] = useState(false)
+  const { user, fetchUser } = useAuthStore()
 
-  const checkLogin = () => {
-    try {
-      const token = localStorage.getItem('accessToken')
-      if (!token) {
-        setIsChekLogin(false)
-        return
-      }
-      setIsChekLogin(true)
-    } catch (error) {
-      console.error('Error', error)
-    }
-  }
   useEffect(() => {
-    checkLogin()
-  }, [])
+    fetchUser()
+
+    const handleLoginStateChange = () => {
+      fetchUser()
+    }
+    window.addEventListener('loginStateChanged', handleLoginStateChange)
+
+    return () => {
+      window.removeEventListener('loginStateChanged', handleLoginStateChange)
+    }
+  }, [fetchUser])
+
   return (
     <div className="w-[90%] max-w-[var(--max-width)] grid grid-cols-3 gap-6 mx-auto h-24 items-center">
       <NavLink to={HOME_PAGE} className="w-[160px] col-start-1">
         <img src="https://polomanor.vn/cdn/shop/files/Polomanor-logo-main-color.png" alt="" />
       </NavLink>
+
       <div className="col-start-2 w-full flex justify-center text-[var(--primary-color)] font-bold">
-        {/* PAGE NEW IN */}
+        {/* new in */}
         <NavLink to={NEWIN_PAGE} className="px-2 hover:opacity-80 text-xl">
-          HÀNG MỚI
+          NEW IN
         </NavLink>
 
         <ModalProduct />
@@ -49,7 +49,7 @@ const Header = () => {
         <NavLink to={CART_PAGE}>
           <CartIcon count={1} />
         </NavLink>
-        {isCheckLogin ? (
+        {user ? (
           <UserDropdown />
         ) : (
           <NavLink to={LOGIN_PAGE}>

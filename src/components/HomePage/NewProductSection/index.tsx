@@ -42,10 +42,7 @@ const NewProductsSection = () => {
       <div className="max-w-7xl mx-auto">
         <header className="flex items-center justify-between mb-8">
           <h2 className="text-2xl font-extrabold tracking-tight">Sản Phẩm Mới</h2>
-          <a
-            href="/category/new-products-1"
-            className="group flex items-center text-sm font-semibold text-blue-600 hover:text-blue-800"
-          >
+          <a href="/newin" className="group flex items-center text-sm font-semibold text-blue-600 hover:text-blue-800">
             <span>Xem toàn bộ sản phẩm</span>
             <span className="ml-2 flex h-5 w-5 items-center justify-center rounded-full bg-gray-200 transition-colors group-hover:bg-blue-600 group-hover:text-white">
               <ChevronRightIcon />

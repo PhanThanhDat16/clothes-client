@@ -15,7 +15,7 @@ const ExploreSection = () => {
   ]
 
   return (
-    <div className="p-8">
+    <div className="p-8 max-w-7xl mx-auto">
       <div className="">
         <div className="section-stack space-y-6">
           <header className="section-header text-start">
@@ -24,7 +24,7 @@ const ExploreSection = () => {
 
           <div className="flex justify-between items-start">
             {images.map((img, index) => (
-              <div key={index} className="w-[411px] h-[598px] overflow-hidden rounded">
+              <div key={index} className="w-[33%] h-auto overflow-hidden rounded">
                 <img src={img.src} alt={img.alt} loading="lazy" className="w-full h-full object-cover rounded" />
               </div>
             ))}

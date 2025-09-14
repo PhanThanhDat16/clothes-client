@@ -5,7 +5,7 @@ import { Trash2 } from 'lucide-react'
 import { useCartStore } from '@/store/useCartStore'
 import { useCartStoreUser } from '@/store/useCartStoreUser'
 import { User } from '@/models/user'
-import { getProfile } from '@/apis/user'
+import { getProfile } from '@/apis/userService'
 
 type SuggestItem = {
   id: number

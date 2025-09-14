@@ -48,7 +48,7 @@ export const ModalCategory = () => {
   }
 
   return (
-    <div className="z-10">
+    <div className="z-20">
       <NavLink
         to={CATEGORY_PAGE}
         className={`flex px-2 hover:opacity-80`}
@@ -60,7 +60,7 @@ export const ModalCategory = () => {
       </NavLink>
 
       <div
-        className={`absolute inset-x-0 h-auto mt-10 bg-white border ${isModalOpen ? '' : 'hidden'}`}
+        className={`absolute inset-x-0 h-auto mt-8 bg-white border ${isModalOpen ? '' : 'hidden'}`}
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
       >
@@ -68,7 +68,7 @@ export const ModalCategory = () => {
           <ul className="flex flex-auto flex-wrap gap-[4rem]">
             {categories.map((item) => (
               <li key={item._id} className="font-normal grid">
-                <a href="#" className="text-xl hover:underline">
+                <a href={`/category/${item._id}`} className="text-xl hover:underline">
                   {item.name}
                 </a>
               </li>

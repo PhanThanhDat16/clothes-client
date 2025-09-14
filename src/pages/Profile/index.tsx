@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { User2, Settings, Camera, Edit3, Save, X, Mail, Phone, MapPin, Calendar } from 'lucide-react'
 import type { User } from '@/models/user'
-import { getProfile } from '@/apis/user'
+import { getProfile } from '@/apis/userService'
 
 const fieldClass =
   'w-full p-3 rounded-lg text-gray-800 bg-gray-50 border-2 border-stone-100 border-transparent focus:border-[var(--primary-color)] focus:outline-none transition-colors'

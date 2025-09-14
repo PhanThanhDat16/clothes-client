@@ -40,13 +40,6 @@ const Login = () => {
     formState: { errors, isSubmitting }
   } = useForm<IAuthForm>(defaultForm)
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem('accessToken')
-  //   if (token) {
-  //     navigate(PROFILE_PAGE, { replace: true })
-  //   }
-  // }, [navigate])
-
   const handleSignIn: SubmitHandler<IAuthForm> = async (values: IAuthForm) => {
     try {
       const res = await logIn(values)
@@ -61,12 +54,15 @@ const Login = () => {
         autoClose: 3000
       })
 
-      // logining  → HOME_PAGE
-      localStorage.setItem('accessToken', accessToken)
-      navigate(HOME_PAGE)
-
+      // Save tokens to localStorage
       localStorage.setItem('accessToken', accessToken)
       localStorage.setItem('refreshToken', refreshToken)
+
+      // Dispatch custom event to notify Header component
+      window.dispatchEvent(new CustomEvent('loginStateChanged'))
+
+      // Navigate to home page
+      navigate(HOME_PAGE)
 
       if (rememberMe) {
         localStorage.setItem('email', values.email)

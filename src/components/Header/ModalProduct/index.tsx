@@ -1,7 +1,7 @@
 import { PRODUCT_PAGE } from '@/constants'
 import { useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
-
+import { ChevronDown } from 'lucide-react'
 const listNameProduceShirt = [
   { id: 1, name: 'Polo' },
   { id: 2, name: 'T-shirt' },
@@ -23,23 +23,23 @@ export const ModalProduct = () => {
   }
 
   const handleLeave = () => {
-    timeoutRef.current = setTimeout(() => setIsModalOpen(false), 500) // ⏱ delay 500ms
+    timeoutRef.current = setTimeout(() => setIsModalOpen(false), 300) // ⏱ delay 500ms
   }
 
   return (
-    <div>
+    <div className="z-20">
       <NavLink
         to={PRODUCT_PAGE}
         className={`flex px-2 hover:opacity-80`}
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
       >
-        <p>Sản phẩm</p>
-        <i className="bx bx-chevron-down"></i>
+        <p className="text-xl">SẢN PHẨM</p>
+        <ChevronDown className="w-[20px] h-[20px] mt-1" />
       </NavLink>
 
       <div
-        className={`absolute inset-x-0 h-auto mt-10 bg-white border ${isModalOpen ? '' : 'hidden'}`}
+        className={`absolute inset-x-0 h-auto mt-8 bg-white border ${isModalOpen ? '' : 'hidden'}`}
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
       >
@@ -80,7 +80,7 @@ export const ModalProduct = () => {
               </a>
             </li>
             <li className="font-normal grid">
-              <a href="#" className="text-2xl hover:underline">
+              <a href={'/product'} className="text-2xl hover:underline">
                 Tất cả sản phẩm
               </a>
             </li>

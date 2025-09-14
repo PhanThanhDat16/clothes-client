@@ -19,6 +19,9 @@ const AuthSuccess = () => {
       localStorage.setItem('accessToken', accessToken)
       localStorage.setItem('refreshToken', refreshToken)
 
+      // Dispatch custom event to notify Header component
+      window.dispatchEvent(new CustomEvent('loginStateChanged'))
+
       processed.current = true // Chuyển hướng về trang chủ
       navigate('/', { replace: true })
     } else {

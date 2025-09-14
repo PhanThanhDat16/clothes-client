@@ -14,9 +14,14 @@ export const handleLogout = async () => {
     localStorage.setItem('password', pwd || '')
     localStorage.setItem('rememberMe', rememberMe || '')
 
+    // Dispatch custom event to notify Header component
+    window.dispatchEvent(new CustomEvent('loginStateChanged'))
+
     location.replace(LOGIN_PAGE)
   } else {
     localStorage.clear()
+    // Dispatch custom event to notify Header component
+    window.dispatchEvent(new CustomEvent('loginStateChanged'))
   }
 
   window.location.replace(LOGIN_PAGE)

@@ -1,5 +1,5 @@
 import { IAuthForm } from '@/models/auth'
-import axiosConfig from './axioConfig'
+import axiosConfig from './axiosConfig'
 
 const DEFAULT_URL = '/auth'
 export const logIn = async (values: IAuthForm) => await axiosConfig.post(`${DEFAULT_URL}/login`, values)

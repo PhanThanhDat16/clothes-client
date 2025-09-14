@@ -47,79 +47,77 @@ const MediaGrid = () => {
   ]
 
   return (
-    <section className="w-full p-8">
-      <div>
-        <div className="grid grid-cols-4 grid-rows-2 gap-4 h-full">
-          <a
-            href={mediaItems[0].href}
-            className="col-span-2 row-span-2 relative overflow-hidden rounded-lg group cursor-pointer"
-          >
-            <div className="relative w-full h-full bg-black overflow-hidden rounded-lg">
-              <img
-                src={mediaItems[0].image}
-                alt={mediaItems[0].alt}
-                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 filter grayscale"
-              />
+    <section className="w-full p-8 max-w-7xl mx-auto">
+      <div className="grid grid-cols-4 grid-rows-2 gap-4 h-full">
+        <a
+          href={mediaItems[0].href}
+          className="col-span-2 row-span-2 relative overflow-hidden rounded-lg group cursor-pointer"
+        >
+          <div className="relative w-full h-full bg-black overflow-hidden rounded-lg">
+            <img
+              src={mediaItems[0].image}
+              alt={mediaItems[0].alt}
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 filter grayscale"
+            />
 
-              <div className="absolute inset-0 bg-black bg-opacity-40" />
+            <div className="absolute inset-0 bg-black bg-opacity-40" />
 
-              <div className="absolute inset-0 flex items-center justify-center p-8">
-                <div className="text-center">
-                  <p className="text-white text-lg md:text-xl font-medium leading-relaxed max-w-md">
-                    {mediaItems[0].text}
-                  </p>
-                </div>
+            <div className="absolute inset-0 flex items-center justify-center p-8">
+              <div className="text-center">
+                <p className="text-white text-lg md:text-xl font-medium leading-relaxed max-w-md">
+                  {mediaItems[0].text}
+                </p>
               </div>
             </div>
-          </a>
+          </div>
+        </a>
 
-          {/* Item 2 - Top right */}
-          <a
-            href={mediaItems[1].href}
-            className="col-span-1 row-span-1 relative overflow-hidden rounded-lg group cursor-pointer"
-          >
-            <div className="relative w-full h-full bg-black overflow-hidden rounded-lg">
-              <img
-                src={mediaItems[1].image}
-                alt={mediaItems[1].alt}
-                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 filter grayscale"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-20" />
-            </div>
-          </a>
+        {/* Item 2 - Top right */}
+        <a
+          href={mediaItems[1].href}
+          className="col-span-1 row-span-1 relative overflow-hidden rounded-lg group cursor-pointer"
+        >
+          <div className="relative w-full h-full bg-black overflow-hidden rounded-lg">
+            <img
+              src={mediaItems[1].image}
+              alt={mediaItems[1].alt}
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 filter grayscale"
+            />
+            <div className="absolute inset-0 bg-black bg-opacity-20" />
+          </div>
+        </a>
 
-          {/* Item 3 - Top far right */}
-          <a
-            href={mediaItems[2].href}
-            className="col-span-1 row-span-1 relative overflow-hidden rounded-lg group cursor-pointer"
-          >
-            <div className="relative w-full h-full bg-black overflow-hidden rounded-lg">
-              <img
-                src={mediaItems[2].image}
-                alt={mediaItems[2].alt}
-                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 filter grayscale"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-20" />
-            </div>
-          </a>
+        {/* Item 3 - Top far right */}
+        <a
+          href={mediaItems[2].href}
+          className="col-span-1 row-span-1 relative overflow-hidden rounded-lg group cursor-pointer"
+        >
+          <div className="relative w-full h-full bg-black overflow-hidden rounded-lg">
+            <img
+              src={mediaItems[2].image}
+              alt={mediaItems[2].alt}
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 filter grayscale"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-black bg-opacity-20" />
+          </div>
+        </a>
 
-          {/* Item 4 - Bottom right (spanning 2 columns) */}
-          <a
-            href={mediaItems[3].href}
-            className="col-span-2 row-span-1 relative overflow-hidden rounded-lg group cursor-pointer"
-          >
-            <div className="relative w-full h-full bg-black overflow-hidden rounded-lg">
-              <img
-                src={mediaItems[3].image}
-                alt={mediaItems[3].alt}
-                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 filter grayscale"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-20" />
-            </div>
-          </a>
-        </div>
+        {/* Item 4 - Bottom right (spanning 2 columns) */}
+        <a
+          href={mediaItems[3].href}
+          className="col-span-2 row-span-1 relative overflow-hidden rounded-lg group cursor-pointer"
+        >
+          <div className="relative w-full h-full bg-black overflow-hidden rounded-lg">
+            <img
+              src={mediaItems[3].image}
+              alt={mediaItems[3].alt}
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 filter grayscale"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-black bg-opacity-20" />
+          </div>
+        </a>
       </div>
     </section>
   )

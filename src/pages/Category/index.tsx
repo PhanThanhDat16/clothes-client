@@ -34,7 +34,7 @@ const Category = () => {
       <ul className="grid grid-cols-2 gap-6">
         {categories.map((item) => (
           <li key={item._id} className="text-xl">
-            {item.name}
+            <a href={`/category/${item._id}`}>{item.name}</a>
           </li>
         ))}
       </ul>

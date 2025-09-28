@@ -1,18 +1,18 @@
 export interface RootCart {
   message: string
-  data: CartItems[]
+  data: ICart[]
 }
 
-export interface CartItems {
+export interface ICart {
   _id: string
   cartId: string
   size: string
   quantity: number
   itemId?: string
-  item: CartItem
+  item: ICartItems
 }
 
-export interface CartItem {
+export interface ICartItems {
   name?: string
   images?: string
   price?: number

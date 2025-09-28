@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { Search } from 'lucide-react'
 import { OrderList } from '@/components/order/OrderList'
 
 export interface order {
@@ -85,7 +84,8 @@ const EcommerceProductPage = () => {
       <div className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+            {/* <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" /> */}
+            <i className="bx  bx-search text-gray-400 text-2xl absolute left-3 top-1/2 transform -translate-y-1/2"></i>
             <input
               type="text"
               placeholder="Bạn có thể tìm kiếm theo tên Shop, ID đơn hàng hoặc Tên Sản phẩm"

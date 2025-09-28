@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination } from 'swiper/modules'
 import ProductCard from '../../ProductCard'
-import { getAllProduct } from '@/apis/productService'
+import { getProductTopPopular } from '@/apis/productService'
 import { IProduct } from '@/models/product'
 
 const ChevronRightIcon = () => (
@@ -12,13 +12,14 @@ const ChevronRightIcon = () => (
 )
 
 const BestSellerProductsSection: React.FC = () => {
-  const [products, setProducts] = useState<IProduct[]>([])
+  const [products, setProducts] = useState<IProduct[] | []>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true)
-      const res = await getAllProduct()
+      const res = await getProductTopPopular()
+      console.log(res)
       if (res && res.data) {
         setProducts(res.data.data)
       }
@@ -68,7 +69,7 @@ const BestSellerProductsSection: React.FC = () => {
             }}
             className="pb-12"
           >
-            {products.map((product) => (
+            {products?.map((product) => (
               <SwiperSlide key={product._id}>
                 <ProductCard item={product} />
               </SwiperSlide>

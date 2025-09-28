@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { IProduct } from '@/models/product'
-import { CartItem, useCartStore } from '@/store/useCartStore'
+import { useCartStore } from '@/store/useCartStore'
 import { getProductDetail } from '@/apis/productService'
 import { showToast } from '@/components/Toast/showToast'
 
 const DetailProduct = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const { addItemlocal } = useCartStore()
+  const { add } = useCartStore()
 
   const [product, setProduct] = useState<IProduct>()
   const [loading, setLoading] = useState(true)
@@ -48,23 +48,9 @@ const DetailProduct = () => {
     }
   }
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!product || !selectedSize) return
-
-    const cartItem: CartItem = {
-      id: product._id,
-      name: product.name,
-      price: product.price,
-      image: product.images[0],
-      quantity: quantity,
-      size: selectedSize,
-      description: product.description,
-      oldPrice: product.oldPrice
-    }
-
-    addItemlocal(cartItem)
-
-    // Show success message (you can add toast notification here)
+    await add(product, selectedSize, quantity)
     showToast.success('Đã thêm sản phẩm vào giỏ hàng!')
   }
 

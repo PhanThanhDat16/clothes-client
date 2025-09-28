@@ -3,7 +3,6 @@ import { CATEGORY_PAGE } from '@/constants'
 import { ICategory } from '@/models/categories'
 import { useEffect, useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { ChevronDown } from 'lucide-react'
 // Bo Suu Tap
 // const ListNameCategory = [
 //   { id: 1, name: 'Áo Thun' },
@@ -56,7 +55,7 @@ export const ModalCategory = () => {
         onMouseLeave={handleLeave}
       >
         <p className="text-xl">DANH MỤC</p>
-        <ChevronDown className="h-[20px] w-[20px] mt-1" />
+        <i className="bx  bx-chevron-down text-xl"></i>
       </NavLink>
 
       <div

@@ -5,20 +5,16 @@ export const cartService = {
   addItemToCart: async (userId: string, item: CartItemAdd): Promise<RootCart | null> => {
     try {
       const token = localStorage.getItem('accessToken')
+
       const response = await fetch(`${BASE_URL}/cart/${userId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({
-          itemId: item.itemId,
-          size: item.size,
-          quantity: item.quantity
-        })
+        body: JSON.stringify(item)
       })
       const data = await response.json()
-      console.log(data)
       if (!response.ok) return null
       return data
     } catch (error) {
@@ -30,6 +26,7 @@ export const cartService = {
   getCartByUserId: async (userId: string): Promise<RootCart | null> => {
     try {
       const token = localStorage.getItem('accessToken')
+
       const res = await fetch(`${BASE_URL}/cart/${userId}`, {
         method: 'GET',
         headers: {
@@ -48,27 +45,23 @@ export const cartService = {
 
   updateQuantity: async (userId: string, item: CartItemAdd): Promise<RootCart | null> => {
     const token = localStorage.getItem('accessToken')
+
     const res = await fetch(`${BASE_URL}/cart/${userId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify({
-        itemId: item.itemId,
-        size: item.size,
-        quantity: item.quantity
-      })
+      body: JSON.stringify(item)
     })
     if (!res.ok) return null
-
     const data = await res.json()
-
-    return data as RootCart
+    return data
   },
 
   removeItem: async (userId: string, itemId: string, size: string): Promise<RootCart | null> => {
     const token = localStorage.getItem('accessToken')
+
     const res = await fetch(`${BASE_URL}/cart/${userId}`, {
       method: 'DELETE',
       headers: {
@@ -82,6 +75,7 @@ export const cartService = {
     })
     if (!res.ok) return null
     const data = await res.json()
-    return data as RootCart
+    console.log(data)
+    return data
   }
 }

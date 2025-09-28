@@ -1,5 +1,4 @@
 import { order } from '@/pages/Oder'
-import { Store, CheckCircle, Clock } from 'lucide-react'
 
 export const OrderCard = ({ order }: { order: order }) => {
   const formatPrice = (price: number) => price.toLocaleString('vi-VN')
@@ -8,7 +7,8 @@ export const OrderCard = ({ order }: { order: order }) => {
       {/* Shop Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-3">
-          <Store className="w-5 h-5 text-gray-600" />
+          {/* <Store className="w-5 h-5 text-gray-600" /> */}
+          <i className="bx  bx-store text-2xl text-gray-600"></i>
           <span className="font-medium text-gray-900">{order.shop}</span>
           <span className="inline-flex items-center px-2 py-1 text-sm font-medium bg-blue-100 text-blue-800 rounded cursor-pointer">
             Xem Sản phẩm tương tự
@@ -17,7 +17,8 @@ export const OrderCard = ({ order }: { order: order }) => {
         <div className="flex items-center space-x-3">
           {order.deliverySuccess && (
             <div className="flex items-center text-green-600 text-sm">
-              <CheckCircle className="w-4 h-4 mr-1" />
+              {/* <CheckCircle className="w-4 h-4" /> */}
+              <i className="bx  bx-check-circle mr-1 text-lg"></i>
               Giao hàng thành công
             </div>
           )}
@@ -60,7 +61,8 @@ export const OrderCard = ({ order }: { order: order }) => {
               <>
                 {order.deliveryDate && (
                   <div className="flex items-center mb-2">
-                    <Clock className="w-4 h-4 mr-1" />
+                    {/* <Clock className="w-4 h-4 mr-1" /> */}
+                    <i className="bx  bx-clock-4  mr-1 text-lg"></i>
                     Đánh giá sản phẩm trước: {order.deliveryDate}
                   </div>
                 )}

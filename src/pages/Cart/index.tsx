@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { HOME_PAGE, NEWIN_PAGE } from '@/constants'
-import { Trash2 } from 'lucide-react'
 import { useCartStore } from '@/store/useCartStore'
-import { useCartStoreUser } from '@/store/useCartStoreUser'
-import { User } from '@/models/user'
-import { getProfile } from '@/apis/userService'
+import { useAuthStore } from '@/store/authStore'
 
 type SuggestItem = {
   id: number
@@ -33,37 +30,16 @@ const suggestItems: SuggestItem[] = [
 ]
 
 const Cart: React.FC = () => {
-  const { cart, loadCart, increaseQty, decreaseQty, removeItem, TotalBill, TotalItems, Savingcost } = useCartStore()
-  const { cartUser, fetchCartUser, updateItemUser, removeItemUser, totalPriceUser, totalQuantityUser, SavingCostUser } =
-    useCartStoreUser()
-  const [user, setUser] = useState<User>()
+  const { load, itemsForDisplay, totalPrice, totalQuantity, savingCost, increase, decrease, remove } = useCartStore()
+  const { user } = useAuthStore()
 
   useEffect(() => {
-    const checkLogin = async () => {
-      try {
-        const profile = await getProfile()
-        if (profile) {
-          setUser(profile)
-        }
-      } catch (error) {
-        console.error('Error', error)
-      }
-    }
-    checkLogin()
-  }, [])
-
-  useEffect(() => {
-    if (user) {
-      fetchCartUser(user.data._id)
-    } else {
-      loadCart()
-    }
+    load()
   }, [user])
 
-  //const totalItems = TotalItems()
-  const totalBill = user ? totalPriceUser() : TotalBill()
-  const totalquatity = user ? totalQuantityUser() : TotalItems()
-  const savingCost = user ? SavingCostUser() : Savingcost()
+  const items = itemsForDisplay()
+  const totalBill = totalPrice()
+  const totalquatity = totalQuantity()
 
   if (user)
     return (
@@ -97,12 +73,12 @@ const Cart: React.FC = () => {
                   }}
                 ></span>
                 <div className="space-y-6 mt-10 mb-5">
-                  {cartUser?.data.map((item) => (
-                    <div key={`${item.itemId}-${item.size}`} className="flex gap-4 border-b pb-4">
+                  {items.map((item) => (
+                    <div key={`${item.id}-${item.size}`} className="flex gap-4 border-b pb-4">
                       {/* Ảnh sản phẩm */}
                       <img
-                        src={item.item.images}
-                        alt={item.item.name}
+                        src={item.images}
+                        alt={item.name}
                         className="w-[200px] h-[200px] object-cover rounded cursor-pointer"
                       />
 
@@ -110,13 +86,11 @@ const Cart: React.FC = () => {
                       <div className="flex-1 flex flex-col justify-between">
                         {/* Phần trên: tên + giá */}
                         <div className="flex justify-between items-start">
-                          <p className="font-bold text-xl">{item.item.name}</p>
+                          <p className="font-bold text-xl">{item.name}</p>
                           <div className="text-right">
-                            <p className="font-bold text-base text-gray-800">{item.item.price?.toLocaleString()}đ</p>
-                            {item.item.oldPrice && (
-                              <p className="text-gray-400 line-through text-sm">
-                                {item.item.oldPrice?.toLocaleString()}đ
-                              </p>
+                            <p className="font-bold text-base text-gray-800">{item.price?.toLocaleString()}đ</p>
+                            {item.oldPrice && (
+                              <p className="text-gray-400 line-through text-sm">{item.oldPrice?.toLocaleString()}đ</p>
                             )}
                           </div>
                         </div>
@@ -129,13 +103,10 @@ const Cart: React.FC = () => {
                           <div className="inline-flex border border-gray-300 rounded-md overflow-hidden bg-white shadow-md">
                             <button
                               className="px-4 py-3 border-r border-gray-300 hover:bg-red-500 hover:text-white transition-all duration-300 font-bold text-gray-700"
-                              onClick={() =>
-                                updateItemUser(user?.data._id as string, {
-                                  itemId: item.itemId,
-                                  size: item.size,
-                                  quantity: -1
-                                })
-                              }
+                              onClick={async () => {
+                                await decrease(item.id, item.size)
+                                load()
+                              }}
                             >
                               −
                             </button>
@@ -144,13 +115,10 @@ const Cart: React.FC = () => {
                             </span>
                             <button
                               className="px-4 py-3 border-l border-gray-300 hover:bg-green-500 hover:text-white transition-all duration-300 font-bold text-gray-700"
-                              onClick={() =>
-                                updateItemUser(user?.data._id as string, {
-                                  itemId: item.itemId,
-                                  size: item.size,
-                                  quantity: 1
-                                })
-                              }
+                              onClick={async () => {
+                                await increase(item.id, item.size)
+                                load()
+                              }}
                             >
                               +
                             </button>
@@ -159,9 +127,12 @@ const Cart: React.FC = () => {
                           {/* Nút xoá */}
                           <button
                             className="ml-4 flex  justify-center items-center transition-colors rounded-full w-[40px] h-[40px] hover:bg-red-100 hover:text-red-600"
-                            onClick={() => removeItemUser(user?.data._id as string, item.itemId as string, item.size)}
+                            onClick={async () => {
+                              await remove(item.id, item.size)
+                              load()
+                            }}
                           >
-                            <Trash2 className="w-[22px] h-[22px]" />
+                            <i className="bx bx-trash text-2xl "></i>
                           </button>
                         </div>
                       </div>
@@ -191,12 +162,14 @@ const Cart: React.FC = () => {
             <div className="border border-gray-600 rounded-lg p-4 shadow-sm">
               <h2 className="text-xl font-bold mb-2">Tóm tắt đơn hàng</h2>
               <div className="flex justify-between text-sm mb-4">
-                <span className="text-base text-stone-600">Tổng phụ</span>
+                <span className="text-base text-stone-600">Tổng hóa đơn</span>
                 <span className="font-bold text-base">{totalBill.toLocaleString()} ₫</span>
               </div>
               <div className="flex justify-between text-sm mb-4">
-                <span className="text-base text-stone-600">Tổng phụ</span>
-                <span className="font-bold text-base">{savingCost.toLocaleString()} ₫</span>
+                <span className="text-base text-stone-600">Tiết kiệm</span>
+                <span className="font-bold text-sm text-red-500 line-through mt-1">
+                  {savingCost().toLocaleString()} ₫
+                </span>
               </div>
               <button className="w-full font-semibold bg-gray-900 text-white py-4 rounded-md flex items-center justify-center gap-2 transition-all duration-300 hover:opacity-90 hover:-translate-y-0.5">
                 🔒 Thanh toán
@@ -254,11 +227,11 @@ const Cart: React.FC = () => {
                 }}
               ></span>
               <div className="space-y-6 mt-10">
-                {cart.map((item) => (
+                {items.map((item) => (
                   <div key={`${item.id}-${item.size}`} className="flex gap-4 border-b pb-4">
                     {/* Ảnh sản phẩm */}
                     <img
-                      src={item.image[0] || item.image[1]}
+                      src={item.images}
                       alt={item.name}
                       className="w-[200px] h-[200px] object-cover rounded cursor-pointer"
                     />
@@ -284,7 +257,10 @@ const Cart: React.FC = () => {
                         <div className="inline-flex border border-gray-300 rounded-md overflow-hidden bg-white shadow-md">
                           <button
                             className="px-4 py-3 border-r border-gray-300 hover:bg-red-500 hover:text-white transition-all duration-300 font-bold text-gray-700"
-                            onClick={() => decreaseQty(item.id, item.size)}
+                            onClick={async () => {
+                              await decrease(item.id, item.size)
+                              load()
+                            }}
                           >
                             −
                           </button>
@@ -293,7 +269,10 @@ const Cart: React.FC = () => {
                           </span>
                           <button
                             className="px-4 py-3 border-l border-gray-300 hover:bg-green-500 hover:text-white transition-all duration-300 font-bold text-gray-700"
-                            onClick={() => increaseQty(item.id, item.size)}
+                            onClick={async () => {
+                              await increase(item.id, item.size)
+                              load()
+                            }}
                           >
                             +
                           </button>
@@ -302,9 +281,9 @@ const Cart: React.FC = () => {
                         {/* Nút xoá */}
                         <button
                           className="ml-4 flex  justify-center items-center transition-colors rounded-full w-[40px] h-[40px] hover:bg-red-100 hover:text-red-600"
-                          onClick={() => removeItem(item.id, item.size)}
+                          onClick={() => remove(item.id, item.size)}
                         >
-                          <Trash2 className="w-[22px] h-[22px]" />
+                          <i className="bx bx-trash text-2xl "></i>
                         </button>
                       </div>
                     </div>
@@ -340,7 +319,9 @@ const Cart: React.FC = () => {
             </div>
             <div className="flex justify-between text-sm mb-4">
               <span className="text-lg text-gray-700">Tiết kiệm</span>
-              <span className="font-bold text-sm text-red-500 line-through mt-1">{savingCost.toLocaleString()} ₫</span>
+              <span className="font-bold text-sm text-red-500 line-through mt-1">
+                {savingCost().toLocaleString()} ₫
+              </span>
             </div>
             <button className="w-full font-semibold bg-gray-900 text-white py-4 rounded-md flex items-center justify-center gap-2 transition-all duration-300 hover:opacity-90 hover:-translate-y-0.5">
               🔒 Thanh toán

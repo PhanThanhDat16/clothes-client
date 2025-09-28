@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { User2, Settings, Camera, Edit3, Save, X, Mail, Phone, MapPin, Calendar } from 'lucide-react'
 import type { User } from '@/models/user'
 import { getProfile } from '@/apis/userService'
 
@@ -51,27 +50,31 @@ const Profile = () => {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <button className="absolute bottom-0 right-1/2 transform translate-x-1/2 translate-y-2 bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full shadow-lg transition-colors">
-                  <Camera size={16} />
+                <button className="absolute bottom-0 right-1/2 transform translate-x-1/2 translate-y-2 bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded-full shadow-lg transition-colors">
+                  {/* <Camera size={16} /> */}
+                  <i className="bx  bx-camera text-lg"></i>
                 </button>
               </div>
 
               <h2 className="text-xl font-bold text-gray-800 mb-2">{user?.data.fullName}</h2>
               <p className="text-gray-600 mb-4">{user?.data.email}</p>
 
-              <div className="space-y-3 text-sm text-gray-600">
+              <div className=" text-sm text-gray-600">
                 <div className="flex items-center justify-center gap-2">
-                  <Calendar size={16} />
+                  {/* <Calendar size={16} /> */}
+                  <i className="bx  bx-calendar text-lg"></i>
                   <span>Tham gia {user?.data.createdAt?.split('T')[0]}</span>
                 </div>
                 <div className="flex items-center justify-center gap-2">
-                  <MapPin size={16} />
+                  {/* <MapPin size={16} /> */}
+                  <i className="bx  bx-location text-lg"></i>
                   <span>{user?.data.address ? user?.data.address : '..........'}</span>
                 </div>
               </div>
 
               <button className="mt-4 w-full bg-[var(--primary-color)] hover:opacity-95 transition-transform duration-300 hover:-translate-y-0.5  text-white py-3 px-4 rounded-lg flex items-center justify-center gap-2">
-                <Settings size={16} />
+                {/* <Settings size={16} /> */}
+                <i className="bx  bx-cog"></i>
                 Cài đặt hồ sơ
               </button>
             </div>
@@ -85,19 +88,22 @@ const Profile = () => {
                 <div className="flex gap-2">
                   {isEditing ? (
                     <>
-                      <button className="bg-green-600 hover:bg-green-700 text-white p-2 rounded-lg transition-colors">
-                        <Save size={18} />
+                      <button className="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded-lg transition-colors">
+                        {/* <Save size={18} /> */}
+                        <i className="bx  bx-save text-lg "></i>
                       </button>
-                      <button className="bg-gray-500 hover:bg-gray-600 text-white p-2 rounded-lg transition-colors">
-                        <X size={18} />
+                      <button className="bg-gray-500 hover:bg-gray-600 text-white px-2 py-1 rounded-lg transition-colors">
+                        {/* <X size={18} /> */}
+                        <i className="bx  bx-x text-lg "></i>
                       </button>
                     </>
                   ) : (
                     <button
                       onClick={() => setIsEditing(true)}
-                      className="bg-[var(--primary-color)] hover:opacity-85 transition-transform duration-300 hover:-translate-y-0.5 text-white p-2 rounded-lg"
+                      className="bg-[var(--primary-color)] hover:opacity-85 transition-transform duration-300 hover:-translate-y-0.5 text-white px-2 py-1 rounded-lg"
                     >
-                      <Edit3 size={18} />
+                      {/* <Edit3 size={18} /> */}
+                      <i className="bx  bx-edit text-lg"></i>
                     </button>
                   )}
                 </div>
@@ -105,36 +111,40 @@ const Profile = () => {
 
               <div className="grid gap-4">
                 {/* Name Field */}
-                <div className="space-y-2">
-                  <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                    <User2 size={16} />
+                <div>
+                  <label className="flex items-center gap-2 font-medium text-gray-700">
+                    {/* <User2 size={16} /> */}
+                    <i className="bx bx-user text-lg"></i>
                     Họ và tên
                   </label>
                   <input type="text" value={user?.data.fullName} className={fieldClass} disabled={!isEditing} />
                 </div>
 
                 {/* Email Field */}
-                <div className="space-y-2">
-                  <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                    <Mail size={16} />
+                <div>
+                  <label className="flex items-center gap-2 font-medium text-gray-700">
+                    {/* <Mail size={16} /> */}
+                    <i className="bx  bx-envelope text-lg"></i>
                     Email
                   </label>
                   <input type="email" value={user?.data.email} disabled={!isEditing} className={fieldClass} />
                 </div>
 
                 {/* Phone Field */}
-                <div className="space-y-2">
-                  <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                    <Phone size={16} />
+                <div>
+                  <label className="flex items-center gap-2  font-medium text-gray-700">
+                    {/* <Phone size={16} /> */}
+                    <i className="bx  bx-phone text-lg"></i>
                     Số điện thoại
                   </label>
                   <input type="tel" value={user?.data.phone} className={fieldClass} disabled={!isEditing} />
                 </div>
 
                 {/* Location Field */}
-                <div className="space-y-2">
-                  <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                    <MapPin size={16} />
+                <div>
+                  <label className="flex items-center gap-2 font-medium text-gray-700">
+                    {/* <MapPin size={16} /> */}
+                    <i className="bx  bx-location text-lg"></i>
                     Địa chỉ
                   </label>
                   <input disabled={!isEditing} value={user?.data.address} type="text" className={fieldClass} />

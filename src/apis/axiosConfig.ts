@@ -51,6 +51,7 @@ axiosConfig.interceptors.response.use(
             pauseOnHover: false,
             autoClose: 3000
           })
+          localStorage.clear()
           handleLogout()
           return Promise.reject(error)
         }

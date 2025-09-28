@@ -44,7 +44,7 @@ const Header = () => {
       </div>
       <div className="col-start-3 text-end text-[var(--primary-color)] text-2xl">
         <button>
-          <i className="bx bx-search px-2 mr-1"></i>
+          <i className="bx bx-search px-2 mr-1 text-3xl"></i>
         </button>
         <NavLink to={CART_PAGE}>
           <CartIcon count={1} />
@@ -53,7 +53,7 @@ const Header = () => {
           <UserDropdown />
         ) : (
           <NavLink to={LOGIN_PAGE}>
-            <i className="bx bx-user px-2 mr-1"></i>
+            <i className="bx bx-user px-2 text-3xl"></i>
           </NavLink>
         )}
       </div>

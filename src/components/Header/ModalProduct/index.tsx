@@ -1,7 +1,6 @@
 import { PRODUCT_PAGE } from '@/constants'
 import { useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { ChevronDown } from 'lucide-react'
 const listNameProduceShirt = [
   { id: 1, name: 'Polo' },
   { id: 2, name: 'T-shirt' },
@@ -35,7 +34,7 @@ export const ModalProduct = () => {
         onMouseLeave={handleLeave}
       >
         <p className="text-xl">SẢN PHẨM</p>
-        <ChevronDown className="w-[20px] h-[20px] mt-1" />
+        <i className="bx  bx-chevron-down text-xl"></i>
       </NavLink>
 
       <div

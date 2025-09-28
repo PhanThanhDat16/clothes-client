@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import messengerIcon from '@/assets/messenger.png'
-import { useAuthStore, useChatStore } from '@/store'
 import { LOGIN_PAGE } from '@/constants'
+import { useAuthStore } from '@/store/authStore'
+import { useChatStore } from '@/store/useChatStore'
 
 const ModalChat = () => {
   const [open, setOpen] = useState(false)

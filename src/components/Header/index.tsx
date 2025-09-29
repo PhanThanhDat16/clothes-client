@@ -5,25 +5,29 @@ import { ModalCategory } from './ModalCategory'
 import UserDropdown from '../UserDropdown/userdropdown'
 import { useEffect, useState } from 'react'
 import CartIcon from '../cart_badge'
+import { useCartStore } from '@/store/useCartStore'
+import { useCartStoreUser } from '@/store/useCartStoreUser'
 
 const Header = () => {
   const [isCheckLogin, setIsChekLogin] = useState(false)
-
-  const checkLogin = () => {
-    try {
-      const token = localStorage.getItem('accessToken')
-      if (!token) {
-        setIsChekLogin(false)
-        return
-      }
-      setIsChekLogin(true)
-    } catch (error) {
-      console.error('Error', error)
-    }
-  }
+  const localCart = useCartStore()
+  const userCart = useCartStoreUser()
   useEffect(() => {
+    const checkLogin = () => {
+      try {
+        const token = localStorage.getItem('accessToken')
+        if (!token) {
+          setIsChekLogin(false)
+          return
+        }
+        setIsChekLogin(true)
+      } catch (error) {
+        console.error('Error', error)
+      }
+    }
     checkLogin()
   }, [])
+  const totalQuantity = isCheckLogin ? userCart.totalQuantityUser() : localCart.TotalItems()
   return (
     <div className="w-[90%] max-w-[var(--max-width)] grid grid-cols-3 gap-6 mx-auto h-24 items-center">
       <NavLink to={HOME_PAGE} className="w-[160px] col-start-1">
@@ -47,7 +51,7 @@ const Header = () => {
           <i className="bx bx-search px-2 mr-1"></i>
         </button>
         <NavLink to={CART_PAGE}>
-          <CartIcon count={1} />
+          <CartIcon count={totalQuantity} />
         </NavLink>
         {isCheckLogin ? (
           <UserDropdown />

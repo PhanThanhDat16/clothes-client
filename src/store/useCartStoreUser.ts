@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { cartService } from '@/apis/api_cart'
 import type { CartItemAdd, CartItems } from '@/models/cartItem'
+import { payMent } from '@/apis/api_order'
 
 interface CartState {
   cartUser: CartItems[] | null
@@ -12,6 +13,7 @@ interface CartState {
   addItem: (userId: string, item: CartItemAdd) => Promise<void>
   updateItemUser: (userId: string, item: CartItemAdd) => Promise<void>
   removeItemUser: (userId: string, itemId: string, size: string) => Promise<void>
+  payMentByUser: (userId: string, items: CartItems[], voucherCode?: string | null) => Promise<void>
   clearCartByUser: () => void
   clearError: () => void
 
@@ -142,5 +144,19 @@ export const useCartStoreUser = create<CartState>((set, get) => ({
     }, 0)
 
     return originalCost - currentCost
+  },
+
+  payMentByUser: async (userId, items, voucherCode) => {
+    try {
+      set({ loading: true, error: null })
+      await payMent(userId, items, voucherCode as string)
+      set({ cartUser: null, loading: false })
+    } catch (error) {
+      console.error('Error in payment:', error)
+      set({
+        loading: false,
+        error: error instanceof Error ? error.message : 'Payment failed'
+      })
+    }
   }
 }))

@@ -14,6 +14,7 @@ import Field from '@/components/common/Field'
 import Input from '@/components/common/Input'
 import InputPassword from '@/components/common/Input/InputPassword'
 import Profile from '../Profile'
+import { getProfile } from '@/apis/user'
 
 const schema = yup.object({
   email: yup.string().required('The email field is required.').email('Enter email, please!'),
@@ -67,7 +68,10 @@ const Login = () => {
 
       localStorage.setItem('accessToken', accessToken)
       localStorage.setItem('refreshToken', refreshToken)
-
+      const profile = await getProfile()
+      if (profile) {
+        localStorage.setItem('userId', profile.data._id)
+      }
       if (rememberMe) {
         localStorage.setItem('email', values.email)
         localStorage.setItem('password', values.password)

@@ -4,8 +4,6 @@ import { HOME_PAGE, NEWIN_PAGE } from '@/constants'
 import { Trash2 } from 'lucide-react'
 import { useCartStore } from '@/store/useCartStore'
 import { useCartStoreUser } from '@/store/useCartStoreUser'
-import { User } from '@/models/user'
-import { getProfile } from '@/apis/user'
 import { showToast } from '@/components/Toast/showToast'
 
 type SuggestItem = {
@@ -36,9 +34,8 @@ const suggestItems: SuggestItem[] = [
 const Cart: React.FC = () => {
   const localCart = useCartStore()
   const userCart = useCartStoreUser()
-  const [user, setUser] = useState<User>()
   const [isLoadingUser, setIsLoadingUser] = useState(false)
-
+  const userId = localStorage.getItem('userId')
   // Lấy profile nếu có token
   useEffect(() => {
     const token = localStorage.getItem('accessToken')
@@ -46,12 +43,9 @@ const Cart: React.FC = () => {
       setIsLoadingUser(true)
       ;(async () => {
         try {
-          const response = await getProfile()
-          console.log('User profile response:', response) // Debug log
-          setUser({ data: response.data })
+          setIsLoadingUser(true)
         } catch (error) {
           console.error('Error fetching user profile:', error)
-          setUser(undefined)
         } finally {
           setIsLoadingUser(false)
         }
@@ -61,21 +55,18 @@ const Cart: React.FC = () => {
     }
   }, [])
 
-  // Load cart theo user hoặc local - WITH PROPER NULL CHECKS
   useEffect(() => {
-    console.log('User state:', user) // Debug log
-
-    if (user && user.data && user.data._id) {
-      console.log('Fetching user cart for ID:', user.data._id) // Debug log
-      userCart.fetchCartUser(user.data._id)
-    } else if (!isLoadingUser && !user) {
+    if (userId) {
+      console.log('Fetching user cart for ID:', userId) // Debug log
+      userCart.fetchCartUser(userId)
+    } else if (!isLoadingUser && !userId) {
       console.log('Loading local cart') // Debug log
       localCart.loadCart()
     }
-  }, [user, isLoadingUser])
+  }, [isLoadingUser])
 
   // Chọn data source với safe checks
-  const isLoggedIn = Boolean(user && user.data && user.data._id)
+  const isLoggedIn = Boolean(localStorage.getItem('accessToken'))
   const cartItems = isLoggedIn ? userCart.cartUser || [] : localCart.cart
   const totalBill = isLoggedIn ? userCart.totalPriceUser() : localCart.TotalBill()
   const totalQuantity = isLoggedIn ? userCart.totalQuantityUser() : localCart.TotalItems()
@@ -83,8 +74,8 @@ const Cart: React.FC = () => {
 
   // Safe handlers with proper null checks
   const handleIncrease = async (item: any) => {
-    if (isLoggedIn && user?.data?._id) {
-      await userCart.updateItemUser(user.data._id, {
+    if (isLoggedIn && userId) {
+      await userCart.updateItemUser(userId, {
         itemId: item.itemId || item.id,
         size: item.size,
         quantity: 1
@@ -99,8 +90,8 @@ const Cart: React.FC = () => {
       showToast.error('Số lượng sản phẩm hiện tại là 1 không thể giảm nữa!!')
       return
     }
-    if (isLoggedIn && user?.data?._id) {
-      await userCart.updateItemUser(user.data._id, {
+    if (isLoggedIn && userId) {
+      await userCart.updateItemUser(userId, {
         itemId: item.itemId || item.id,
         size: item.size,
         quantity: -1
@@ -111,10 +102,18 @@ const Cart: React.FC = () => {
   }
 
   const handleRemove = async (item: any) => {
-    if (isLoggedIn && user?.data?._id) {
-      await userCart.removeItemUser(user.data._id, item.itemId || item.id, item.size)
+    if (isLoggedIn && userId) {
+      await userCart.removeItemUser(userId, item.itemId || item.id, item.size)
     } else {
       localCart.removeItem(item.id, item.size)
+    }
+  }
+  const handlePayment = async () => {
+    if (isLoggedIn && userId) {
+      await userCart.payMentByUser(userId, cartItems as any, null)
+      showToast.success('Thanh toán thành công!')
+    } else {
+      showToast.error('Vui lòng đăng nhập để tiến hành thanh toán!')
     }
   }
 
@@ -283,6 +282,7 @@ const Cart: React.FC = () => {
             <button
               className="w-full font-semibold bg-gray-900 text-white py-4 rounded-md hover:opacity-90 disabled:opacity-50"
               disabled={userCart.loading}
+              onClick={handlePayment}
             >
               {userCart.loading ? 'Đang xử lý...' : '🔒 Thanh toán'}
             </button>

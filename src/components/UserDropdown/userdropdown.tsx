@@ -22,19 +22,28 @@ const UserDropdown = () => {
       }
       localStorage.removeItem('accessToken')
       localStorage.removeItem('refreshToken')
+      localStorage.removeItem('userId')
+
       window.location.href = '/login'
     } catch (error) {
       console.error(error)
     }
   }
-
   useEffect(() => {
     const fetchUser = async () => {
-      const user = await getProfile()
-      if (user) setUser(user)
+      try {
+        const user = await getProfile()
+        if (user) {
+          setUser(user)
+        } else {
+          setUser(null)
+        }
+      } catch (error) {
+        console.error('Error fetching user profile:', error)
+      }
     }
     fetchUser()
-  }, [user])
+  }, [])
 
   return (
     <div className="relative inline-block text-left">

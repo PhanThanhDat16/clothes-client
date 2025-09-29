@@ -1,7 +1,7 @@
-import { order } from '@/pages/Oder'
+import { Order } from '@/models/order'
 import { OrderCard } from './OrderCard'
 
-export const OrderList = ({ orders }: { orders: order[] }) => {
+export const OrderList = ({ orders }: { orders: Order[] }) => {
   if (orders.length === 0) {
     return (
       <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
@@ -13,7 +13,7 @@ export const OrderList = ({ orders }: { orders: order[] }) => {
   return (
     <div className="space-y-4">
       {orders.map((order) => (
-        <OrderCard key={order.id} order={order} />
+        <OrderCard key={order._id} order={order} />
       ))}
     </div>
   )

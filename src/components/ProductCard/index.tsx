@@ -1,11 +1,9 @@
 import type { IProduct } from '@/models/product'
 import { CartItem, useCartStore } from '@/store/useCartStore'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { showToast } from '../Toast/showToast'
-import { getProfile } from '@/apis/user'
 import { useCartStoreUser } from '@/store/useCartStoreUser'
 import { CartItemAdd } from '@/models/cartItem'
-import { User } from '@/models/user'
 
 const QuickBuyCartIcon = () => (
   <svg role="presentation" fill="none" strokeWidth="1" focusable="false" width="16" height="14" viewBox="0 0 16 14">
@@ -24,7 +22,6 @@ export interface ProductCardProps {
 
 const ProductCard = ({ item }: ProductCardProps) => {
   const [selectedSize, setSelectedSize] = useState(String)
-  const [user, setUser] = useState<User>()
   const { addItem } = useCartStoreUser()
   const { addItemlocal } = useCartStore()
 
@@ -49,8 +46,9 @@ const ProductCard = ({ item }: ProductCardProps) => {
         showToast.error('Vui lòng chọn size trước khi thêm sản phẩm!')
         return
       }
-      if (user) {
-        addItem(user?.data._id as string, productAddByUser)
+      const userId = localStorage.getItem('userId') || ''
+      if (userId) {
+        addItem(userId, productAddByUser)
       } else {
         addItemlocal(productAddLocal)
       }
@@ -59,19 +57,6 @@ const ProductCard = ({ item }: ProductCardProps) => {
       console.error('Error', error)
     }
   }
-  useEffect(() => {
-    const checkLogin = async () => {
-      try {
-        const profile = await getProfile()
-        if (profile) {
-          setUser(profile)
-        }
-      } catch (error) {
-        console.error('Error', error)
-      }
-    }
-    checkLogin()
-  }, [])
   const costSaving = item.oldPrice - item.price
   return (
     <div className="group flex-shrink-0">

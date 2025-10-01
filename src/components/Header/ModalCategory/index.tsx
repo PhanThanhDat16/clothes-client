@@ -3,17 +3,6 @@ import { CATEGORY_PAGE } from '@/constants'
 import { ICategory } from '@/models/categories'
 import { useEffect, useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
-// Bo Suu Tap
-// const ListNameCategory = [
-//   { id: 1, name: 'Áo Thun' },
-//   { id: 2, name: 'Áo Khoác' },
-//   { id: 3, name: 'Jeans' },
-//   { id: 4, name: 'Pants' },
-//   { id: 5, name: 'Polo' },
-//   { id: 6, name: 'Short' },
-//   { id: 7, name: 'Sơmi' },
-//   { id: 8, name: 'Phụ kiện' }
-// ]
 
 export const ModalCategory = () => {
   //API cate
@@ -32,7 +21,6 @@ export const ModalCategory = () => {
   useEffect(() => {
     handleGetAll()
   }, [])
-  // -----
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)

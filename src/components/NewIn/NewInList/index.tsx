@@ -6,46 +6,6 @@ import { ICategory } from '@/models/categories'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
-// interface PropsCategories {
-//   nameCate: string
-//   countCate: number
-// }
-
-// const Categories: PropsCategories[] = [
-//   {
-//     nameCate: 'Áo Khoác',
-//     countCate: 1
-//   },
-//   {
-//     nameCate: 'Áo Thun',
-//     countCate: 17
-//   },
-//   {
-//     nameCate: 'Jeans',
-//     countCate: 1
-//   },
-//   {
-//     nameCate: 'Pants',
-//     countCate: 6
-//   },
-//   {
-//     nameCate: 'Phụ kiện',
-//     countCate: 9
-//   },
-//   {
-//     nameCate: 'Polo',
-//     countCate: 92
-//   },
-//   {
-//     nameCate: 'Short',
-//     countCate: 6
-//   },
-//   {
-//     nameCate: 'Sơmi',
-//     countCate: 9
-//   }
-// ]
-
 const NewInList = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const [productsData, setProductsData] = useState<{ data: [] }>({ data: [] })

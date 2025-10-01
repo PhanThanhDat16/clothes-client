@@ -1,71 +1,79 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import messengerIcon from '@/assets/messenger.png'
 import { useAuthStore } from '@/store/authStore'
 import { useStoreSocketIO } from '@/store/useStoreSocketIO'
-import { getCheckConversationByUser, createConversation } from '@/apis/conversation'
+import { createConversation, getCheckConversationByUser } from '@/apis/conversation'
 import { createMessage, getMessageConversation } from '@/apis/message'
 import { IMessage } from '@/models/message'
-
-// Types
-import type { IConversationMessage } from '@/models/conversation'
-import type { IConversation } from '@/models/conversation'
+import { useNavigate } from 'react-router-dom'
+import { LOGIN_PAGE } from '@/constants'
 
 const ModalChat = () => {
   const [open, setOpen] = useState(false)
   const [message, setMessage] = useState('')
-  const [currentRoom, setCurrentRoom] = useState<IConversation | null>(null)
-  const [messages, setMessages] = useState<IConversationMessage[]>([])
-  const [loading, setLoading] = useState(false)
+  const [currentRoom, setCurrentRoom] = useState<any>(null)
+  const [messages, setMessages] = useState<any[]>([])
+  const navigate = useNavigate()
   const [sending, setSending] = useState(false)
-  const [checkingConversation, setCheckingConversation] = useState(false)
 
   const { socket } = useStoreSocketIO()
   const { user, fetchUser } = useAuthStore((state) => state)
 
-  // load user khi mở chat
   useEffect(() => {
-    if (open) fetchUser()
-  }, [open])
+    fetchUser()
+  }, [fetchUser])
 
   // Load messages của room
-  const loadRoomMessages = useCallback(async (conversationId: string) => {
-    setLoading(true)
+  const loadRoomMessages = async (conversationId: string) => {
     try {
       const res = await getMessageConversation(conversationId)
       setMessages(res.data || [])
     } catch (err) {
       console.error('loadRoomMessages error:', err)
-    } finally {
-      setLoading(false)
     }
-  }, [])
+  }
+
+  const handleStartNewChat = async () => {
+    if (!user) {
+      navigate(LOGIN_PAGE)
+      return
+    }
+    try {
+      const res = await createConversation(user.data._id)
+      const conversation = res.data
+      setCurrentRoom(conversation)
+      if (socket) {
+        socket.emit('join-conversation', { conversationId: conversation._id })
+      }
+      await loadRoomMessages(conversation._id)
+    } catch (err) {
+      console.error('handleStartNewChat error:', err)
+    }
+  }
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!message.trim() || !currentRoom) return
 
-    const newMsg: IMessage = {
+    const newMsg = {
       conversationId: currentRoom._id,
       content: message.trim(),
-      senderId: user?.data._id ?? '',
-      receiverId: currentRoom.userId
+      senderId: user?.data._id,
+      receiverId: currentRoom.userId // giống admin
     }
 
     try {
       setSending(true)
+      await createMessage(newMsg as IMessage)
 
-      // Gửi API
-      const res = await createMessage(newMsg)
-      const savedMsg = res.data ?? newMsg // ưu tiên dữ liệu server trả về
+      // Emit socket
+      if (socket) {
+        socket.emit('send-message', newMsg)
+      }
 
-      // Emit qua socket
-      socket?.emit('send-message', savedMsg)
-
-      // Append trực tiếp vào state
-      setMessages((prev) => [...prev, savedMsg])
-      await loadRoomMessages(currentRoom._id)
-      // Clear input
       setMessage('')
+      // gọi lại API để cập nhật messages =>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> xử lý khúc load message ni lại đi công
+      await loadRoomMessages(currentRoom._id)
     } catch (err) {
       console.error('handleSendMessage error:', err)
     } finally {
@@ -88,22 +96,6 @@ const ModalChat = () => {
     }
   }
 
-  const handleCreateConversation = async () => {
-    if (!user?.data._id) return
-    setCheckingConversation(true)
-    try {
-      const res = await createConversation(user.data._id)
-      if (res.data) {
-        setCurrentRoom(res.data)
-        await loadRoomMessages(res.data._id)
-      }
-    } catch (error) {
-      console.error('handleCreateConversation error:', error)
-    } finally {
-      setCheckingConversation(false)
-    }
-  }
-
   useEffect(() => {
     if (open) {
       handleCheckConversationUser()
@@ -111,18 +103,17 @@ const ModalChat = () => {
   }, [open])
 
   useEffect(() => {
-    if (!socket) return
-    const onMessage = (data: IConversationMessage) => {
-      if (currentRoom?._id === data.conversationId) {
-        setMessages((prev) => [...prev, data])
+    if (socket) {
+      socket.on('send-message', (data) => {
+        console.log('new message from socket:', data)
+        if (currentRoom?._id) {
+          loadRoomMessages(currentRoom._id)
+        }
+      })
+
+      if (currentRoom) {
+        socket.emit('join-conversation', { conversationId: currentRoom._id })
       }
-    }
-    socket.on('send-message', onMessage)
-    if (currentRoom) {
-      socket.emit('join-conversation', { conversationId: currentRoom._id })
-    }
-    return () => {
-      socket.off('send-message', onMessage)
     }
   }, [socket, currentRoom])
 
@@ -174,40 +165,9 @@ const ModalChat = () => {
           </div>
 
           <div className="flex-1 p-4 overflow-y-auto">
-            {!user?.data._id ? (
-              <div className="flex flex-col items-center justify-center h-full">
-                <div className="mb-4 text-gray-500">Bạn cần đăng nhập để bắt đầu trò chuyện.</div>
-                <button
-                  className="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700"
-                  onClick={() => {
-                    window.location.href = '/login'
-                  }}
-                >
-                  Đăng nhập để bắt đầu
-                </button>
-              </div>
-            ) : !currentRoom ? (
-              <div className="flex flex-col items-center justify-center h-full">
-                <div className="mb-4 text-gray-500">Bấm để bắt đầu cuộc trò chuyện mới với admin.</div>
-                <button
-                  className="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700"
-                  onClick={handleCreateConversation}
-                  disabled={checkingConversation}
-                >
-                  {checkingConversation ? 'Đang tạo...' : 'Bắt đầu trò chuyện'}
-                </button>
-              </div>
-            ) : loading ? (
-              <div className="text-center text-sm text-gray-500">Đang tải tin nhắn...</div>
-            ) : messages.length > 0 ? (
+            {messages.length > 0 ? (
               messages.map((msg) => {
-                let senderId: string = ''
-                if (typeof msg.senderId === 'string') {
-                  senderId = msg.senderId
-                } else if (msg.senderId && typeof msg.senderId === 'object' && '_id' in msg.senderId) {
-                  senderId = (msg.senderId as any)._id
-                }
-                const isMine = senderId === user?.data._id
+                const isMine = msg.senderId === user?.data._id || msg.senderType === 'user'
                 return (
                   <div key={msg._id} className={`flex mb-3 ${isMine ? 'justify-end' : 'justify-start'}`}>
                     <div
@@ -217,7 +177,7 @@ const ModalChat = () => {
                     >
                       <div className="text-sm">{msg.content}</div>
                       <div className="text-xs opacity-70 mt-1">
-                        {new Date(msg.createdAt).toLocaleTimeString('vi-VN', {
+                        {new Date(msg.createdAt || msg.timestamp).toLocaleTimeString('vi-VN', {
                           hour: '2-digit',
                           minute: '2-digit'
                         })}
@@ -227,11 +187,19 @@ const ModalChat = () => {
                 )
               })
             ) : (
-              <div className="text-center text-sm text-gray-500">Chưa có tin nhắn nào. Hãy bắt đầu trò chuyện!</div>
+              <div className="flex flex-col items-center justify-center h-full space-y-4">
+                <div className="text-center text-sm text-gray-500">Chưa có tin nhắn nào. Hãy bắt đầu trò chuyện!</div>
+                <button
+                  onClick={handleStartNewChat}
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105"
+                >
+                  Bắt đầu trò chuyện
+                </button>
+              </div>
             )}
           </div>
 
-          {currentRoom && user?.data._id && (
+          {currentRoom && (
             <div className="p-3 border-t">
               <form onSubmit={handleSendMessage} className="flex items-center gap-2">
                 <input

@@ -23,6 +23,7 @@ const DetailCategory = () => {
 
       if (response && response.data) {
         setProducts(response.data)
+        // Set default size
       }
     } catch (err) {
       console.error('Error fetching product detail:', err)

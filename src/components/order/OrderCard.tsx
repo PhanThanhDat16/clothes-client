@@ -101,7 +101,7 @@ export const OrderCard = ({ order }: { order: Order }) => {
       <div className="mt-6 pt-4 border-t border-gray-100">
         <div className="flex items-center justify-between">
           <div className="text-sm text-gray-600">
-            {order.status === 'completed' ? (
+            {order.status === 'paid' ? (
               <span>
                 Vui lòng chỉ nhấn "Đã nhận được hàng" khi đơn hàng đã được giao đến bạn và sản phẩm nhận được không có
                 vấn đề nào.

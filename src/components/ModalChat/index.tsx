@@ -186,7 +186,7 @@ const ModalChat = () => {
                   </div>
                 )
               })
-            ) : (
+            ) : !currentRoom ? (
               <div className="flex flex-col items-center justify-center h-full space-y-4">
                 <div className="text-center text-sm text-gray-500">Chưa có tin nhắn nào. Hãy bắt đầu trò chuyện!</div>
                 <button
@@ -195,6 +195,10 @@ const ModalChat = () => {
                 >
                   Bắt đầu trò chuyện
                 </button>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center h-full space-y-4">
+                <div className="text-center text-sm text-gray-500">Chưa có tin nhắn nào trong phòng chat này.</div>
               </div>
             )}
           </div>

@@ -31,7 +31,7 @@ import Register from '@/pages/Register'
 import Cart from '@/pages/Cart'
 import AuthSuccess from '@/pages/auth-success/auth-success'
 import Profile from '@/pages/Profile'
-import ORDER from '@/pages/Oder'
+import Order from '@/pages/Order'
 import DetailProduct from '@/pages/Product/DetailProduct'
 import DetailCategory from '@/pages/Category/DetailCategory'
 const AppRouters = () => {
@@ -53,7 +53,7 @@ const AppRouters = () => {
         <Route path={LOGIN_PAGE} element={<Login />} />
         <Route path={REGISTER_PAGE} element={<Register />} />
         <Route path={AUTH_SUCCESS} element={<AuthSuccess />} />
-        <Route path={ORDER_PAGE} element={<ORDER />} />
+        <Route path={ORDER_PAGE} element={<Order />} />
       </Route>
     </Routes>
   )

@@ -75,7 +75,22 @@ export const cartService = {
     })
     if (!res.ok) return null
     const data = await res.json()
-    console.log(data)
+    return data
+  },
+
+  clearCart: async (userId: string): Promise<RootCart | null> => {
+    const token = localStorage.getItem('accessToken')
+
+    const res = await fetch(`${BASE_URL}/cart/${userId}/all`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({})
+    })
+    if (!res.ok) return null
+    const data = await res.json()
     return data
   }
 }

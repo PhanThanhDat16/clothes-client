@@ -3,6 +3,7 @@ import { cartService } from '@/apis/api_cart'
 import type { ICart, ICartItems, CartItemAdd } from '@/models/cartItem'
 import type { IProduct } from '@/models/product'
 import { useAuthStore } from '@/store/authStore'
+import { payMent } from '@/apis/api_order'
 
 type DisplayItem = {
   id: string
@@ -20,6 +21,7 @@ type UnifiedCartState = {
   // remote state (user)
   cartUser: ICart[]
   loading: boolean
+  error: string | null
 
   // lifecycle
   load: () => Promise<void>
@@ -29,6 +31,8 @@ type UnifiedCartState = {
   increase: (itemId: string, size: string) => Promise<void>
   decrease: (itemId: string, size: string) => Promise<void>
   remove: (itemId: string, size: string) => Promise<void>
+  payMentByUser: (userId: string, items: ICart[], voucherCode?: string | null) => Promise<void>
+  clearError: () => void
   clearLocal: () => void
   clearRemote: () => void
 
@@ -61,6 +65,7 @@ export const useCartStore = create<UnifiedCartState>((set, get) => ({
   cart: [],
   cartUser: [],
   loading: false,
+  error: null,
 
   load: async () => {
     const { user } = useAuthStore.getState()
@@ -162,6 +167,22 @@ export const useCartStore = create<UnifiedCartState>((set, get) => ({
     set({ cart: updatedCart })
   },
 
+  payMentByUser: async (userId, items, voucherCode) => {
+    try {
+      set({ loading: true, error: null })
+      await payMent(userId, items, voucherCode as string)
+      const data = await cartService.clearCart(userId)
+      set({ cartUser: data?.data || [], loading: false })
+    } catch (error) {
+      console.error('Error in payment:', error)
+      set({
+        loading: false,
+        error: error instanceof Error ? error.message : 'Payment failed'
+      })
+    }
+  },
+
+  clearError: () => set({ error: null }),
   clearLocal: () => set({ cart: [] }),
   clearRemote: () => set({ cartUser: [] }),
 

@@ -12,16 +12,15 @@ const ChevronRightIcon = () => (
 )
 
 const BestSellerProductsSection: React.FC = () => {
-  const [products, setProducts] = useState<IProduct[] | []>([])
+  const [products, setProducts] = useState<IProduct[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true)
       const res = await getProductTopPopular()
-      console.log(res)
-      if (res && res.data) {
-        setProducts(res.data.data)
+      if (res) {
+        setProducts(res.data)
       }
       setLoading(false)
     }
@@ -51,25 +50,13 @@ const BestSellerProductsSection: React.FC = () => {
           <Swiper
             spaceBetween={20}
             slidesPerView={4}
-            breakpoints={{
-              640: {
-                slidesPerView: 2
-              },
-              768: {
-                slidesPerView: 3
-              },
-              1024: {
-                slidesPerView: 4
-              }
-            }}
             modules={[Navigation, Pagination]}
             navigation={true}
             pagination={{
               clickable: true
             }}
-            className="pb-12"
           >
-            {products?.map((product) => (
+            {products.map((product) => (
               <SwiperSlide key={product._id}>
                 <ProductCard item={product} />
               </SwiperSlide>

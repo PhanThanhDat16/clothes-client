@@ -1,4 +1,4 @@
-import { getAllCategory } from '@/apis/categories'
+import { getAllCategory } from '@/apis/categoriesService'
 import { ICategory } from '@/models/categories'
 import { useEffect, useState } from 'react'
 

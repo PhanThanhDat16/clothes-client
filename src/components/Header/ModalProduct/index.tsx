@@ -1,29 +1,29 @@
 import { PRODUCT_PAGE } from '@/constants'
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import { NavLink } from 'react-router-dom'
-const listNameProduceShirt = [
-  { id: 1, name: 'Polo' },
-  { id: 2, name: 'T-shirt' },
-  { id: 3, name: 'SơMi' }
-]
-const listNameProduceShort = [
-  { id: 1, name: 'Quần Dài' },
-  { id: 2, name: 'Quần Short' },
-  { id: 3, name: 'Quần Jean' }
-]
+// const listNameProduceShirt = [
+//   { id: 1, name: 'Polo' },
+//   { id: 2, name: 'T-shirt' },
+//   { id: 3, name: 'SơMi' }
+// ]
+// const listNameProduceShort = [
+//   { id: 1, name: 'Quần Dài' },
+//   { id: 2, name: 'Quần Short' },
+//   { id: 3, name: 'Quần Jean' }
+// ]
 
 export const ModalProduct = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  // const [isModalOpen, setIsModalOpen] = useState(false)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const handleEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current)
-    setIsModalOpen(true)
+    // setIsModalOpen(true)
   }
 
-  const handleLeave = () => {
-    timeoutRef.current = setTimeout(() => setIsModalOpen(false), 300) // ⏱ delay 500ms
-  }
+  // const handleLeave = () => {
+  //   timeoutRef.current = setTimeout(() => setIsModalOpen(false), 300) // ⏱ delay 500ms
+  // }
 
   return (
     <div className="z-20">
@@ -31,13 +31,13 @@ export const ModalProduct = () => {
         to={PRODUCT_PAGE}
         className={`flex px-2 hover:opacity-80`}
         onMouseEnter={handleEnter}
-        onMouseLeave={handleLeave}
+        // onMouseLeave={handleLeave}
       >
         <p className="text-xl">SẢN PHẨM</p>
-        <i className="bx  bx-chevron-down text-xl"></i>
+        {/* <i className="bx  bx-chevron-down text-xl"></i> */}
       </NavLink>
 
-      <div
+      {/* <div
         className={`absolute inset-x-0 h-auto mt-8 bg-white border ${isModalOpen ? '' : 'hidden'}`}
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
@@ -85,7 +85,7 @@ export const ModalProduct = () => {
             </li>
           </ul>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

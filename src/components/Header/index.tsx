@@ -6,9 +6,15 @@ import { ModalCategory } from './ModalCategory'
 import UserDropdown from '../UserDropdown/userdropdown'
 import CartIcon from '../cart_badge'
 import { useAuthStore } from '@/store/authStore'
+import { useCartStore } from '@/store/useCartStore'
 
 const Header = () => {
   const { user, fetchUser } = useAuthStore()
+  const { load, totalQuantity } = useCartStore()
+
+  useEffect(() => {
+    load()
+  }, [user])
 
   useEffect(() => {
     fetchUser()
@@ -22,6 +28,7 @@ const Header = () => {
       window.removeEventListener('loginStateChanged', handleLoginStateChange)
     }
   }, [fetchUser])
+  const totalquantity = totalQuantity()
 
   return (
     <div className="w-[90%] max-w-[var(--max-width)] grid grid-cols-3 gap-6 mx-auto h-24 items-center">
@@ -47,7 +54,7 @@ const Header = () => {
           <i className="bx bx-search px-2 mr-1 text-3xl"></i>
         </button>
         <NavLink to={CART_PAGE}>
-          <CartIcon count={1} />
+          <CartIcon count={totalquantity} />
         </NavLink>
         {user ? (
           <UserDropdown />

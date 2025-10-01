@@ -29,7 +29,6 @@ const DetailProduct = () => {
       setError(null)
 
       const response = await getProductDetail(productId)
-      console.log(response.data)
 
       if (response && response.data) {
         setProduct(response.data)

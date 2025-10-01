@@ -2,7 +2,7 @@ import { io, Socket } from 'socket.io-client'
 import { create } from 'zustand'
 
 interface ISocketSore {
-  socket: Socket | ''
+  socket: Socket | null
   isConnected: boolean
   connect: () => void
   disconnect: () => void
@@ -11,7 +11,7 @@ interface ISocketSore {
 const SOCKET_URL = import.meta.env.VITE_SOCKETIO
 
 export const useStoreSocketIO = create<ISocketSore>((set) => ({
-  socket: '',
+  socket: null,
   isConnected: false,
 
   connect: () => {
@@ -55,7 +55,7 @@ export const useStoreSocketIO = create<ISocketSore>((set) => ({
         state.socket.disconnect()
         console.log('Socket disconnected')
       }
-      return { socket: '', isConnected: false }
+      return { socket: null, isConnected: false }
     })
   }
 }))

@@ -20,7 +20,7 @@ export interface ProductCardProps {
 
 const ProductCard = ({ item }: ProductCardProps) => {
   const [selectedSize, setSelectedSize] = useState<string>('')
-  const { add } = useCartStore()
+  const { add, load } = useCartStore()
 
   const handleAddToCart = async () => {
     try {
@@ -30,6 +30,7 @@ const ProductCard = ({ item }: ProductCardProps) => {
       }
 
       await add(item, selectedSize, 1)
+      load()
       showToast.success('Đã thêm sản phẩm vào giỏ hàng!')
     } catch (error) {
       console.error('Error', error)

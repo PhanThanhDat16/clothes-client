@@ -1,21 +1,19 @@
 import { useState, useEffect } from 'react'
-// import { useNavigate } from 'react-router-dom'
 import messengerIcon from '@/assets/messenger.png'
 import { useAuthStore } from '@/store/authStore'
 import { useStoreSocketIO } from '@/store/useStoreSocketIO'
-// import { LOGIN_PAGE } from '@/constants'
-import { getCheckConversationByUser } from '@/apis/conversation'
+import { createConversation, getCheckConversationByUser } from '@/apis/conversation'
 import { createMessage, getMessageConversation } from '@/apis/message'
 import { IMessage } from '@/models/message'
+import { useNavigate } from 'react-router-dom'
+import { LOGIN_PAGE } from '@/constants'
 
 const ModalChat = () => {
   const [open, setOpen] = useState(false)
   const [message, setMessage] = useState('')
   const [currentRoom, setCurrentRoom] = useState<any>(null)
   const [messages, setMessages] = useState<any[]>([])
-  const [loading, setLoading] = useState(false)
-  // const [creating, setCreating] = useState(false)
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
   const [sending, setSending] = useState(false)
 
   const { socket } = useStoreSocketIO()
@@ -28,37 +26,30 @@ const ModalChat = () => {
   // Load messages của room
   const loadRoomMessages = async (conversationId: string) => {
     try {
-      setLoading(true)
       const res = await getMessageConversation(conversationId)
       setMessages(res.data || [])
     } catch (err) {
       console.error('loadRoomMessages error:', err)
-    } finally {
-      setLoading(false)
     }
   }
 
-  // const handleStartNewChat = async () => {
-  //   if (!user) {
-  //     navigate(LOGIN_PAGE)
-  //     return
-  //   }
-  //   try {
-  //     setCreating(true)
-  //     const res = await createConversation(user.data._id)
-  //     const conversation = res.data
-  //     setCurrentRoom(conversation)
-  //     if (socket) {
-  //       socket.emit('join-conversation', { conversationId: conversation._id })
-  //     }
-  //     // load messages ngay khi tạo
-  //     await loadRoomMessages(conversation._id)
-  //   } catch (err) {
-  //     console.error('handleStartNewChat error:', err)
-  //   } finally {
-  //     setCreating(false)
-  //   }
-  // }
+  const handleStartNewChat = async () => {
+    if (!user) {
+      navigate(LOGIN_PAGE)
+      return
+    }
+    try {
+      const res = await createConversation(user.data._id)
+      const conversation = res.data
+      setCurrentRoom(conversation)
+      if (socket) {
+        socket.emit('join-conversation', { conversationId: conversation._id })
+      }
+      await loadRoomMessages(conversation._id)
+    } catch (err) {
+      console.error('handleStartNewChat error:', err)
+    }
+  }
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -174,9 +165,7 @@ const ModalChat = () => {
           </div>
 
           <div className="flex-1 p-4 overflow-y-auto">
-            {loading ? (
-              <div className="text-center text-sm text-gray-500">Đang tải tin nhắn...</div>
-            ) : messages.length > 0 ? (
+            {messages.length > 0 ? (
               messages.map((msg) => {
                 const isMine = msg.senderId === user?.data._id || msg.senderType === 'user'
                 return (
@@ -198,7 +187,15 @@ const ModalChat = () => {
                 )
               })
             ) : (
-              <div className="text-center text-sm text-gray-500">Chưa có tin nhắn nào. Hãy bắt đầu trò chuyện!</div>
+              <div className="flex flex-col items-center justify-center h-full space-y-4">
+                <div className="text-center text-sm text-gray-500">Chưa có tin nhắn nào. Hãy bắt đầu trò chuyện!</div>
+                <button
+                  onClick={handleStartNewChat}
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105"
+                >
+                  Bắt đầu trò chuyện
+                </button>
+              </div>
             )}
           </div>
 

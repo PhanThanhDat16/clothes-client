@@ -1,0 +1,89 @@
+@use 'tailwindcss/base';
+@use 'tailwindcss/components';
+@use 'tailwindcss/utilities';
+
+@use 'swiper/css';
+@use 'swiper/css/navigation';
+@use 'swiper/css/pagination';
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+select,
+textarea {
+  background-color: transparent;
+  outline: none;
+}
+
+button {
+  cursor: pointer;
+  background-color: transparent;
+  outline: none;
+  border: 0;
+}
+
+body {
+  min-height: 100vh;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+:root {
+  --max-width: 1600px;
+  // Primary colors
+  --accent: rgb(35 49 75);
+  --primary-color: var(--accent);
+  // --background-primary: #ffffff;
+}
+
+.swiper-pagination-bullet {
+  width: 32px; // ngang
+  height: 4px; // mỏng
+  border-radius: 9999px; // bo tròn
+  background-color: #d1d5db; // tương đương tailwind gray-300
+  opacity: 1;
+  transition: all 0.3s ease;
+  margin: 0 4px !important; // tạo khoảng cách
+}
+
+.swiper-pagination-bullet-active {
+  background-color: var(--primary-color); // màu chính của bạn
+  width: 40px; // dài hơn khi active
+}
+
+/* container pagination */
+.swiper-pagination {
+  position: static !important; // tránh bị absolute
+  margin-top: 16px; // đẩy xuống dưới ProductCard
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

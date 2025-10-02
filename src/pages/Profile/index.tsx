@@ -10,17 +10,19 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false)
   const [user, setUser] = useState<User | null>(null)
 
-  const getProfileData = async () => {
-    try {
-      const response = await getProfile()
-      if (response && response.data) {
-        setUser(response)
-      }
-    } catch (error) {
-      console.error('Error', error)
-    }
-  }
   useEffect(() => {
+    const getProfileData = async () => {
+      try {
+        const response = await getProfile()
+        if (response && response.data) {
+          setUser(response)
+        } else {
+          setUser(null)
+        }
+      } catch (error) {
+        console.error('Error', error)
+      }
+    }
     getProfileData()
   }, [])
   return (

@@ -1,10 +1,21 @@
 'use client'
+import { getProfile } from '@/apis/userService'
 import { useEffect, useRef } from 'react' // Thêm useRef
 import { useNavigate } from 'react-router-dom'
 
 const AuthSuccess = () => {
   const navigate = useNavigate()
-  const processed = useRef(false) // Ref để track
+  const processed = useRef(false)
+  const fetchUserProfile = async () => {
+    try {
+      const profile = await getProfile()
+      if (profile) {
+        localStorage.setItem('userId', profile.data._id)
+      }
+    } catch (error) {
+      console.error('Error', error)
+    }
+  }
   useEffect(() => {
     if (processed.current) return // Bỏ qua nếu đã xử lý
     // Lấy token từ URL
@@ -19,9 +30,7 @@ const AuthSuccess = () => {
       localStorage.setItem('accessToken', accessToken)
       localStorage.setItem('refreshToken', refreshToken)
 
-      // Dispatch custom event to notify Header component
-      window.dispatchEvent(new CustomEvent('loginStateChanged'))
-
+      fetchUserProfile()
       processed.current = true // Chuyển hướng về trang chủ
       navigate('/', { replace: true })
     } else {
@@ -32,4 +41,5 @@ const AuthSuccess = () => {
   }, [navigate])
   return `<p>Đang xử lý đăng nhập...</p>`
 }
+
 export default AuthSuccess

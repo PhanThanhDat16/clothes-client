@@ -19,9 +19,8 @@ const BestSellerProductsSection: React.FC = () => {
     const fetchProducts = async () => {
       setLoading(true)
       const res = await getProductTopPopular()
-      console.log(res)
-      if (res && res.data) {
-        setProducts(res.data.data)
+      if (res) {
+        setProducts(res.data)
       }
       setLoading(false)
     }

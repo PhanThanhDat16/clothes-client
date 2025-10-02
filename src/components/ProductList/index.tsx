@@ -1,5 +1,5 @@
-import { getAllCategory } from '@/apis/categories'
-import { getAllProduct } from '@/apis/productService'
+import { getAllCategory } from '@/apis/categoriesService'
+import { getAllProduct, getProductByCategoryId } from '@/apis/productService'
 import { ICategory } from '@/models/categories'
 import { IProduct } from '@/models/product'
 import { useEffect, useState } from 'react'
@@ -17,6 +17,8 @@ const ProductList = () => {
   const [totalPages, setTotalPages] = useState(1)
 
   //api cate
+  const [selectedCate, setSelectedCate] = useState<string | null>(null)
+
   const handleGetAllCategory = async (params?: { search?: string; page?: number; limit?: number }) => {
     try {
       const res = await getAllCategory(params)
@@ -36,7 +38,19 @@ const ProductList = () => {
     try {
       const res = await getAllProduct(params)
       if (!res || !res.data) return
-      setProducts(res.data.data)
+      setTotalPages(res.data.totalPages)
+      setProducts(res.data.data || [])
+      setLoading(false)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleGetCategoryDetail = async (cateId: string) => {
+    try {
+      const res = await getProductByCategoryId(cateId)
+      if (!res || !res.data) return
+      setProducts(res.data || [])
       setTotalPages(res.data.totalPages)
       setLoading(false)
     } catch (error) {
@@ -45,8 +59,17 @@ const ProductList = () => {
   }
 
   useEffect(() => {
-    handleGetAllProduct({ page: currentPage })
-  }, [currentPage])
+    if (!selectedCate) {
+      handleGetAllProduct({ page: currentPage })
+    } else {
+      handleGetCategoryDetail(selectedCate)
+    }
+  }, [selectedCate, currentPage])
+
+  // Chọn category
+  const handleCategoryChange = (cateId: string | null) => {
+    setSelectedCate(cateId)
+  }
 
   // Handle page change
   const handlePageChange = (page: number) => {
@@ -94,11 +117,20 @@ const ProductList = () => {
             </button>
           </div>
           <div className="border-b border-black pb-5">
+            <div className="flex py-2">
+              <input type="checkbox" id="all" checked={!selectedCate} onChange={() => handleCategoryChange(null)} />
+              <p className="px-2">Tất cả</p>
+            </div>
+
             {categories.map((item) => (
               <div key={item._id} className="flex py-2">
-                <input type="checkbox" name="" id="" />
+                <input
+                  type="checkbox"
+                  id={item._id}
+                  checked={selectedCate === item._id}
+                  onChange={() => handleCategoryChange(item._id)}
+                />
                 <p className="px-2">{item.name}</p>
-                <p>(số lượng)</p>
               </div>
             ))}
           </div>

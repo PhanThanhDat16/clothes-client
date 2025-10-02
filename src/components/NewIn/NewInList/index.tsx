@@ -1,50 +1,10 @@
-import { getAllCategory } from '@/apis/categories'
-import { getAllProduct } from '@/apis/productService'
+import { getAllCategory } from '@/apis/categoriesService'
+import { getAllProduct, getProductByCategoryId } from '@/apis/productService'
 import ProductCard from '@/components/ProductCard'
 import { ICategory } from '@/models/categories'
 // import { type IProduct } from '@/models/product'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-
-// interface PropsCategories {
-//   nameCate: string
-//   countCate: number
-// }
-
-// const Categories: PropsCategories[] = [
-//   {
-//     nameCate: 'Áo Khoác',
-//     countCate: 1
-//   },
-//   {
-//     nameCate: 'Áo Thun',
-//     countCate: 17
-//   },
-//   {
-//     nameCate: 'Jeans',
-//     countCate: 1
-//   },
-//   {
-//     nameCate: 'Pants',
-//     countCate: 6
-//   },
-//   {
-//     nameCate: 'Phụ kiện',
-//     countCate: 9
-//   },
-//   {
-//     nameCate: 'Polo',
-//     countCate: 92
-//   },
-//   {
-//     nameCate: 'Short',
-//     countCate: 6
-//   },
-//   {
-//     nameCate: 'Sơmi',
-//     countCate: 9
-//   }
-// ]
 
 const NewInList = () => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -55,6 +15,8 @@ const NewInList = () => {
   // Pagination state
   const currentPage = parseInt(searchParams.get('page') || '1')
   const [totalPages, setTotalPages] = useState(1)
+
+  const [selectedCate, setSelectedCate] = useState<string | null>(null)
 
   //api cate
   const handleGetAllCategory = async (params?: { search?: string; page?: number; limit?: number }) => {
@@ -84,9 +46,30 @@ const NewInList = () => {
     }
   }
 
+  const handleGetCategoryDetail = async (cateId: string) => {
+    try {
+      const res = await getProductByCategoryId(cateId)
+      if (!res || !res.data) return
+      setProductsData(res || [])
+      setTotalPages(res.data.totalPages)
+      setLoading(false)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
-    handleGetAllProduct({ page: currentPage })
-  }, [currentPage])
+    if (!selectedCate) {
+      handleGetAllProduct({ page: currentPage })
+    } else {
+      handleGetCategoryDetail(selectedCate)
+    }
+  }, [selectedCate, currentPage])
+
+  // Chọn category
+  const handleCategoryChange = (cateId: string | null) => {
+    setSelectedCate(cateId)
+  }
 
   // Handle page change
   const handlePageChange = (page: number) => {
@@ -134,11 +117,20 @@ const NewInList = () => {
               </button>
             </div>
             <div className="border-b border-black pb-5">
+              <div className="flex py-2">
+                <input type="checkbox" id="all" checked={!selectedCate} onChange={() => handleCategoryChange(null)} />
+                <p className="px-2">Tất cả</p>
+              </div>
+
               {categories.map((item) => (
                 <div key={item._id} className="flex py-2">
-                  <input type="checkbox" name="" id="" />
+                  <input
+                    type="checkbox"
+                    id={item._id}
+                    checked={selectedCate === item._id}
+                    onChange={() => handleCategoryChange(item._id)}
+                  />
                   <p className="px-2">{item.name}</p>
-                  <p>(số lượng)</p>
                 </div>
               ))}
             </div>

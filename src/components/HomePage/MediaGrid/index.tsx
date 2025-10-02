@@ -12,7 +12,7 @@ const MediaGrid = () => {
   const mediaItems: MediaGridItem[] = [
     {
       id: 'media-grid-item-1',
-      href: '/pages/ve-chung-toi',
+      href: '/contact',
       image: 'https://polomanor.vn/cdn/shop/files/about-polomanor.png?v=1744616276&width=752',
       alt: 'Giới thiệu về Polomanor',
       text: 'Mỗi sản phẩm đến tay bạn là những chất xám và công sức của cả một tập thể phía sau',
@@ -21,7 +21,7 @@ const MediaGrid = () => {
     },
     {
       id: 'media-grid-item-2',
-      href: '/category/tat-ca-san-pham',
+      href: '/product',
       image: 'https://polomanor.vn/cdn/shop/files/IMG_97921.jpg?v=1737000965&width=1200',
       alt: 'Xem tất cả sản phẩm Polomanor',
       columnSpan: 1,
@@ -37,7 +37,7 @@ const MediaGrid = () => {
     },
     {
       id: 'media-grid-item-4',
-      href: '/pages/tuyen-dung-polomanor',
+      href: '/newin',
       image:
         'https://polomanor.vn/cdn/shop/files/305285072_136619802433240_8264298626722550243_n_3472b698-1d7b-4011-9519-a548db6ebf0c.jpg?v=1671679605&width=886',
       alt: 'Cơ hội làm việc cùng Polomanor',

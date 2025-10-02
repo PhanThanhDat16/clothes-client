@@ -1,10 +1,7 @@
 import type { IProduct } from '@/models/product'
-import { CartItem, useCartStore } from '@/store/useCartStore'
+import { useCartStore } from '@/store/useCartStore'
 import { showToast } from '../Toast/showToast'
-import { useCartStoreUser } from '@/store/useCartStoreUser'
-import { CartItemAdd } from '@/models/cartItem'
 import { useState } from 'react'
-import { useAuthStore } from '@/store/authStore'
 
 const QuickBuyCartIcon = () => (
   <svg role="presentation" fill="none" strokeWidth="1" focusable="false" width="16" height="14" viewBox="0 0 16 14">
@@ -23,26 +20,7 @@ export interface ProductCardProps {
 
 const ProductCard = ({ item }: ProductCardProps) => {
   const [selectedSize, setSelectedSize] = useState<string>('')
-
-  const { user } = useAuthStore() //lấy user từ store (không cần gọi API trong Card)
-  const { addItem } = useCartStoreUser()
-  const { addItemlocal } = useCartStore()
-
-  const productAddLocal: CartItem = {
-    id: item._id,
-    image: item.images[0] || item.images[1],
-    name: item.name,
-    oldPrice: item.oldPrice,
-    description: item.description,
-    price: item.price,
-    quantity: 1,
-    size: selectedSize
-  }
-  const productAddByUser: CartItemAdd = {
-    itemId: item._id,
-    size: selectedSize,
-    quantity: 1
-  }
+  const { add, load } = useCartStore()
 
   const handleAddToCart = async () => {
     try {
@@ -51,11 +29,8 @@ const ProductCard = ({ item }: ProductCardProps) => {
         return
       }
 
-      if (user) {
-        await addItem(user.data._id, productAddByUser)
-      } else {
-        addItemlocal(productAddLocal)
-      }
+      await add(item, selectedSize, 1)
+      load()
       showToast.success('Đã thêm sản phẩm vào giỏ hàng!')
     } catch (error) {
       console.error('Error', error)

@@ -167,7 +167,9 @@ const ModalChat = () => {
           <div className="flex-1 p-4 overflow-y-auto">
             {messages.length > 0 ? (
               messages.map((msg) => {
-                const isMine = msg.senderId === user?.data._id || msg.senderType === 'user'
+                const userId = user?.data._id
+                const getId = (id: any) => (typeof id === 'string' ? id : id?._id)
+                const isMine = getId(msg.senderId) === userId
                 return (
                   <div key={msg._id} className={`flex mb-3 ${isMine ? 'justify-end' : 'justify-start'}`}>
                     <div
@@ -177,7 +179,7 @@ const ModalChat = () => {
                     >
                       <div className="text-sm">{msg.content}</div>
                       <div className="text-xs opacity-70 mt-1">
-                        {new Date(msg.createdAt || msg.timestamp).toLocaleTimeString('vi-VN', {
+                        {new Date(msg.createdAt).toLocaleTimeString('vi-VN', {
                           hour: '2-digit',
                           minute: '2-digit'
                         })}

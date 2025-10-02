@@ -217,7 +217,7 @@ const Cart: React.FC = () => {
               onClick={handlePayment}
               className="w-full font-semibold bg-gray-900 text-white py-4 rounded-md flex items-center justify-center gap-2 transition-all duration-300 hover:opacity-90 hover:-translate-y-0.5"
             >
-              🔒 {user ? 'Thanh toán' : 'Đăng nhập để thanh toán'}
+              {user ? '🔓️ Thanh toán' : '🔒 Đăng nhập để thanh toán'}
             </button>
           </div>
 

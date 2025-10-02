@@ -15,3 +15,4 @@ export const getAllProduct = async (params?: { search?: string; page?: number; l
 export const getProductTopPopular = async () => await axiosConfig.get(`${DEFAULT_URL}/popular`)
 export const getProductByCategoryId = async (categoryId: string) =>
   await axiosConfig.get(`${DEFAULT_URL}/category/${categoryId}`)
+export const searchItems = async (query: string) => axiosConfig.get(`${DEFAULT_URL}/search/${query}`)

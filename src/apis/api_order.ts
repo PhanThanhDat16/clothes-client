@@ -49,9 +49,35 @@ export const payMent = async (userId: string, items: ICart[], voucherCode?: stri
       return null
     }
     const data = await response.json()
+
     return data
   } catch (error) {
     console.error('Error adding item to cart:', error)
+    return null
+  }
+}
+
+export const deleteOrderByUser = async (orderId: string): Promise<string | null> => {
+  try {
+    const response = await fetch(`${BASE_URL}/orders/${orderId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'any',
+        ...(localStorage.getItem('accessToken')
+          ? { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
+          : {})
+      }
+    })
+    if (!response.ok) {
+      const errorText = await response.text()
+      console.error(`API Error ${response.status}:`, errorText)
+      return null
+    }
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error('Error delete order: ', error)
     return null
   }
 }

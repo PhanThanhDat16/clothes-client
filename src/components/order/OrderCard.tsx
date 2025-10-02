@@ -1,8 +1,14 @@
+import { deleteOrderByUser } from '@/apis/api_order'
 import { Order } from '@/models/order'
 import { Store, CheckCircle, Clock, Car } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
+import { showToast } from '../Toast/showToast'
+import { useState } from 'react'
 
 export const OrderCard = ({ order }: { order: Order }) => {
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
+
   const formatPrice = (price: number) => price.toLocaleString('vi-VN')
 
   const getStatusText = (status: string) => {
@@ -35,6 +41,31 @@ export const OrderCard = ({ order }: { order: Order }) => {
         return 'bg-yellow-100 text-yellow-800'
       default:
         return 'bg-gray-100 text-gray-800'
+    }
+  }
+
+  const handlerDeleteOrder = async (orderId: string) => {
+    if (order.status !== 'pending') {
+      showToast.info('Tính năng đang được phát triển')
+      return
+    }
+
+    setLoading(true)
+    try {
+      const response = await deleteOrderByUser(orderId)
+      if (!response) {
+        showToast.error('Xóa đơn hàng thất bại. Vui lòng thử lại!')
+      } else {
+        showToast.success('Xóa đơn hàng thành công')
+        // Reload trang để cập nhật danh sách
+        window.location.reload()
+      }
+    } catch (error) {
+      console.error('Error: ', error)
+      showToast.error('Có lỗi xảy ra khi hủy đơn hàng')
+    } finally {
+      setLoading(false)
+      setIsConfirmOpen(false)
     }
   }
 
@@ -139,10 +170,40 @@ export const OrderCard = ({ order }: { order: Order }) => {
             Yêu Cầu Trả Hàng/Hoàn Tiền
           </button>
         )}
-        <button className="px-6 py-2 text-base font-medium text-white bg-[var(--primary-color)] rounded-md hover:opacity-90 transition-colors">
+        <button
+          onClick={() =>
+            order.status === 'pending' ? setIsConfirmOpen(true) : showToast.info('Tính năng đang được phát triển')
+          }
+          className="px-6 py-2 text-base font-medium text-white bg-[var(--primary-color)] rounded-md hover:opacity-90 transition-colors"
+        >
           {order.status === 'pending' ? 'Hủy đơn hàng' : '★ Đánh Giá'}
         </button>
       </div>
+
+      {/* AlertDialog đơn giản */}
+      {isConfirmOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-md w-[400px]">
+            <h2 className="text-lg font-semibold mb-4">Bạn có chắc chắn muốn hủy đơn hàng?</h2>
+            <div className="flex justify-end space-x-3">
+              <button
+                onClick={() => setIsConfirmOpen(false)}
+                className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                disabled={loading}
+              >
+                Không
+              </button>
+              <button
+                onClick={() => handlerDeleteOrder(order._id)}
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                disabled={loading}
+              >
+                {loading ? 'Đang hủy...' : 'Có, hủy đơn hàng'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

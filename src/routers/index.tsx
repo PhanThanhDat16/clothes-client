@@ -18,7 +18,8 @@ import {
   PROFILE_PAGE,
   ORDER_PAGE,
   PRODUCT_DETAIL_PAGE,
-  CATEGORY_DETAIL_PAGE
+  CATEGORY_DETAIL_PAGE,
+  SEARCH_PAGE
 } from '@/constants'
 
 import MainLayout from '@/layouts'
@@ -34,6 +35,7 @@ import Profile from '@/pages/Profile'
 import Order from '@/pages/Order'
 import DetailProduct from '@/pages/Product/DetailProduct'
 import DetailCategory from '@/pages/Category/DetailCategory'
+import SearchPage from '@/pages/search'
 const AppRouters = () => {
   return (
     <Routes>
@@ -54,6 +56,7 @@ const AppRouters = () => {
         <Route path={REGISTER_PAGE} element={<Register />} />
         <Route path={AUTH_SUCCESS} element={<AuthSuccess />} />
         <Route path={ORDER_PAGE} element={<Order />} />
+        <Route path={SEARCH_PAGE} element={<SearchPage />} />
       </Route>
     </Routes>
   )

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
-import { CART_PAGE, CONTACT_PAGE, HOME_PAGE, LOGIN_PAGE, NEWIN_PAGE } from '@/constants'
+import { CART_PAGE, CONTACT_PAGE, HOME_PAGE, LOGIN_PAGE, NEWIN_PAGE, SEARCH_PAGE } from '@/constants'
 import { ModalProduct } from './ModalProduct'
 import { ModalCategory } from './ModalCategory'
 import UserDropdown from '../UserDropdown/userdropdown'
@@ -51,7 +51,7 @@ const Header = () => {
       </div>
       <div className="col-start-3 text-end text-[var(--primary-color)] text-2xl">
         <button>
-          <i className="bx bx-search px-2 mr-1 text-3xl"></i>
+          <NavLink to={SEARCH_PAGE} className="bx bx-search px-2 mr-1 text-3xl"></NavLink>
         </button>
         <NavLink to={CART_PAGE}>
           <CartIcon count={totalquantity} />

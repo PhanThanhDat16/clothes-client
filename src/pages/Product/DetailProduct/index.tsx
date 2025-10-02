@@ -8,7 +8,7 @@ import { showToast } from '@/components/Toast/showToast'
 const DetailProduct = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const { add } = useCartStore()
+  const { add, load } = useCartStore()
 
   const [product, setProduct] = useState<IProduct>()
   const [loading, setLoading] = useState(true)
@@ -50,6 +50,7 @@ const DetailProduct = () => {
   const handleAddToCart = async () => {
     if (!product || !selectedSize) return
     await add(product, selectedSize, quantity)
+    load()
     showToast.success('Đã thêm sản phẩm vào giỏ hàng!')
   }
 

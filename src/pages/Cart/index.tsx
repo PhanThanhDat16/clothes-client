@@ -5,6 +5,7 @@ import { useCartStore } from '@/store/useCartStore'
 import { useAuthStore } from '@/store/authStore'
 import { showToast } from '@/components/Toast/showToast'
 import { ICart } from '@/models/cartItem'
+import { useStoreSocketIO } from '@/store/useStoreSocketIO'
 
 type SuggestItem = {
   id: number
@@ -35,6 +36,7 @@ const Cart: React.FC = () => {
   const { load, itemsForDisplay, totalPrice, totalQuantity, savingCost, increase, decrease, remove, payMentByUser } =
     useCartStore()
   const { user } = useAuthStore()
+  const { socket } = useStoreSocketIO((state) => state)
 
   useEffect(() => {
     load()
@@ -84,6 +86,9 @@ const Cart: React.FC = () => {
       }))
 
       await payMentByUser(user.data._id, cartItems, null)
+      if (socket) {
+        socket.emit('createOrder', { userId: user.data._id, userName: user.data.fullName })
+      }
       showToast.success('Thanh toán thành công!')
     } catch (error) {
       console.error('Payment error:', error)

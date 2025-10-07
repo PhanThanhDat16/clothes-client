@@ -7,10 +7,12 @@ import UserDropdown from '../UserDropdown/userdropdown'
 import CartIcon from '../cart_badge'
 import { useAuthStore } from '@/store/authStore'
 import { useCartStore } from '@/store/useCartStore'
+import { useStoreSocketIO } from '@/store/useStoreSocketIO'
 
 const Header = () => {
   const { user, fetchUser } = useAuthStore()
   const { load, totalQuantity } = useCartStore()
+  const { socket } = useStoreSocketIO((state) => state)
 
   useEffect(() => {
     load()
@@ -29,6 +31,14 @@ const Header = () => {
     }
   }, [fetchUser])
   const totalquantity = totalQuantity()
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('updateOrder', () => {
+        console.log('notiiiiiiiiiiiiiiii') /// fetch api noti ở đây khi updateOrder thay đổi
+      })
+    }
+  }, [socket])
 
   return (
     <div className="w-[90%] max-w-[var(--max-width)] grid grid-cols-3 gap-6 mx-auto h-24 items-center">

@@ -26,11 +26,12 @@ export const useStoreSocketIO = create<ISocketSore>((set) => ({
       let failedAttempts = 0
 
       socket.on('connect', () => {
-        // JOIN ROOM
-        // if (accessToken) {
-        //     set({ socket, isConnected: true })
-        //     socket.emit('joinAdmin', { token: accessToken })
-        //   }
+        // JOIN SOCKET
+        const userId = localStorage.getItem('userId')
+        if (userId) {
+          socket.emit('join-user', { userId })
+          set({ socket, isConnected: true })
+        }
 
         console.log('Socket IO Connected')
         failedAttempts = 0

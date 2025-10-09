@@ -1,34 +1,39 @@
 import { ICart } from '@/models/cartItem'
-import { GetOrdersResponse, Order } from '@/models/order'
+import { Order } from '@/models/order'
+import axiosConfig from './axiosConfig'
 
 const BASE_URL = import.meta.env.VITE_API_URL
 
-// Sử dụng axiosConfig của bạn thay vì fetch
-export const getOrderByUserId = async (userId: string): Promise<GetOrdersResponse | null> => {
-  try {
-    const response = await fetch(`${BASE_URL}/orders/user/${userId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': 'any',
-        ...(localStorage.getItem('accessToken')
-          ? { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
-          : {})
-      }
-    })
+export const updateOrder = async (orderId: string, data: { status: string }) =>
+  await axiosConfig.put(`/orders/${orderId}`, data)
+export const getOrderByUserId = async (userId: string) => await axiosConfig.get(`/orders/user/${userId}`)
 
-    if (!response.ok) {
-      const errorText = await response.text()
-      console.error(`API Error ${response.status}:`, errorText)
-      return null
-    }
-    const data = await response.json()
-    return data
-  } catch (error) {
-    console.error('Error adding item to cart:', error)
-    return null
-  }
-}
+// export const getOrderByUserId = async (userId: string): Promise<GetOrdersResponse | null> => {
+//   try {
+//     const response = await fetch(`${BASE_URL}/orders/user/${userId}`, {
+//       method: 'GET',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'ngrok-skip-browser-warning': 'any',
+//         ...(localStorage.getItem('accessToken')
+//           ? { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
+//           : {})
+//       }
+//     })
+
+//     if (!response.ok) {
+//       const errorText = await response.text()
+//       console.error(`API Error ${response.status}:`, errorText)
+//       return null
+//     }
+//     const data = await response.json()
+//     return data
+//   } catch (error) {
+//     console.error('Error adding item to cart:', error)
+//     return null
+//   }
+// }
+
 export const payMent = async (userId: string, items: ICart[], voucherCode?: string): Promise<string | null> => {
   try {
     const response = await fetch(`${BASE_URL}/orders/`, {

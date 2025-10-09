@@ -1,30 +1,18 @@
 import { useEffect, useState } from 'react'
 import { User2, Settings, Camera, Edit3, Save, X, Mail, Phone, MapPin, Calendar } from 'lucide-react'
-import type { User } from '@/models/user'
-import { getProfile } from '@/apis/userService'
+import { useAuthStore } from '@/store/authStore'
 
 const fieldClass =
   'w-full p-3 rounded-lg text-gray-800 bg-gray-50 border-2 border-stone-100 border-transparent focus:border-[var(--primary-color)] focus:outline-none transition-colors'
 
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false)
-  const [user, setUser] = useState<User | null>(null)
+  const { user, fetchUser } = useAuthStore()
 
   useEffect(() => {
-    const getProfileData = async () => {
-      try {
-        const response = await getProfile()
-        if (response && response.data) {
-          setUser(response)
-        } else {
-          setUser(null)
-        }
-      } catch (error) {
-        console.error('Error', error)
-      }
-    }
-    getProfileData()
-  }, [])
+    fetchUser()
+  }, [fetchUser])
+
   return (
     <div className="p-10 bg-gradient-to-br from-blue-50 via-white to-purple-50 ">
       <div className="max-w-4xl mx-auto">
@@ -74,7 +62,7 @@ const Profile = () => {
 
               <button className="mt-4 w-full bg-[var(--primary-color)] hover:opacity-95 transition-transform duration-300 hover:-translate-y-0.5  text-white py-3 px-4 rounded-lg flex items-center justify-center gap-2">
                 <Settings size={16} />
-                Cài đặt hồ sơ
+                Đổi mật khẩu
               </button>
             </div>
           </div>
@@ -87,7 +75,7 @@ const Profile = () => {
                 <div className="flex gap-2">
                   {isEditing ? (
                     <>
-                      <button className="bg-green-600 hover:bg-green-700 text-white p-2 rounded-lg transition-colors">
+                      <button className="bg-green-600 hover:bg-green-700 text-white p-2 rounded-lg transition-colors disabled:opacity-60">
                         <Save size={18} />
                       </button>
                       <button className="bg-gray-500 hover:bg-gray-600 text-white p-2 rounded-lg transition-colors">
@@ -105,14 +93,20 @@ const Profile = () => {
                 </div>
               </div>
 
-              <div className="grid gap-4">
+              <form className="grid gap-4">
                 {/* Name Field */}
                 <div className="space-y-2">
                   <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
                     <User2 size={16} />
                     Họ và tên
                   </label>
-                  <input type="text" value={user?.data.fullName} className={fieldClass} disabled={!isEditing} />
+                  <input
+                    type="text"
+                    value={user?.data.fullName}
+                    className={fieldClass}
+                    disabled={!isEditing}
+                    name="fullName"
+                  />
                 </div>
 
                 {/* Email Field */}
@@ -121,7 +115,13 @@ const Profile = () => {
                     <Mail size={16} />
                     Email
                   </label>
-                  <input type="email" value={user?.data.email} disabled={!isEditing} className={fieldClass} />
+                  <input
+                    name="email"
+                    type="email"
+                    value={user?.data.email}
+                    className={fieldClass}
+                    disabled={!isEditing}
+                  />
                 </div>
 
                 {/* Phone Field */}
@@ -130,7 +130,13 @@ const Profile = () => {
                     <Phone size={16} />
                     Số điện thoại
                   </label>
-                  <input type="tel" value={user?.data.phone} className={fieldClass} disabled={!isEditing} />
+                  <input
+                    name="phone"
+                    type="tel"
+                    value={user?.data.phone}
+                    className={fieldClass}
+                    disabled={!isEditing}
+                  />
                 </div>
 
                 {/* Location Field */}
@@ -139,9 +145,15 @@ const Profile = () => {
                     <MapPin size={16} />
                     Địa chỉ
                   </label>
-                  <input disabled={!isEditing} value={user?.data.address} type="text" className={fieldClass} />
+                  <input
+                    name="address"
+                    type="text"
+                    value={user?.data.address}
+                    className={fieldClass}
+                    disabled={!isEditing}
+                  />
                 </div>
-              </div>
+              </form>
             </div>
           </div>
         </div>

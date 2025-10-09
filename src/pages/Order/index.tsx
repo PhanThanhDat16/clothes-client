@@ -12,7 +12,7 @@ const OrderPage = () => {
   const [error, setError] = useState<string | null>(null)
   const { user } = useAuthStore()
 
-  const tabs = ['Tất cả', 'Chờ xác nhận', 'Đã xác nhận', 'Đang xử lý', 'Hoàn thành']
+  const tabs = ['Tất cả', 'Chờ xác nhận', 'Đã xác nhận', 'Đã hủy', 'Hoàn thành']
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -40,8 +40,8 @@ const OrderPage = () => {
     if (tab === 'Tất cả') return orders
     if (tab === 'Chờ xác nhận') return orders.filter((order) => order.status === 'pending')
     if (tab === 'Đã xác nhận') return orders.filter((order) => order.status === 'confirmed')
-    if (tab === 'Đang xử lý') return orders.filter((order) => order.status === 'processing')
-    if (tab === 'Hoàn thành') return orders.filter((order) => order.status === 'paid' || order.status === 'completed')
+    if (tab === 'Đã hủy') return orders.filter((order) => order.status === 'cancelled')
+    if (tab === 'Hoàn thành') return orders.filter((order) => order.status === 'paid')
 
     return []
   }

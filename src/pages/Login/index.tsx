@@ -44,6 +44,9 @@ const Login = () => {
     try {
       const res = await logIn(values)
       const { accessToken, refreshToken } = res.data
+      console.log(res.data.dataToken.id)
+
+      localStorage.setItem('userId', res.data.dataToken.id)
 
       if (!accessToken || !refreshToken) {
         throw new Error('Token empty')

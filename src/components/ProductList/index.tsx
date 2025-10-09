@@ -103,14 +103,15 @@ const ProductList = () => {
   return (
     <div className="max-w-7xl mx-auto p-8 flex gap-8">
       <div className="w-[20%]">
-        <div className="border-black border-b text-base pb-10">
+        <div className="border-black border-b text-base pb-10 flex items-center gap-2">
           <button>
-            <i className="bx bx-filter"></i>
+            <i className="bx  bx-slider text-2xl "></i>
           </button>
+          <h2 className="text-lg font-bold ">Bộ lọc</h2>
         </div>
 
         <div>
-          <div className="flex justify-between pt-10 pb-3">
+          <div className="flex justify-between pt-5 pb-3">
             <p className="font-semibold text-base">Phân loại</p>
             <button className="ml-2 hover:bg-blue-950 hover:text-white rounded-full bg-gray-300">
               <i className="bx bx-chevron-down p-1"></i>
@@ -135,12 +136,7 @@ const ProductList = () => {
             ))}
           </div>
 
-          <div className="flex justify-between py-5 border-b border-black">
-            <p className="font-semibold">Sẵn Hàng </p>
-            <input type="checkbox" name="" id="" />
-          </div>
-
-          <div className="pb-5 border-b border-black flex justify-between pt-10">
+          <div className="pb-5 border-b border-black flex justify-between pt-5">
             <p className="font-semibold text-base">Giá</p>
             <button className="ml-2 hover:bg-blue-950 hover:text-white rounded-full bg-gray-300">
               <i className="bx bx-chevron-down p-1"></i>

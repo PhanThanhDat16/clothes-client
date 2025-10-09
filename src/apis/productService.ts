@@ -3,12 +3,13 @@ import axiosConfig from './axiosConfig'
 const DEFAULT_URL = '/items'
 
 export const getProductDetail = async (productId: string) => await axiosConfig.get(`${DEFAULT_URL}/${productId}`)
-export const getAllProduct = async (params?: { search?: string; page?: number; limit?: number }) =>
+export const getAllProduct = async (params?: { search?: string; page?: number; limit?: number; categoryId?: string }) =>
   await axiosConfig.get(DEFAULT_URL, {
     params: {
       search: params?.search || '',
       page: params?.page || 1,
-      limit: params?.limit || 9
+      limit: params?.limit || 9,
+      categoryId: params?.categoryId
     }
   })
 

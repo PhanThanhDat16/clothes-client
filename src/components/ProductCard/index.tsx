@@ -2,6 +2,7 @@ import type { IProduct } from '@/models/product'
 import { useCartStore } from '@/store/useCartStore'
 import { showToast } from '../Toast/showToast'
 import { useState } from 'react'
+import { formatCurrencyVND } from '@/utils'
 
 const QuickBuyCartIcon = () => (
   <svg role="presentation" fill="none" strokeWidth="1" focusable="false" width="16" height="14" viewBox="0 0 16 14">
@@ -43,9 +44,8 @@ const ProductCard = ({ item }: ProductCardProps) => {
       <div className="relative overflow-hidden bg-white text-[#23314B] rounded-lg shadow-sm hover:shadow-xl transition-shadow duration-300">
         {/* Badges */}
         <div className="absolute top-3 left-3 z-10 flex flex-col items-start space-y-2">
-          <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-800">New Product</span>
           <span className="rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-800">
-            Tiết kiệm {costSaving}₫
+            Tiết kiệm {formatCurrencyVND(costSaving)}
           </span>
         </div>
 
@@ -76,14 +76,14 @@ const ProductCard = ({ item }: ProductCardProps) => {
           <div className="items-start">
             <h3 className="font-bold text-base md:text-lg overflow-y-hidden">
               <a href={`/product/${item._id}`} className="hover:underline">
-                {item.name}
+                <p className="text-nowrap overflow-hidden">{item.name}</p>
               </a>
             </h3>
 
             <div className="mt-3 flex flex-wrap gap-2 text-base font-medium">
               <div className="mt-1 flex items-baseline space-x-2">
-                <span className="text-red-600 font-bold">{item.price.toLocaleString()}₫</span>
-                <span className="text-gray-500 line-through text-xs">{item.oldPrice.toLocaleString()}₫</span>
+                <span className="text-red-600 font-bold">{formatCurrencyVND(item.price)}</span>
+                <span className="text-gray-500 line-through text-xs">{formatCurrencyVND(item.oldPrice)}</span>
               </div>
               {item.options.map((opt) => (
                 <button

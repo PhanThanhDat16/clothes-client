@@ -2,6 +2,7 @@ import { getAllCategory } from '@/apis/categoriesService'
 import { getAllProduct, getProductByCategoryId } from '@/apis/productService'
 import ProductCard from '@/components/ProductCard'
 import { ICategory } from '@/models/categories'
+import { formatMonth } from '@/utils'
 // import { type IProduct } from '@/models/product'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
@@ -103,14 +104,15 @@ const NewInList = () => {
     <div className="w-full">
       <div className="max-w-7xl mx-auto p-8 flex gap-8">
         <div className="w-[20%]">
-          <div className="border-black border-b text-base pb-10">
+          <div className="border-black border-b text-base pb-10 flex items-center gap-2">
             <button>
-              <i className="bx bx-filter"></i>
+              <i className="bx  bx-slider text-2xl "></i>
             </button>
+            <h2 className="text-lg font-bold ">Bộ lọc</h2>
           </div>
 
           <div>
-            <div className="flex justify-between pt-10 pb-3">
+            <div className="flex justify-between pt-5 pb-3">
               <p className="font-semibold text-base">Phân loại</p>
               <button className="ml-2 hover:bg-blue-950 hover:text-white rounded-full bg-gray-300">
                 <i className="bx bx-chevron-down p-1"></i>
@@ -135,12 +137,7 @@ const NewInList = () => {
               ))}
             </div>
 
-            <div className="flex justify-between py-5 border-b border-black">
-              <p className="font-semibold">Sẵn Hàng </p>
-              <input type="checkbox" name="" id="" />
-            </div>
-
-            <div className="pb-5 border-b border-black flex justify-between pt-10">
+            <div className="pb-5 border-b border-black flex justify-between pt-5">
               <p className="font-semibold text-base">Giá</p>
               <button className="ml-2 hover:bg-blue-950 hover:text-white rounded-full bg-gray-300">
                 <i className="bx bx-chevron-down p-1"></i>
@@ -162,12 +159,29 @@ const NewInList = () => {
             </button>
           </div>
           <div className="grid grid-cols-3 gap-6">
-            {productsData.data.map((product: any) => (
-              <div key={product._id}>
-                <ProductCard item={product} />
-                <div>{product.createdAt}</div>
-              </div>
-            ))}
+            {productsData.data
+              .filter((product: any) => {
+                const createdDate = new Date(product.createdAt)
+                const now = new Date()
+
+                // Lấy mốc thời gian 2 tháng trước
+                const twoMonthsAgo = new Date()
+                twoMonthsAgo.setMonth(now.getMonth() - 2)
+
+                // Trả về true nếu ngày tạo >= 2 tháng trước
+                return createdDate >= twoMonthsAgo
+              })
+              .map((product: any) => (
+                <div key={product._id} className="relative">
+                  <ProductCard item={product} />
+                  <div className="absolute top-2 right-2 bg-blue-300 py-1 px-2 my-1 rounded-full text-xs font-bold text-blue-950">
+                    {formatMonth(product.createdAt).toUpperCase()}
+                  </div>
+                  <div className="absolute top-10 right-2 bg-blue-300 py-1 px-2 my-1 rounded-full text-xs font-bold text-blue-950">
+                    {'Hàng Mới'}
+                  </div>
+                </div>
+              ))}
           </div>
 
           {/* Pagination */}

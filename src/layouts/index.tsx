@@ -6,12 +6,15 @@ import PromoBanner from '@/components/PromoBanner'
 import ModalChat from '@/components/ModalChat'
 import { useStoreSocketIO } from '@/store/useStoreSocketIO'
 import { useEffect } from 'react'
+import { useAuthStore } from '@/store/authStore'
 
 const MainLayout = () => {
   const { connect, disconnect } = useStoreSocketIO()
+  const { user } = useAuthStore()
 
   useEffect(() => {
     connect()
+    console.log('User in layout:', user)
 
     return () => {
       disconnect()
@@ -19,16 +22,16 @@ const MainLayout = () => {
   }, [])
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full min-h-screen flex flex-col">
       <PromoBanner />
       <ModalChat />
       {/* <div className="md:hidden">
         <Sidebar />
       </div> */}
       <Header />
-      <div className="w-full">
+      <main className="w-full flex-1">
         <Outlet />
-      </div>
+      </main>
       <Footer />
     </div>
   )

@@ -29,7 +29,7 @@ export interface Order {
   userId: string
   totalPrice: number
   finalTotal: number
-  status: 'paid' | 'pending' | 'confirmed' | 'completed' | 'processing'
+  status: 'paid' | 'pending' | 'confirmed' | 'cancelled'
   voucherId: string | null
   discount: number
   createdAt: string

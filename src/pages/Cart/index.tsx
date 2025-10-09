@@ -35,12 +35,13 @@ const suggestItems: SuggestItem[] = [
 const Cart: React.FC = () => {
   const { load, itemsForDisplay, totalPrice, totalQuantity, savingCost, increase, decrease, remove, payMentByUser } =
     useCartStore()
-  const { user } = useAuthStore()
+  const { user, fetchUser } = useAuthStore()
   const { socket } = useStoreSocketIO((state) => state)
 
   useEffect(() => {
+    fetchUser()
     load()
-  }, [user])
+  }, [])
 
   const items = itemsForDisplay()
   const totalBill = totalPrice()

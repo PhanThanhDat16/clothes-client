@@ -54,9 +54,10 @@ const Header = () => {
   }
 
   const fetchNotifications = async () => {
-    if (user) {
+    const userId = localStorage.getItem('userId')
+    if (userId) {
       try {
-        const res1 = await getListNotification(user.data._id as string)
+        const res1 = await getListNotification(userId as string)
         setNotiList(res1.data)
       } catch (error) {
         console.error('Error fetching notifications:', error)

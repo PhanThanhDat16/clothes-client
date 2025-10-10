@@ -80,16 +80,17 @@ const ProductCard = ({ item }: ProductCardProps) => {
               </a>
             </h3>
 
-            <div className="mt-3 flex flex-wrap gap-2 text-base font-medium">
-              <div className="mt-1 flex items-baseline space-x-2">
-                <span className="text-red-600 font-bold">{formatCurrencyVND(item.price)}</span>
-                <span className="text-gray-500 line-through text-xs">{formatCurrencyVND(item.oldPrice)}</span>
+            <div className="mt-3 flex flex-wrap gap-2 text-base font-medium  justify-between">
+              <div className="w-[30%]">
+                <div className="text-gray-500 line-through text-xs">{formatCurrencyVND(item.oldPrice)}</div>
+                <div className="text-red-600 font-bold">{formatCurrencyVND(item.price)}</div>
               </div>
-              {item.options.map((opt) => (
-                <button
-                  onClick={() => setSelectedSize(opt.size)}
-                  key={opt.size}
-                  className={`
+              <div className="flex w-[65%]">
+                {item.options.map((opt) => (
+                  <button
+                    onClick={() => setSelectedSize(opt.size)}
+                    key={opt.size}
+                    className={`
                     px-3 rounded-lg border-2 transition
                     ${
                       opt.stockQuantity > 0
@@ -100,11 +101,12 @@ const ProductCard = ({ item }: ProductCardProps) => {
                         : 'border-gray-200 text-gray-400 cursor-not-allowed opacity-50'
                     }
                   `}
-                  disabled={opt.stockQuantity <= 0}
-                >
-                  {opt.size}
-                </button>
-              ))}
+                    disabled={opt.stockQuantity <= 0}
+                  >
+                    {opt.size}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>

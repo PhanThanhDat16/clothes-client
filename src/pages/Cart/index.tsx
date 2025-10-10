@@ -6,6 +6,7 @@ import { useAuthStore } from '@/store/authStore'
 import { showToast } from '@/components/Toast/showToast'
 import { ICart } from '@/models/cartItem'
 import { useStoreSocketIO } from '@/store/useStoreSocketIO'
+import { getProductDetail } from '@/apis/productService'
 
 type SuggestItem = {
   id: number
@@ -40,7 +41,6 @@ const Cart: React.FC = () => {
 
   useEffect(() => {
     fetchUser()
-    load()
   }, [])
 
   const items = itemsForDisplay()
@@ -48,8 +48,28 @@ const Cart: React.FC = () => {
   const totalQuantityCart = totalQuantity()
 
   const handleIncrease = async (itemId: string, size: string) => {
-    await increase(itemId, size)
-    load()
+    try {
+      const product = await getProductDetail(itemId)
+      if (!product?.data) return
+
+      const option = product.data.options.find((opt: any) => opt.size === size)
+      if (!option) {
+        showToast.error('Không tìm thấy kích cỡ này trong sản phẩm!')
+        return
+      }
+      const cartItem = items.find((item) => item.id === itemId && item.size === size)
+      const currentQuantity = cartItem ? cartItem.quantity : 0
+
+      if (currentQuantity + 1 > option.stockQuantity) {
+        showToast.warning(`Hiện tại mặt hàng này chỉ còn: ${option.stockQuantity} sản phẩm`)
+        return
+      }
+      await increase(itemId, size)
+      load()
+    } catch (error) {
+      console.error('Error in handleIncrease:', error)
+      showToast.error('Không thể tăng số lượng sản phẩm!')
+    }
   }
   const handleDecrease = async (itemId: string, size: string) => {
     await decrease(itemId, size)
@@ -65,12 +85,10 @@ const Cart: React.FC = () => {
       showToast.error('Vui lòng đăng nhập để tiến hành thanh toán!')
       return
     }
-
-    if (items.length === 0) {
-      showToast.error('Giỏ hàng trống!')
-      return
-    }
-
+    // if (items.length === 0) {
+    //   showToast.error('Giỏ hàng trống!')
+    //   return
+    // }
     try {
       const cartItems: ICart[] = items.map((item) => ({
         _id: item.id,
@@ -86,9 +104,9 @@ const Cart: React.FC = () => {
         }
       }))
 
-      await payMentByUser(user.data._id, cartItems, null)
+      await payMentByUser(user._id, cartItems, null)
       if (socket) {
-        socket.emit('createOrder', { userId: user.data._id, userName: user.data.fullName })
+        socket.emit('createOrder', { userId: user._id, userName: user.fullName })
       }
       showToast.success('Thanh toán thành công!')
     } catch (error) {
@@ -135,11 +153,13 @@ const Cart: React.FC = () => {
               <div className="space-y-6 mt-10 mb-5">
                 {items.map((item) => (
                   <div key={`${item.id}-${item.size}`} className="flex gap-4 border-b pb-4">
-                    <img
-                      src={item.images}
-                      alt={item.name}
-                      className="w-[200px] h-[200px] object-cover rounded cursor-pointer"
-                    />
+                    <a href={`/product/${item.id}`}>
+                      <img
+                        src={item.images}
+                        alt={item.name}
+                        className="w-[200px] h-[200px] object-cover rounded cursor-pointer"
+                      />
+                    </a>
 
                     <div className="flex-1 flex flex-col justify-between">
                       <div className="flex justify-between items-start">
@@ -162,9 +182,11 @@ const Cart: React.FC = () => {
                           >
                             −
                           </button>
-                          <span className="px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 font-bold text-gray-800 min-w-[60px] text-center border-gray-300">
-                            {item.quantity}
-                          </span>
+                          <input
+                            type="text"
+                            value={item.quantity}
+                            className="px-4 py-3 bg-gradient-to-r from-gray-50 to-gray-100 font-bold text-gray-800 max-w-[60px] text-center border-gray-300"
+                          />
                           <button
                             className="px-4 py-3 border-l border-gray-300 hover:bg-green-500 hover:text-white transition-all duration-300 font-bold text-gray-700"
                             onClick={() => handleIncrease(item.id, item.size)}

@@ -6,16 +6,12 @@ import PromoBanner from '@/components/PromoBanner'
 import ModalChat from '@/components/ModalChat'
 import { useStoreSocketIO } from '@/store/useStoreSocketIO'
 import { useEffect } from 'react'
-import { useAuthStore } from '@/store/authStore'
 
 const MainLayout = () => {
   const { connect, disconnect } = useStoreSocketIO()
-  const { user } = useAuthStore()
 
   useEffect(() => {
     connect()
-    console.log('User in layout:', user)
-
     return () => {
       disconnect()
     }

@@ -71,7 +71,7 @@ export const useCartStore = create<UnifiedCartState>((set, get) => ({
     const { user } = useAuthStore.getState()
     if (user) {
       set({ loading: true })
-      const data = await cartService.getCartByUserId(user.data._id)
+      const data = await cartService.getCartByUserId(user._id)
       set({ cartUser: data?.data || [], loading: false })
     } else {
       const cart = getCartFromStorage()
@@ -84,7 +84,7 @@ export const useCartStore = create<UnifiedCartState>((set, get) => ({
     if (user) {
       set({ loading: true })
       const payload: CartItemAdd = { itemId: product._id, size, quantity }
-      const data = await cartService.addItemToCart(user.data._id, payload)
+      const data = await cartService.addItemToCart(user._id, payload)
       set({ cartUser: data?.data || [], loading: false })
       return
     }
@@ -118,7 +118,7 @@ export const useCartStore = create<UnifiedCartState>((set, get) => ({
     const { user } = useAuthStore.getState()
     if (user) {
       set({ loading: true })
-      const data = await cartService.updateQuantity(user.data._id, { itemId, size, quantity: 1 })
+      const data = await cartService.updateQuantity(user._id, { itemId, size, quantity: 1 })
       set({ cartUser: data?.data || [], loading: false })
       return
     }
@@ -138,7 +138,7 @@ export const useCartStore = create<UnifiedCartState>((set, get) => ({
       const target = get().cartUser.find((i) => i.itemId === itemId && i.size === size)
 
       if (target && target.quantity > 1) {
-        const data = await cartService.updateQuantity(user.data._id, { itemId, size, quantity: -1 })
+        const data = await cartService.updateQuantity(user._id, { itemId, size, quantity: -1 })
         set({ cartUser: data?.data || [], loading: false })
       }
       return
@@ -158,7 +158,7 @@ export const useCartStore = create<UnifiedCartState>((set, get) => ({
     const { user } = useAuthStore.getState()
     if (user) {
       set({ loading: true })
-      const data = await cartService.removeItem(user.data._id, itemId, size)
+      const data = await cartService.removeItem(user._id, itemId, size)
       set({ cartUser: data?.data || [], loading: false })
       return
     }

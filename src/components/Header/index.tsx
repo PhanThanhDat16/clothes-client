@@ -45,7 +45,7 @@ const Header = () => {
   const handleReadAll = async () => {
     try {
       if (user) {
-        await readAllNotification(user.data._id as string)
+        await readAllNotification(user._id as string)
         await fetchNotifications()
       }
     } catch (error) {

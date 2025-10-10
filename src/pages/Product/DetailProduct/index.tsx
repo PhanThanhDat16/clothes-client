@@ -220,21 +220,25 @@ const DetailProduct = () => {
               {/* Quantity */}
               <div className="space-y-3">
                 <h3 className="text-lg font-semibold text-gray-900">Số lượng:</h3>
-                <div className="flex items-center space-x-3">
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="w-10 h-10 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50"
-                  >
-                    -
-                  </button>
-                  <span className="w-16 text-center font-medium">{quantity}</span>
-                  <button
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="w-10 h-10 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50"
-                  >
-                    +
-                  </button>
-                </div>
+                {product.options.map((option) => (
+                  <div className="flex items-center space-x-3">
+                    <button
+                      disabled={quantity === 1}
+                      onClick={() => setQuantity(quantity - 1)}
+                      className="w-10 h-10 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50"
+                    >
+                      -
+                    </button>
+                    <span className="w-16 text-center font-medium">{quantity}</span>
+                    <button
+                      disabled={option.stockQuantity === quantity}
+                      onClick={() => setQuantity(quantity + 1)}
+                      className="w-10 h-10 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50"
+                    >
+                      +
+                    </button>
+                  </div>
+                ))}
               </div>
 
               {/* Add to Cart Button */}

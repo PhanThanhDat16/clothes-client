@@ -77,6 +77,7 @@ const NewInList = () => {
     const newSearchParams = new URLSearchParams(searchParams)
     newSearchParams.set('page', page.toString())
     setSearchParams(newSearchParams)
+    window.scrollTo(0, 0)
   }
 
   // Generate page numbers for pagination

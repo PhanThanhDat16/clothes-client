@@ -23,7 +23,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({ isLoading: true })
       const res = await getProfile()
       if (res) {
-        set({ user: res })
+        set({ user: res.data })
       }
     } catch (error) {
       console.log(error)

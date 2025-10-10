@@ -14,28 +14,30 @@ const OrderPage = () => {
 
   const tabs = ['Tất cả', 'Chờ xác nhận', 'Đã xác nhận', 'Đã hủy', 'Hoàn thành']
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      if (user?.data._id) {
-        try {
-          setLoading(true)
-          const response = await getOrderByUserId(user?.data._id)
-          setOrders(response?.data || [])
-          setError(null)
-        } catch (error) {
-          console.error('Failed to fetch orders:', error)
-          setError('Không thể tải danh sách đơn hàng')
-          setOrders([])
-        } finally {
-          setLoading(false)
-        }
-      } else {
+  const fetchOrders = async () => {
+    if (user?._id) {
+      try {
+        setLoading(true)
+        const response = await getOrderByUserId(user?._id)
+        setOrders(response?.data || [])
+        setError(null)
+      } catch (error) {
+        console.error('Failed to fetch orders:', error)
+        setError('Không thể tải danh sách đơn hàng')
+        setOrders([])
+      } finally {
         setLoading(false)
-        setError('Vui lòng đăng nhập để xem đơn hàng')
       }
+    } else {
+      setLoading(false)
+      setError('Vui lòng đăng nhập để xem đơn hàng')
     }
+  }
+
+  useEffect(() => {
     fetchOrders()
   }, [user])
+
   const filterOrders = (tab: string): Order[] => {
     if (tab === 'Tất cả') return orders
     if (tab === 'Chờ xác nhận') return orders.filter((order) => order.status === 'pending')
@@ -65,7 +67,7 @@ const OrderPage = () => {
         <div className="text-center">
           <p className="text-red-600 text-lg mb-4">{error}</p>
           <button
-            onClick={() => window.location.reload()}
+            onClick={() => fetchOrders()}
             className="px-4 py-2 bg-[var(--primary-color)] text-white rounded-md hover:opacity-90"
           >
             Thử lại

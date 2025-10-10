@@ -39,7 +39,7 @@ const ModalChat = () => {
       return
     }
     try {
-      const res = await createConversation(user.data._id)
+      const res = await createConversation(user._id)
       const conversation = res.data
       setCurrentRoom(conversation)
       if (socket) {
@@ -58,7 +58,7 @@ const ModalChat = () => {
     const newMsg = {
       conversationId: currentRoom._id,
       content: message.trim(),
-      senderId: user?.data._id,
+      senderId: user?._id,
       receiverId: currentRoom.userId // giống admin
     }
 
@@ -83,8 +83,8 @@ const ModalChat = () => {
 
   const handleCheckConversationUser = async () => {
     try {
-      if (user?.data._id) {
-        const res = await getCheckConversationByUser(user?.data._id as string)
+      if (user?._id) {
+        const res = await getCheckConversationByUser(user?._id as string)
         const conversation = res.data
         if (conversation) {
           setCurrentRoom(conversation)
@@ -167,7 +167,7 @@ const ModalChat = () => {
           <div className="flex-1 p-4 overflow-y-auto">
             {messages.length > 0 ? (
               messages.map((msg) => {
-                const userId = user?.data._id
+                const userId = user?._id
                 const getId = (id: any) => (typeof id === 'string' ? id : id?._id)
                 const isMine = getId(msg.senderId) === userId
                 return (

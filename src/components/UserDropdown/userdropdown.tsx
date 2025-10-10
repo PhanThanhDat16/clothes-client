@@ -47,14 +47,10 @@ const UserDropdown = () => {
         onClick={() => setOpen(!open)}
         className="inline-flex items-center gap-x-2 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-gray-300 hover:bg-gray-50"
       >
-        <img
-          src="https://images.unsplash.com/photo-1633332755192-727a05c4013d"
-          alt="avatar"
-          className="w-8 h-8 rounded-full"
-        />
+        <img src={user?.avatar} alt="avatar" className="w-8 h-8 rounded-full" />
         <div className="text-left">
-          <p className="text-sm font-medium">{user?.data.fullName}</p>
-          <p className="text-xs text-gray-500">{user?.data.email}</p>
+          <p className="text-sm font-medium">{user?.fullName}</p>
+          <p className="text-xs text-gray-500">{user?.email}</p>
         </div>
         {open ? (
           <i className="bx bx-chevron-up text-lg text-gray-500"></i>
